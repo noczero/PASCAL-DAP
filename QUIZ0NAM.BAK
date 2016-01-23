@@ -1,0 +1,8 @@
+PROGRAM QUIZ0Nama;
+var
+   nama : string;
+Begin
+ writeln('Halo, siapa namamu?'); readln(nama);
+ writeln('Senang berteman denganmu ' , nama);
+readln;
+end.
