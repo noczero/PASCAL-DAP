@@ -1,3 +1,3 @@
 # PASCAL
-Dokumentasi Dasar Algoritma Pemgrograman 
+Dokumentasi Dasar Algoritma Pemrograman 
 
