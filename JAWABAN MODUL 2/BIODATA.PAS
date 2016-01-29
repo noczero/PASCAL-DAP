@@ -1,3 +1,4 @@
+{SOAL NO 1 MODUL2}
 program biodata;
 uses crt;
 
