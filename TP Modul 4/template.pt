@@ -1,0 +1,11 @@
+{File   : $PROMPT('File')}
+{Desc   : $PROMPT('Desc')}
+{Date   : $PROMPT('Date')}
+
+program $PROMPT('nprogram');
+
+uses crt;
+
+begin
+
+end.
