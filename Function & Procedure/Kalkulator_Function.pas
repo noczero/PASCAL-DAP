@@ -60,6 +60,7 @@ case pilih of
         end;
 '2' : begin
         clrscr;
+
         writeln('Hasil Penjumlahan adalah');
         writeln('Hasil tambah', x , ' + ' , y , ' = ' , tambah(x,y));
        end;
