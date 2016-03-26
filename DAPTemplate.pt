@@ -1,8 +1,0 @@
-{File		: $PROMPT('nfile')}
-{Description	: $PROMPT('desc')}
-{Date		: $PROMPT('cdate')}
-
-Program $PROMPT('program');Uses $PROMPT('uses');
-
-Begin
-End.
