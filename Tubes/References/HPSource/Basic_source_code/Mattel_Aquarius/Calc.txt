@@ -1,0 +1,22 @@
+
+5 rem Calculator, for Aquarius, http://rudih.info
+10  PRINT "---Calculator---"
+20  PRINT "Enter 1st number";
+23  INPUT n1
+30  PRINT "Enter operator" 
+33  PRINT "(+,-,*,/,sin,cos,tan,sqr)"
+35  INPUT op$
+37  IF LEN(op$)>1 then goto 55
+40  PRINT "Enter 2nd number"; 
+50  INPUT n2
+55  ra=3.141593*(n1/180)
+60  IF op$ = "+" THEN PRINT n1 + n2
+70  IF op$ = "-" THEN PRINT n1 - n2
+80  IF op$ = "*" THEN PRINT n1 * n2
+90  IF op$ = "/" THEN PRINT n1 / n2
+100 if op$ = "sqr" then print SQR(n1)
+110 IF op$ = "cos" THEN PRINT COS(ra)
+120 IF op$ = "sin" THEN PRINT SIN(ra)
+130 IF op$ = "tan" THEN PRINT TAN(ra)
+160 GOTO 20
+

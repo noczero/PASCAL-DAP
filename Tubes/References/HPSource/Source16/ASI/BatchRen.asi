@@ -1,0 +1,55 @@
+rem Batch Renamer, for ASIC 5.00, http://rudih.info
+
+print "---BATCH RENAMER---"
+print "WARNING: This utility will rename all files in the directory!"
+print "Enter [R] to rename to numbers,"
+print "[X] to rename all extensions, or [Q] to quit: ";
+input operat$;
+print ""
+operat$=ucase$(operat$)
+operat$=ltrim$(operat$)
+
+if operat$="R" then
+  print "Enter extension of file to rename (e.g. DOC): ";
+  input ext$;
+  print ""
+  fs$="*."
+  fs$=fs$+ext$
+  file$=find first (fs$,0)
+  while error=0
+    count$=str$(count)
+    count$=Ltrim$(count$)
+    file2$=count$+"."
+    file2$=file2$+ext$
+    name file$ as file2$
+    file$=find continue
+    count=count+1
+  wend
+endif
+
+if operat$="X" then
+  print "Enter extension to change to (e.g. TXT): ";
+  input ext$;
+  print ""
+  fs$="*.*"
+  file$=find first (fs$,0)
+  while error=0
+    dotplace=instr(file$,".")
+    leftfile$=left$ (file$,dotplace)
+    change2$=leftfile$+ext$
+    leftfile$=ucase$(leftfile$)
+    if leftfile$<>"BATCHREN." then
+      name file$ as change2$
+    endif
+    file$=find continue
+    count=count+1
+  wend
+endif
+
+print count;
+print " files renamed. Press any key to continue..."
+x$=""
+while x$=""
+  x$=inkey$
+wend
+end

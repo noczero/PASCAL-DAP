@@ -1,0 +1,121 @@
+rem '===========================================================================
+rem ' Subject: DRAW BOX DEMO                     Date: Unknown Date           
+rem '  Author: Phil Wright                       Code: ASIC                   
+rem '    Keys: DRAW,BOX,DEMO                   Packet: ASIC.ABC
+rem '===========================================================================
+REM drawbox.asi for ASIC 5.0
+REM ported from original QBasic source code written by:
+REM acr@iccu6.ipswichcity.qld.gov.au <Phil Wright> *Thanks Mate!*
+
+CLS
+
+COLOR 0, 7
+for i = 1 to 26
+a$ = string$(80, " ")
+print a$
+next i
+
+REM Message may be resized and the box will fit it (keep it divisible by 2).
+Message$ = " This is<---------->a re-sizable<------------>screen "
+
+GOSUB PrintMessage:
+GOSUB Constants:
+GOSUB DrawTopBox:
+GOSUB Constants:
+GOSUB DrawSidesBox:
+GOSUB Constants:
+GOSUB DrawBotBox:
+GOSUB SaveScreen:
+GOSUB MessageTimer:
+END
+
+PrintMessage:
+   REM was> LOCATE 12, 40 - (LEN(Message$) / 2)
+      Col = LEN(Message$)
+      Col = Col / 2
+      Col = 40 - Col
+   LOCATE 12, Col
+   PRINT Message$
+RETURN
+
+Constants:
+   UpRow = 11
+       REM was> UpCol = 40 - LEN(Message$) / 2 + 1
+       UpCol = LEN(Message$)
+       UpCol = UpCol / 2
+       UpCol = UpCol + 1
+   UpCol = 40 - UpCol
+   LoRow = 13
+       REM was> LoCol = 40 + LEN(Message$) / 2
+       LoCol = LEN(Message$
+       LoCol = LoCol / 2
+   LoCol = 40 + LoCol
+   Back = 1
+   Fore = 7
+RETURN
+
+
+DrawTopBox:
+COLOR Fore, Back
+LOCATE UpRow, UpCol
+REM was> PRINT CHR$(218) + STRING$(LoCol - UpCol - 1, CHR$(196)) + CHR$(191)
+   A$ = CHR$(218)
+   B = LoCol - UpCol
+   B = B - 1
+   C$ = CHR$(196)
+   D$ = CHR$(191)
+   X$ = STRING$(B, C$)
+   A$ = A$ + X$
+   A$ = A$ + D$
+PRINT A$
+RETURN
+
+DrawSidesBox:
+REM was> FOR Z = (UpRow + 1) TO (LoRow - 1)
+   REM prime the FOR/NEXT loop
+   UpRow = UpRow + 1
+   LoRow = LoRow - 1
+FOR Z = UpRow TO LoRow
+       LOCATE Z, UpCol
+       REM was> PRINT CHR$(179)
+           W$ = CHR$(179)
+       PRINT W$
+       LOCATE Z, LoCol
+       REM was> PRINT CHR$(179)
+           U$ = CHR$(179)
+       PRINT U$
+   NEXT Z
+RETURN
+
+DrawBotBox:
+LOCATE LoRow, UpCol
+REM was> PRINT CHR$(192) + STRING$(LoCol - UpCol - 1, CHR$(196)) + CHR$(217)
+   A$ = CHR$(192)
+   B = LoCol - UpCol
+   B = B - 1
+   C$ = CHR$(196)
+   D$ = CHR$(217)
+   X$ = STRING$(B, C$)
+   A$ = A$ + X$
+   A$ = A$ + D$
+PRINT A$
+RETURN
+
+SaveScreen:
+DEFSEG = &hexB800
+BSAVE "screen", 0, 4000
+RETURN
+
+MessageTimer:
+REM 5 sec. timer routine from original QBasic source code written by:
+REM obother@netcom.com (Glen Blankenship)
+REM (5 * 18.2 clock-ticks-per-second = 91)
+TickOne = TIMER
+FOR i = 1 TO 91
+   TickTwo = TickOne
+   WHILE TickTwo = TickOne
+       TickOne = TIMER
+   WEND
+NEXT i
+RETURN
+

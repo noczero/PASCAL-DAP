@@ -1,0 +1,113 @@
+rem '===========================================================================
+rem ' Subject: 12 HOUR CLOCK                     Date: 09-22-97 (14:39)       
+rem '  Author: Kenneth Green                     Code: ASIC                   
+rem '  Origin: green2@onramp113.org            Packet: ASIC.ABC
+rem '===========================================================================
+REM This is my first 12 hour clock program!
+REM I added lots of REM lines in this program to teach you how I made it.
+REM You are free to change the code if you know of a better way.
+REM Actually, you are free to change any of my ASIC programs.
+REM You might want to make the clock display different to add a personal touch. 
+REM My current E-Mail address is green2@onramp113.org
+cls
+locate 9,0
+print
+print
+print "12 Hour Clock By Kenneth Green"
+print "To quit program, press space bar or Esc key."
+print "If time is incorrect, then set your computer's internal clock."
+REM Set c$ to Esc key.
+c$=chr$(27)
+REM Start Loop
+go:
+a$=inkey$
+if a$=c$ then done:
+if a$=" " then done:
+REM Below checks the time and makes a small loop if the time is still the same. 
+o$=t$
+t$=time$
+if o$=t$ then go:
+REM I use these 3 lines to get the numbers I need from t$.
+REM Then I make the string into a number variable using the val command.
+h$=left$(t$,2)
+mi$=mid$(t$,4,2)
+se$=mid$(t$,7,2)
+sd=val(se$)
+mu=val(mi$)
+ty=val(h$)
+
+REM Set s$ to A.M. then check every P.M. hour to change 24 hour clock to
+REM 12 hour and also resets s$ to P.M. if needed.
+s$="A.M."
+if ty=12 then
+   s$="P.M."
+   endif
+if ty=0 then
+   ty=12
+   endif
+if ty=13 then
+   ty=1
+   s$="P.M."
+   endif
+if ty=14 then
+   ty=2
+   s$="P.M."
+   endif
+if ty=15 then
+   ty=3
+   s$="P.M."
+   endif
+if ty=16 then
+   ty=4
+   s$="P.M."
+   endif
+if ty=17 then
+   ty=5
+   s$="P.M."
+  endif
+if ty=18 then
+   ty=6
+   s$="P.M."
+   endif
+if ty=19 then
+   ty=7
+   s$="P.M."
+   endif
+if ty=20 then
+   ty=8
+   s$="P.M."
+   endif
+if ty=21 then
+   ty=9
+   s$="P.M."
+   endif
+if ty=22 then
+   ty=10
+   s$="P.M."
+   endif
+if ty=23 then
+   ty=11
+   s$="P.M."
+   endif
+
+REM Now display everything.
+locate 0,0
+print "------------------------------------"
+print "Hour:";
+print ty;
+print " ";
+print s$
+print "------------------------------------"
+print "Minute:";
+print mu
+print "------------------------------------"
+print "Second:";
+print sd
+print "------------------------------------"
+REM Goes back to go: for the big loop.
+goto go:
+
+REM Clears screen and ends program when program is sent to done:
+done:
+cls
+end

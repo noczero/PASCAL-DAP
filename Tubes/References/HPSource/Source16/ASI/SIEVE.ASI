@@ -1,0 +1,71 @@
+rem '===========================================================================
+rem ' Subject: SIEVE OF ERATOSTHENES             Date: Unknown Date           
+rem '  Author: Damond Walker                     Code: ASIC                   
+rem '    Keys: PRIME,NUMBER,GENERATOR          Packet: ASIC.ABC
+rem '===========================================================================
+rem ********************************
+rem *** ASIC version of Classic  ***
+rem ***  Sieve of Eratosthenes   ***
+rem ***      Benchmark           ***
+rem ***   by Damond Walker       ***
+rem *** c2mxwalk@fre.fsu.umd.edu ***
+rem ********************************
+rem *** Adapted from:            ***
+rem ***    Byte Magzine          ***
+rem ***    September, 1981       ***
+rem ***    Pages 180-189         ***
+rem ********************************
+rem *** Timings:                 ***
+rem ***  486dx4-100    0.494     ***
+rem ***  PS/2 Mod 50Z 11.485     ***
+rem ***   ('286-10)              ***
+rem ***                          ***
+rem *** Times are in seconds.    ***
+rem ********************************
+
+DIM Flags(8190)
+
+CLS
+PRINT "Sieve - 25 iterations"
+X& = TIMER
+
+FOR Iter = 1 TO 25
+  Count = 0
+
+  FOR I = 0 TO 8190
+    Flags(I) = 1
+  NEXT I
+
+  FOR I = 0 TO 8190
+    IF Flags(I) = 1 THEN
+       Prime = I + I
+       Prime = Prime + 3
+       K = I + Prime
+       WHILE K <= 8190
+         Flags(K) = 0
+         K = K + Prime
+       WEND
+       Count = Count + 1
+    ENDIF
+  NEXT I
+NEXT Iter
+
+XX& = TIMER
+
+Seconds@ = xx& - x&
+Seconds@ = Seconds@ / 18.2@
+Seconds$ = str$(Seconds@)
+Seconds$ = ltrim$(Seconds$)
+
+print Count;
+print " primes in ";
+print Seconds$;
+print " seconds."
+
+END
+
+rem Note:- To get this to compile, you have to set Decimal & Extended math on.
+rem As the remarks show up top, my 486dx4-100 ran the thing in less than a
+rem second while my PS/2 Mod 50Z ('286-10) ran the sucker in 11.5 seconds.
+rem -: Moribund
+

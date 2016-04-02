@@ -1,0 +1,9 @@
+
+10 REM Loopy, for Aquarius, http://rudih.info
+20 for x=1 to 7
+30 for y=1 to 7
+40 for z=1 to 7
+50 print "x =";x;" y =";y;" z =";z
+60 next z
+70 next y
+80 next x

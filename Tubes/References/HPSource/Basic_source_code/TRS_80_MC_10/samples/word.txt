@@ -1,0 +1,22 @@
+2 rem Word Scramble, for BASIC, web: http://rudih.info 
+5 cls
+10 dim y(30)
+12 print "2 player word guessing game"
+13 print "Enter word to scramble:"
+20 input x$
+30 xl=len(x$)
+40 if xl<1 then end
+50 for a=1 to xl
+60    x=rnd(xl)
+90    for b=1 to 30
+100          if x=y(b) then goto 60 
+110    next b   
+125    d$=d$+mid$(x$,x,1) 
+130    y(a)=x
+140 next a
+142 cls
+143 print "Here is the scrambled word:"
+150 print d$
+160 input"Enter guess"; g$
+170 if g$<>x$ then goto 160
+180 print"You got it!"

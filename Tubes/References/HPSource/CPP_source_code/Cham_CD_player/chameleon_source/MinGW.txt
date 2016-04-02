@@ -1,0 +1,12 @@
+Instructions for MinGW gcc g++ compiler
+
+=========================
+Windows 98
+=========================
+
+MinGW ( Minimalist GNU for Windows)
+http://www.mingw.org/
+
+1. Install MinGW compiler ( set PATH in autoexec.bat  i.e.  PATH=%PATH%;C:\MINGW\BIN)
+2. Update makefile.gcc  ( set MINGWROOT to root directory of MinGW compiler i.e. MINGWROOT=c:/MinGW )
+3. Compile with:  make -f makefile.gcc all   ( or mingw32-make -f makefile.gcc all )

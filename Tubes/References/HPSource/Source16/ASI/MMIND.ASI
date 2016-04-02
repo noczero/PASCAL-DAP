@@ -1,0 +1,110 @@
+rem Mastermind, for ASIC, http://rudih.info
+rem The player has 9 attempts to guess a 4 digit combination
+rem with indication of white for correct digit and black for
+rem correct place and digit. The digits are 1-6.
+
+DIM digit(4)
+DIM user(4)
+
+rem generate combination
+RANDOMIZE
+FOR x = 1 TO 4
+  digit(x) = RND(0)
+  digit(x) = digit(x) mod 5
+  digit(x) = digit(x) + 1
+NEXT x
+
+rem print messages on screen
+CLS
+PRINT " ---Mastermind---"
+PRINT "Key in 4 digits from 1 to 6 to crack a secret code."
+PRINT "White=correct digit. Black=correct digit and place."
+PRINT "You have 9 attempts. <Esc> quits."
+
+rem program main loop
+main:
+attemptnum = 1
+WHILE blkcount < 4
+ GOSUB getinput:
+ GOSUB feedback:
+ attemptnum = attemptnum + 1
+ IF attemptnum = 10 then
+   if blkcount <> 4 then
+    PRINT "You lose. It was: ";
+    GOSUB dispcombo:
+    PRINT "Press any key to exit..."
+    x$=""
+    while x$=""
+     X$=inkey$
+    wend
+    END
+   endif
+ ENDIF
+WEND
+PRINT "You got it! Press any key to exit..."
+x$=""
+while x$=""
+ x$=inkey$
+wend
+END
+
+rem disp combo
+dispcombo:
+FOR x = 1 TO 4
+ digstr$=str$(digit(x))
+ digstr$=ltrim$(digstr$)
+ PRINT digstr$;
+NEXT x
+PRINT ""
+RETURN
+
+rem get guess input from user
+getinput:
+PRINT " Attempt# ";
+attstr$=STR$(attemptnum)
+attstr$=Ltrim$(attstr$)
+PRINT attstr$;
+PRINT ": ";
+FOR x = 1 TO 4
+  inplab: y$ = ""
+  WHILE y$ = ""
+    y$ = INKEY$
+  WEND
+  IF y$ = "" THEN
+    END
+  endif
+  user(x) = VAL(y$)
+  if user(x)>6 then inplab:
+  if user(x)<1 then inplab:
+  PRINT y$;
+  print " ";
+NEXT x
+RETURN
+
+rem Provide feedback about guess
+feedback:
+FOR x = 1 TO 4
+ IF user(x) = digit(x) THEN
+  blkcount = blkcount + 1
+ endif
+ FOR y = 1 TO 4
+    IF user(x) = digit(y) THEN
+      whtcount = whtcount + 1
+      y = 4
+    ENDIF
+ NEXT y
+NEXT x
+PRINT " - ";
+PRINT "Black = ";
+blkcstr$=str$(blkcount)
+blkcstr$=ltrim$(blkcstr$)
+print blkcstr$;
+PRINT " White = ";
+whtcstr$=str$(whtcount)
+whtcstr$=ltrim$(whtcstr$)
+print whtcstr$
+IF blkcount < 4 THEN
+ blkcount = 0
+endif
+whtcount = 0
+RETURN

@@ -1,0 +1,169 @@
+rem '===========================================================================
+rem ' Subject: SCROLLING STARFIELD               Date: 02-16-96 (00:00)       
+rem '  Author: Tony D. Jones                     Code: ASIC                   
+rem '  Origin: arafel@ix.netcom.com            Packet: ASIC.ABC
+rem '===========================================================================
+REM Author: arafel@ix.netcom.com (Tony D.J.)
+REM STARFLD.ASI -- Creates a layered, side scrolling starfield.
+REM Developed with ASIC 5.00
+REM Written by Tony Jones -- 2/16/96
+REM Notes: My goal was to write this entirely in Basic without any use of
+REM        external assembly routines.
+REM You can add more or less stars by changing the values in the DIM
+REM statements and the the NumStars variable
+
+REM Arrays to hold our stars x,y,plane and colors
+REM We have to use 4 different arrays because ASIC doesn't support
+REM user defined types(i.e. structures).
+
+DIM Star_X(100)
+DIM Star_Y(100)
+DIM Star_P(100)
+DIM Star_C(100)
+
+REM Variables to hold the old x,y positions so we don't have to erase the
+REM whole screen
+
+DIM Old_X(100)
+DIM Old_Y(100)
+
+REM Variable for the Number of stars we want
+NumStars=100
+
+REM Variables to move the stars at different "velocities"
+velocity_1=1
+velocity_2=2
+velocity_3=4
+
+REM Variable to store our visible and hidden video page
+VisiblePage=&hex0000
+HiddenPage=&hex0100
+
+REM Variable to store the color black
+ColorBlack=&hex0C00
+
+REM Set the video mode to 320x200, 16 colors
+REM We use this mode because we have multiple video pages and we can use
+REM page flipping techniques to animate the starfield
+SCREEN 7
+
+
+REM Main program loop starts here
+GOSUB InitStarfield:
+
+AnimateLoop:
+ GOSUB UpdateStarfield:
+ GOSUB DrawStarfield:
+ GOSUB ShowPage:
+
+Wait:
+ K$=INKEY$
+ IF K$ = "" THEN
+  GOTO AnimateLoop:
+ ELSE
+  SCREEN 0
+  END
+ ENDIF
+
+REM Here we setup the starfield
+InitStarfield:
+RANDOMIZE
+
+ REM Fill in the x,y positions
+ FOR count=0 TO NumStars
+  X=RND(0)
+  X=X MOD 320
+  Y=RND(0)
+  Y=Y MOD 200
+  Star_X(count)=X
+  Star_Y(count)=Y
+
+  Plane=RND(0)
+  Plane=Plane MOD 3
+  IF Plane = 0 THEN
+   Star_P(count) = 1
+   Star_C(count) = &hex0C08
+  ENDIF
+
+  IF Plane = 1 THEN
+   Star_P(count) = 2
+   Star_C(count) = &hex0C07
+  ENDIF
+
+  IF Plane = 2 THEN
+   Star_P(count) = 3
+   Star_C(count) = &hex0C0F
+  ENDIF
+ NEXT count
+RETURN
+
+REM Here's where we draw the starfield
+DrawStarfield:
+ FOR count = 0 TO NumStars
+  REM We use the BIOS pixel setting routine so that we can specify which
+  REM video page to draw on
+  AX=Star_C(count)
+  BX=HiddenPage
+  CX=Star_X(count)
+  DX=Star_Y(count)
+  INT86(&hex10,AX,BX,CX,DX,NA,NA,NA,NA,NA)
+ NEXT count
+RETURN
+
+REM Here's where we flip the video pages
+ShowPage:
+ IF VisiblePage=&hex0000 THEN
+  AX=&hex0501
+  HiddenPage=&hex0000
+  VisiblePage=&hex0100
+ ELSE
+  AX=&hex0500
+  HiddenPage=&hex0100
+  VisiblePage=&hex0000
+ ENDIF
+
+ REM Now let the BIOS flip the page
+ INT86(&hex10,AX,NA,NA,NA,NA,NA,NA,NA,NA)
+
+ REM Now we clear the hidden page to black
+ FOR count=0 to NumStars
+  AX=ColorBlack
+  BX=HiddenPage
+  CX=Old_X(count)
+  DX=Old_Y(count)
+  INT86(&hex10,AX,BX,CX,DX,NA,NA,NA,NA,NA)
+ NEXT count
+RETURN
+
+REM Animates the starfield by moving the pixels in the x direction
+UpdateStarfield:
+ FOR count=0 TO NumStars
+
+ REM Save the old x,y positions
+ Old_X(count)=Star_X(count)
+ Old_Y(count)=Star_Y(count)
+
+  IF Star_P(count)=1 THEN
+   Star_X(count)=Star_X(count)+velocity_1
+  ENDIF
+
+  IF Star_P(count)=2 THEN
+   Star_X(count)=Star_X(count)+velocity_2
+  ENDIF
+
+  IF Star_P(count)=3 THEN
+   Star_X(count)=Star_X(count)+velocity_3
+  ENDIF
+
+  REM Clip the x coordinate to the screen
+  IF Star_X(count) > 319 THEN
+   Star_X(count) = Star_X(count) - 320
+  ENDIF
+
+  IF Star_X(count) < 0 THEN
+   Star_X(count) = Star_X(count) + 319
+  ENDIF
+ NEXT count
+RETURN
+
+

@@ -1,0 +1,5 @@
+
+10 rem Aquarius character set
+20 FOR X=1 TO 255
+30 PRINT CHR$(X);
+40 NEXT X

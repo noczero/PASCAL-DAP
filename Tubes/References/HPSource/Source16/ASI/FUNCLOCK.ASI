@@ -1,0 +1,240 @@
+rem '===========================================================================
+rem ' Subject: FUN SCREEN SAVER CLOCK            Date: 09-23-97 (19:19)       
+rem '  Author: Kenneth Green                     Code: ASIC                   
+rem '  Origin: green2@onramp113.org            Packet: ASIC.ABC
+rem '===========================================================================
+REM Fun Screen Saver Clock Program
+REM By Kenneth Green
+REM You need a VGA monitor for this program.
+REM But you don't need a color adapter.
+REM My current E-Mail address is green2@onramp113.org
+cls
+begin:
+screen 13
+color 7,0
+print "  *************************"
+print "  *Fun Screen Saver and 12*"
+print "  *  Hour Clock Program   *"
+print "  *   By Kenneth Green    *"
+print "  *************************"
+print
+print "     *******************"
+print "     * (1) Run Program *"
+print "     * (2) Introduction*"
+print "     * (3) Quit Now    *"
+print "     *******************"
+print "     * Type 1, 2, or 3 *"
+print "     * here:           *"
+print "     *******************"
+key:
+n$=inkey$
+if n$="" then key:
+locate 13,12
+if n$="1" then runtheprogram:
+if n$="2" then introduction:
+if n$="3" then done:
+goto begin:
+introduction:
+screen 13
+color 7,0
+print "*************************************"
+print "**    Fun Screen Saver and Clock   **"
+print "**         Introduction            **"
+print "*************************************"
+print
+print "This shows the current time from your"
+print "computer's internal clock, like"
+print "this:  hour     minute     second."
+print "It shows 2 of the same clocks, but faded"
+print "in color. It also displays"
+print "various pictures in random"
+print "location below the clock."
+print "If you watch long enough,"
+print "you will see all the pictures."
+print "It will run forever until you end it."
+print "To end program after started,"
+print "press either the space bar"
+print "or the Esc key."
+print
+print "Press enter to begin.";
+input sr$
+runtheprogram:
+screen 13
+c$=chr$(27)
+t=4
+l=1
+w=1
+ol=1
+hf$=chr$(1)
+hf2$=chr$(2)
+man$=chr$(11)
+woman$=chr$(12)
+music$=chr$(14)
+heart$=chr$(3)
+rl$=chr$(29)
+ud$=chr$(18)
+go:
+a$=inkey$
+if a$=c$ then done:
+if a$=" " then done:
+o$=t$
+t$=time$
+if o$=t$ then go:
+h$=left$(t$,2)
+mi$=mid$(t$,4,2)
+se$=mid$(t$,7,2)
+sd=val(se$)
+mu=val(mi$)
+ty=val(h$)
+s$="A.M."
+if ty=12 then
+   s$="P.M."
+   endif
+if ty=0 then
+   ty=12
+   endif
+if ty=13 then
+   ty=1
+   s$="P.M."
+   endif
+if ty=14 then
+   ty=2
+   s$="P.M."
+   endif
+if ty=15 then
+   ty=3
+   s$="P.M."
+   endif
+if ty=16 then
+   ty=4
+   s$="P.M."
+   endif
+if ty=17 then
+   ty=5
+   s$="P.M."
+  endif
+if ty=18 then
+   ty=6
+   s$="P.M."
+   endif
+if ty=19 then
+   ty=7
+   s$="P.M."
+   endif
+if ty=20 then
+   ty=8
+   s$="P.M."
+   endif
+if ty=21 then
+   ty=9
+   s$="P.M."
+   endif
+if ty=22 then
+   ty=10
+   s$="P.M."
+   endif
+if ty=23 then
+   ty=11
+   s$="P.M."
+   endif
+if t>8 then
+    t=2
+    l=l+2
+    ol=l
+       if l>12 then
+       l=1
+       ol=1
+       screen 13
+       w=w+1
+         if w=5 then
+            w=1
+            endif
+       endif
+   endif
+locate ott,ol
+print "                                         "
+locate ottt,ol
+print "                                         "
+locate otttt,ol
+print "                                         "
+t=t+1
+tt=t-1
+ott=tt
+ttt=t-2
+ottt=ttt
+tttt=t-3
+otttt=tttt
+locate tttt,l
+color 8,0
+print ty;
+print " ";
+print s$;
+print " ";
+print mu;
+print " ";
+print sd
+locate ttt,l
+color 7,0
+print ty;
+print " ";
+print s$;
+print " ";
+print mu;
+print " ";
+print sd
+locate tt,l
+color 15,0
+print ty;
+print " ";
+print s$;
+print " ";
+print mu;
+print " ";
+print sd
+randomize
+x=rnd(0)
+x=x mod 38
+x=x+1
+y=rnd(0)
+y=y mod 10
+y=y+13
+wf=rnd(0)
+wf=wf mod 2
+wf=wf+1
+if wf=1 then
+   if w=1 then
+      f$=hf$
+      endif
+   if w=2 then
+      f$=man$
+      endif
+   if w=3 then
+      f$=music$
+      endif
+   if w=4 then
+      f$=rl$
+      endif
+  endif
+if wf=2 then
+   if w=1 then
+      f$=hf2$
+      endif
+   if w=2 then
+      f$=woman$
+      endif
+   if w=3 then
+      f$=heart$
+      endif
+   if w=4 then
+      f$=ud$
+      endif
+   endif
+locate y,x
+color 15,0
+print f$
+goto go:
+done:
+screen 0
+width 80
+cls
+end

@@ -1,0 +1,249 @@
+rem '===========================================================================
+rem ' Subject: LOADS 320X200X256 PCX IMAGES      Date: 09-17-96 (00:00)       
+rem '  Author: Tony Jones                        Code: ASIC                   
+rem '  Origin: arafel1@ix.netcom.com           Packet: ASIC.ABC
+rem '===========================================================================
+REM -- Filename: SHOWPCX.ASI
+REM -- Developed with ASIC 5.00
+REM -- Description: Decodes and displays 320x200,256 color PCX images
+REM -- Date: September 17,1996
+REM -- Author: Tony Jones
+REM -- E-Mail: arafel1@ix.netcom.com
+
+REM -- Use in any way you wish, but give credit where credit is due. :-)
+REM -- Compile with Extended Math on.
+
+REM -- Decodes a PCX file, fades the image in, waits for a key press
+REM -- and then fades the image out.
+
+REM -- Array's to hold the palette data.
+DIM Red(256)
+DIM Green(256)
+DIM Blue(256)
+
+REM -- We parse the command line for the name of our PCX file.
+FileName$=COMMAND$
+FileName$=LTRIM$(FileName$)
+
+IF FileName$ = "" THEN
+
+ PRINT
+ PRINT "USAGE: SHOWPCX <filename>, where filename is a 320x200, 256 color"
+ PRINT "PCX file with extension."
+ PRINT
+
+ END
+
+ENDIF
+
+REM -- Enter Mode 13h
+SCREEN 13
+
+REM --  Open the file
+OPEN "R",1,FileName$
+
+REM -- Check to see if the file exist
+IF ERROR > 0 THEN
+ SCREEN 0
+ PRINT
+ PRINT " Error opening ";
+ PRINT FileName$;
+ PRINT "!"
+ PRINT
+ END
+ENDIF
+
+REM -- Check to see if its a 320x200, 256 color PCX file
+REM -- The first byte should be 10, the second should be 5.
+INPUT#1, Man$ BYTE
+Check = ASC(Man$)
+IF Check <> 10 THEN
+ CLOSE 1
+ SCREEN 0
+ PRINT
+ PRINT " Not a valid PCX file!"
+ PRINT
+ END
+ENDIF
+
+INPUT#1, Ver$ BYTE
+Check = ASC(Ver$)
+IF Check <> 5 THEN
+ CLOSE 1
+ SCREEN 0
+ PRINT
+ PRINT " Not a valid PCX file!"
+ PRINT
+ END
+ENDIF
+
+REM -- Set the palette to black so we can fade the image in later.
+FOR Index = 0 TO 255
+  OUT(&hex3c8,Index)
+  OUT(&hex3c9,0)
+  OUT(&hex3c9,0)
+  OUT(&hex3c9,0)
+NEXT Index
+
+
+REM -- Load the palette.
+REM -- Position the file pointer 768 bytes from the end of the file.
+LENG& = FILELEN(FileName$)
+LENG& = LENG& - 768&
+Temp&=FILEPOS(1,LENG&)
+
+FOR Index = 0 TO 255
+ REM -- Get the red,green and blue values
+ INPUT#1, R$ BYTE
+ INPUT#1, G$ BYTE
+ INPUT#1, B$ BYTE
+
+ Red(Index) = ASC(R$)
+ Red(Index) = Red(Index) / 4
+ Green(Index) = ASC(G$)
+ Green(Index) = Green(Index) / 4
+ Blue(Index) = ASC(B$)
+ Blue(Index) = Blue(Index) / 4
+NEXT Index
+
+
+REM -- Position the file pointer 128 bytes from the start
+Temp&=FILEPOS(1,128)
+
+REM -- Decode the PCX data
+
+Counter& = 0&
+WHILE Counter& < 64000&
+
+ REM -- Get the data
+ INPUT#1, Dat$ BYTE
+
+ REM -- See if this is a run.
+ ACode = ASC(Dat$)
+
+ IF ACode > 191 THEN
+  REM -- How many bytes are in the run.
+  NumBytes = ACode - 192
+
+  REM -- Get the actual data for the run
+  INPUT#1, Dat$ BYTE
+  ACode = ASC(Dat$)
+
+  REM -- Put the data on the screen NumBytes times.
+  DEFSEG = &hexA000
+
+  WHILE NumBytes > 0
+   POKE Counter&,ACode
+   Counter& = Counter& + 1&
+   NumBytes = NumBytes - 1
+  WEND
+
+  DEFSEG = -1
+
+ ELSE
+  REM -- Else just put the data on the screen
+  DEFSEG = &hexA000
+
+  POKE Counter&,ACode
+  Counter& = Counter& + 1&
+
+  DEFSEG = -1
+
+ ENDIF
+
+WEND
+
+REM -- Close the file
+CLOSE 1
+
+REM -- Fade the image in
+FOR Count = 0 TO 31
+
+ FOR Index = 0 TO 255
+
+  OUT(&hex3c7,Index)
+  TR = INP(&hex3c9)
+  TG = INP(&hex3c9)
+  TB = INP(&hex3c9)
+
+  IF TR < Red(Index) THEN
+   TR = TR + 2
+  ENDIF
+
+  IF TG < Green(Index) THEN
+   TG = TG + 2
+  ENDIF
+
+  IF TB < Blue(Index) THEN
+   TB = TB + 2
+  ENDIF
+
+  OUT(&hex3c8,Index)
+  OUT(&hex3c9,TR)
+  OUT(&hex3c9,TG)
+  OUT(&hex3c9,TB)
+
+ NEXT Index
+
+
+ REM -- Delay for a while to make the fade smooth.
+ Thn& = TIMER
+ Elapsed& = 0&
+ WHILE Elapsed& < 2&
+  Now& = TIMER
+  Elapsed& = Now& - Thn&
+  Elapsed& = ABS(Elapsed&)
+ WEND
+
+NEXT Count
+
+K$=""
+REM -- Wait for a key press and then exit
+WHILE K$=""
+ K$=INKEY$
+WEND
+
+REM -- Fade the image out
+FOR Count = 0 TO 31
+
+ FOR Index = 0 TO 255
+
+  OUT(&hex3c7,Index)
+  TR = INP(&hex3c9)
+  TG = INP(&hex3c9)
+  TB = INP(&hex3c9)
+
+  IF TR > 0 THEN
+   TR = TR - 2
+  ENDIF
+
+  IF TG > 0 THEN
+   TG = TG - 2
+  ENDIF
+
+  IF TB > 0 THEN
+   TB = TB - 2
+  ENDIF
+
+  OUT(&hex3c8,Index)
+  OUT(&hex3c9,TR)
+  OUT(&hex3c9,TG)
+  OUT(&hex3c9,TB)
+
+ NEXT Index
+
+ REM -- Delay for a while to make the fade smooth.
+ Thn& = TIMER
+ Elapsed& = 0&
+ WHILE Elapsed& < 2&
+  Now& = TIMER
+  Elapsed& = Now& - Thn&
+  Elapsed& = ABS(Elapsed&)
+ WEND
+
+NEXT Count
+
+REM -- Back to text mode
+SCREEN 0
+
+END

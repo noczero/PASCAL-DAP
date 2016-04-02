@@ -1,0 +1,323 @@
+rem '===========================================================================
+rem ' Subject: FIND THE GOLD GAME                Date: 10-21-97 (13:06)       
+rem '  Author: Kenneth Green                     Code: ASIC                   
+rem '  Origin: green2@onramp113.org            Packet: ASIC.ABC
+rem '===========================================================================
+REM Updated on October 17, 1997
+REM By Kenneth Green
+REM This is a good game using your mouse.
+dim exx(100)
+dim eyy(100)
+dim oxx(100)
+dim oyy(100)
+dim bxx(100)
+dim byy(100)
+game:
+cls
+print "           FIND THE GOLD GAME"
+print
+print "           Updated Version!"
+print
+print "By Kenneth Green"
+print
+print
+print "If you are running Win. 95, please go to the DOS prompt and play"
+print "this game."
+print "Use your mouse and move  around the screen to collect the $."
+print "But don't touch the other  on the screen or you will"
+print "be caught and one of your men will be taken away."
+print "Get around half of all the $ on each level to pass it."
+print "Make sure that you move over the $ or - slow enough so it disappears."
+print "There is a time limit for each level."
+print "You start with 5 men."
+print "To quit game any time, press Esc key."
+print "If you don't have a mouse, exit this game now by typing Q and enter."
+print "Make sure you read the STORY on the next page to learn to make the"
+print "game easier to play and more fun."
+print "Press enter to begin.";
+input bbg$
+if bbg$="Q" then done2:
+if bbg$="q" then done2:
+if bbg$="QUIT" then done2:
+if bbg$="quit" then done2:
+if bbg$="Quit" then done2:
+spsel:
+cls
+print "      System Selection"
+print
+print "1. 35 Mhz. or Less"
+print "2. 36 to 60 Mhz."
+print "3. 61 or above"
+print "286's and most 386's would be number 1."
+print "Most older 486's and some 386's would be number 2."
+print "Pentiums and some high end 486's would be number 3."
+print "While playing and you think it is going too fast or too"
+print "slow, start the game over and choose a different system selection."
+print
+print "Type a number (1-3) here:";
+input ssm
+if ssm>3 then spsel:
+if ssm<1 then spsel:
+if ssm=1 then
+   ltm=24
+   ro=2
+   j=2
+   endif
+
+if ssm=2 then
+   ltm=48
+   ro=4
+   j=4
+   endif
+
+if ssm=3 then
+   ltm=96
+   ro=8
+   j=8
+   endif
+cls
+print "                     THE STORY"
+print "You are the richest person in the world and your bank is being robbed"
+print "and you happen to be there at that time."
+print "There are 30 bandits and they are going from"
+print "vault to vault stealing all the cash. Then they see you and you have"
+print "to make a run for it. But before that, you must gather"
+print "all the money you see before they either catch"
+print "you or your time runs out and there is no way out."
+print "You go to the next level when you fill your pockets"
+print "with cash. But when a bandit moves over money, he makes it disappear."
+print "So it is possible to pick up money that used to be there, that you"
+print "never got. When the bandit moves, he leaves a dash (-) behind him so"
+print "you can follow the trails of dashes if you need hidden money"
+print "to pass a level. Each level goes faster and faster, until they run so"
+print "fast that it is impossible for any human being to run"
+print "so fast. That's why I made a limit somewhere around level 12."
+print "Good luck! Even though there's no limit of levels,"
+print "you get to see your score during play and also after the game."
+print
+print "Press enter for some action!";
+input gggo$
+cls
+REM FIRST, CHECK FOR MOUSE DRIVER, AND RESET IT
+AX=0
+GOSUB MOUSE:
+m=5
+lv=1
+p=0
+start:
+s=0
+CLS
+ax=3
+gosub mouse:
+xx=cx/8
+yy=dx/8
+color 15,0
+randomize
+money:
+for t=1 to 90
+money2:
+ex=rnd(0)
+ex=ex mod 76
+ex=ex+2
+ey=rnd(0)
+ey=ey mod 20
+ey=ey+2
+exx(t)=ex
+eyy(t)=ey
+for z=1 to t
+if oxx(z)=exx(t) then
+  if oyy(z)=eyy(t) then
+  goto money2:
+  endif
+endif
+next z
+oxx(t)=exx(t)
+oyy(t)=eyy(t)
+locate ey,ex
+color 2,0
+print "$"
+next t
+color 15,0
+lxx=xx-10
+rxx=xx+10
+uyy=yy-10
+dyy=yy+10
+for tt=1 to 30
+badm:
+bx=rnd(0)
+bx=bx mod 76
+bx=bx+1
+by=rnd(0)
+by=by mod 23
+by=by+1
+bxx(tt)=bx
+byy(tt)=by
+if bx=40 then
+   if by=12 then
+    goto badm:
+    endif
+ endif
+if bx>lxx then
+  if bx<rxx then
+    if by>uyy then
+      if by<dyy then
+       goto badm:
+      endif
+    endif
+  endif
+endif
+if bx=oxx(tt) then
+   if by=oyy(tt) then
+   goto badm:
+   endif
+ endif
+next tt
+esc$=chr$(27)
+tm=timer
+tmm=tm+1000
+WHILE (X$<>esc$)
+   ti=timer
+   if ti>tmm then
+       tm=0
+       m=m-1
+       cls
+       locate 10,30
+       print "TIME UP!"
+       beep
+       beep
+       if m=0 then done:
+       goto start:
+   endif
+   locate 0,0
+   print "Score:";
+   print p
+   locate 0,30
+   print "Men:";
+   print m
+   locate 0,45
+   print "Level:";
+   print lv
+   locate 0,60
+   AX=3
+   GOSUB MOUSE:
+   LOCATE 2,0
+   X$=INKEY$
+   locate yy,xx
+   print " "
+   yy=dx/8
+   xx=cx/8
+   if yy<1 then
+     yy=1
+     endif
+   if yy>23 then
+     yy=23
+     endif
+   if xx<2 then
+     xx=2
+     endif
+   if xx>78 then
+     xx=78
+     endif
+   locate yy,xx
+   color 9,0
+   print ""
+   color 15,0
+   for c=1 to 90
+   if yy=eyy(c) then
+     if xx=exx(c) then
+     p=p+10
+     s=s+1
+     eyy(c)=0
+     exx(c)=0
+     if s=30 then
+       lv=lv+1
+       ltm=ltm-j
+       if ltm<ro then
+          ltm=ro
+          endif
+       cls
+       locate 17,20
+       print "GO ON TO LEVEL ";
+       print lv
+       locate 20,20
+       print "Press enter to continue.";
+       input con$
+       cls
+       goto start:
+       endif
+     endif
+   endif
+   if yy=byy(c) then
+     if xx=bxx(c) then
+     m=m-1
+     beep
+       if m=0 then
+        goto done:
+       endif
+     goto start:
+     endif
+   endif
+   next c
+qq=qq+1
+if qq>ltm then
+  qq=0
+  for bg=1 to 30
+  bxxx=bxx(bg)
+  byyy=byy(bg)
+ if bxx(bg)>xx then
+    locate byyy,bxxx
+    color 4,0
+    print "-"
+    bxx(bg)=bxx(bg)-1
+    bxxx=bxx(bg)
+    endif
+  if bxx(bg)<xx then
+    locate byyy,bxxx
+    color 4,0
+    print "-"
+    bxx(bg)=bxx(bg)+1
+    bxxx=bxx(bg)
+    endif
+  if byy(bg)>yy then
+    locate byyy,bxxx
+    color 4,0
+    print "-"
+    byy(bg)=byy(bg)-1
+    byyy=byy(bg)
+  endif
+  if byy(bg)<yy then
+   locate byyy,bxxx
+   color 4,0
+   print "-"
+   byy(bg)=byy(bg)+1
+   byyy=byy(bg)
+  endif
+  locate byyy,bxxx
+  color 4,0
+  print ""
+  next bg
+endif
+WEND
+done:
+cls
+print
+print
+print "             Come Back Soon!"
+print
+print
+print "Score:";
+print p
+print
+print
+print "Press enter to leave program.";
+input lp$
+cls
+REM FINALLY, HIDE MOUSE BEFORE LEAVING
+AX=2
+GOSUB MOUSE:
+done2:
+END
+MOUSE:
+REM CALLS MOUSE INTERRUPT 33H
+INT86(&HEX33,AX,BX,CX,DX,NA,NA,NA,NA,NA)
+RETURN

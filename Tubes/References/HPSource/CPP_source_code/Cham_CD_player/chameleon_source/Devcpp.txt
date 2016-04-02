@@ -1,0 +1,12 @@
+Instructions for Dev C++ IDE:
+
+============================
+Windows 98
+============================
+
+Bloodshed Software - Dev-C++
+http://www.bloodshed.net/devcpp.html
+
+1. Instal Dev C++ (large version with MinGW compiler or just IDE + external MinGW compiler )
+2. Open Chameleo.dev and compile
+ 

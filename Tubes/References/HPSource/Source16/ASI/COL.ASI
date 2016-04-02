@@ -1,0 +1,162 @@
+rem '===========================================================================
+rem ' Subject: UTILITY SHOWING COLOUR NUMBERS    Date: 01-14-96 (22:22)       
+rem '  Author: John A. Kiernan                   Code: ASIC                   
+rem '  Origin: kiernan@uwo.ca                  Packet: ASIC.ABC
+rem '===========================================================================
+rem  COL.ASI    Displays the 16 colours on the 8 backgrounds.
+rem             Also shows composite colour attributes (single numbers).
+rem             COL /f  to see numbers to use for flashing characters.
+rem  Compile with ASIC version 3, 4 or 5 to make a .COM file.
+     cls
+     gosub announce:
+     color 7,0
+     arg$=command$
+     arg$=ltrim$(arg$)
+     arg$=rtrim$(arg$)
+     arg$=lcase$(arg$)
+     flash=instr(arg$,"f")
+     spaces$=space$(39)
+     locate 3,0
+     gosub printtop:
+       if flash>0 then flash:
+     locate 2,0
+     print "           Enter  COL /f  for numbers for flashing colours."
+     locate 4,0
+       for fg=0 to 15
+          for bg=0 to 7
+            gosub displayforegroundandbackground:
+          next bg
+       next fg
+     goto finished:
+  flash:
+     locate 2,0
+     print "           Enter  COL  without the  /f  for non-flashing colours."
+     locate 4,0
+       for fg=0 to 15
+         for bg=8 to 15
+           gosub displayforegroundandbackground:
+         next bg
+       next fg
+  finished:
+     gosub printbottom:
+     print spaces$;
+     print "Press any key . . ."
+     gosub wait:
+     locate 0,17
+     print "composite colour attributes.                          "
+     locate 3,0
+       gosub printtop:
+         if flash>0 then flashsingle:
+         for fg=0 to 15
+            for bg=0 to 7
+               gosub displaysinglenumbers:
+            next bg
+       next fg
+     goto theend:
+  flashsingle:
+     locate 3,0
+     gosub printtop:
+       for fg=0 to 15
+          for bg=8 to 15
+             gosub displaysinglenumbers:
+          next bg
+       next fg
+  theend:
+     gosub printbottom:
+     print spaces$;
+     print spaces$
+     end
+
+rem  Subroutines follow.
+
+  announce:
+         locate 0,0
+         print "  COL.COM  Shows numbers for foreground and background colours."
+         print "           (Version 1.0)           by  J. A. Kiernan  (c)  1996"
+         return
+
+  printtop:
+         print " Ú";
+         print "ÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄ";
+         print "¿"
+     return
+
+  printbottom:
+         print " À";
+         print "ÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄ";
+         print "Ù";
+         print ""
+     return
+
+  displayforegroundandbackground:
+         gosub getforegroundandbackground:
+         color fg,bg
+         print fg$;
+         print " on ";
+         print bg$;
+         color 7,0
+         print "³";
+         gosub linefull:
+     return
+
+  getforegroundandbackground:
+           if bg=0 then
+             print " ³";
+           endif
+           if bg=8 then
+             print " ³";
+           endif
+         fg$=str$(fg)
+         fg$=ltrim$(fg$)
+           if fg<10 then
+             fg$=" "+fg$
+           endif
+         bg$=str$(bg)
+         bg$=ltrim$(bg$)
+           if bg<10 then
+                 bg$=bg$+" "
+           endif
+     return
+
+  displaysinglenumbers:
+         gosub getforegroundandbackground:
+         gosub getsinglenumbers:
+         color fg,bg
+         print singlenumber$;
+         color 7,0
+         print "³";
+         gosub linefull:
+     return
+
+  getsinglenumbers:
+         singlenumber=bg*16
+         singlenumber=singlenumber+fg
+         singlenumber$=str$(singlenumber)
+         singlenumber$=ltrim$(singlenumber$)
+           if singlenumber<100 then
+             if singlenumber<10 then
+               if bg=0 then
+                 singlenumber$="  "+singlenumber$
+                 goto bgnotzero:
+               endif
+                 singlenumber$="  "+singlenumber$
+             endif
+             singlenumber$=" "+singlenumber$
+           endif
+  bgnotzero:
+         singlenumber$="  "+singlenumber$
+         singlenumber$=singlenumber$+"   "
+     return
+
+  linefull:
+         linefull=pos(0)
+           if linefull > 68 then
+             print ""
+           endif
+     return
+
+  wait:
+         key$=inkey$
+         if Key$="" then wait:
+     return
+

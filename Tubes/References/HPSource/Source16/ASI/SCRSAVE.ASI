@@ -1,0 +1,149 @@
+rem '===========================================================================
+rem ' Subject: SCREEN SAVER W/ASILIB LIBRARY     Date: 10-22-97 (02:12)       
+rem '  Author: John A. Kiernan                   Code: ASIC                   
+rem '  Origin: kiernan@uwo.ca                  Packet: ASIC.ABC
+rem '===========================================================================
+rem  SCRSAVE.ASI  Blank the screen; exact restoration with any keypress.
+rem               Version 1.00 by J. A. Kiernan (c) October 1997
+rem                               (kiernan@uwo.ca)
+rem               Freeware! Feel free to modify the code or
+rem               incorporate it into your own programmes, but
+rem               don't blame me if your changes don't work.
+
+rem               This is an annotated example of an ASIC programme made
+rem               almost entirely with objects CALLed as SUBs from the
+rem               ASILIB library. The commands are preceded by explanatory
+rem               rem lines.
+
+rem    The ASILIB library is available as shareware ($25)
+rem    from its author:
+rem              Douglas R. Herr
+rem              P. O. Box 207
+rem              Sacramento, CA  95812
+rem              U. S. A.
+rem              telephone (916) 721-8762, voice only
+rem              CompuServe 71247,3542
+rem    It's good value for money, in my opinion.
+
+rem  Compilation:
+rem     To make the EXE file, you need  ASICC.EXE from ASIC version 5,
+rem     a linker (LINK.EXE) and ASI5LIB.LIB (from the ASILIB library).
+rem  The directory paths in the command lines below are the ones
+rem  on my C: drive. Other people will organize their files
+rem  in other ways. The LINK.EXE is Version 2.3, the one that
+rem  went with IBM DOS 3.2.  The two command lines that follow
+rem  (with duly modified path specs) are best put into a batch file,
+rem  because every letter and comma is significant.
+rem  COMMAND LINES FOR (1) compilation by ASICC; (2) linking with LINK -
+rem    C:\PROG\ASIC\ASICC SCRSAVE e b/obj
+rem    C:\PROG\ASIC\IBRARY\LINK SCRSAVE.OBJ,SCRSAVE.EXE,nul.map,C:\PROG\ASIC\ASILIB\ASI5LIB
+
+   rem   If this code is included in a programme that also makes calls
+   rem   to other libraries, ASILIB must be last on libraries list in the
+   rem   LINK command line (a requirement of the AllocDOS subroutine;
+   rem   see the ASILIB documentation.)
+
+rem    The executable file (SCRSAVE.EXE) can be compressed with
+rem    PKLITE, TINYPROG, XPACK or LZEXE (and probably others).
+rem    Of these four, LZEXE gave the best compression (5871 --> 2442 bytes).
+
+rem  SUBs are all from ASI5LIB.LIB, which is the ASILIB library
+rem  file that works with ASIC 5.0
+
+rem ____________ Programme code begins here _____________
+
+rem   Get the cursor position. This is one Line down from the
+rem   DOS command line that calls the programme, and in
+rem   column (Col) zero, because there isn't a DOS prompt
+rem   any more once we are within this programme.
+        Line=CSRLIN
+        Col=POS(0)
+
+rem   The "AllocDOS" SUB will need DOS 3 or higher, so get DOS version
+rem   now, and display a message if it is below 3.0.
+        CALL SUB "GetDOSver" Major Minor
+          IF Major < 3 THEN
+            PRINT "This program needs a DOS version 3 or higher."
+            PRINT "Version ";
+            Major$=STR$(Major)
+            Major$=LTRIM$(Major$)
+            Minor$=STR$(Minor)
+            Minor$=LTRIM$(Minor$)
+            Version$=Major$+"."
+            Version$=Version$+Minor$
+            PRINT Version$;
+            PRINT " cannot evaluate the screen dimensions."
+            PRINT "The original screen may not be accurately restored. Sorry!"
+            GOSUB Wait:
+          ENDIF
+
+rem   Calculate bytes required to save a text screen page. The ASILIB
+rem   subroutine requires an extended integer, hence the "&" and also
+rem   the need to have an "e" in the ASICC compiler's command line.
+        CALL SUB "ScreenMem", ScreenBytes&
+
+rem   AllocDOS permits dynamic memory allocation for an ASIC programme.
+rem   AllocDOS needs DOS 3 or higher.
+rem   ScreenBytes& is the number of bytes you want to allocate.
+rem   This number was returned by ASILIB's "ScreenMem" SUB.
+rem   If the segment address returned by AllocDOS = 0, then
+rem   insufficient memory is available for the requested memory
+rem   block. The IF ... ENDIF below is to check for and respond to
+rem   this unlikely event.
+        CALL SUB "AllocDOS", ScreenBytes&, BlockSeg
+          IF BlockSeg=0 THEN
+            PRINT "Not enough memory to save the screen!"
+            GOTO TheEnd:
+          ENDIF
+
+rem   Acquire the screen.
+        CALL SUB "GetScreen", BlockSeg, 0
+
+rem   Make a blank, black screen
+        CLS
+rem   Make the cursor invisible
+        CALL SUB "CursorOff"
+
+rem   The  Wait:  subroutine is to wait (with screen black) until
+rem   any key is pressed.
+        GOSUB Wait:
+
+rem   Restore the screen.
+        CALL SUB "PutScreen", BlockSeg, 0
+
+rem   The next job is to delete the command line that called this
+rem   programme, so that the screen will look exactly as it was
+rem   before this programme did its stuff.
+rem   This necessitates a bit of cursor moving: up from the Line
+rem   originally saved with CSRLIN. The column (Col) saved with
+rem   POS(0) is 0 so a whole 80-column line can be overwritten
+rem   with "space" (ASCII 32) characters. The DOS prompt will
+rem   reappear on top of the deleted line, with the cursor
+rem   poised to receive a new command.
+rem                                     If you use 4DOS.COM instead
+rem                                     of COMMAND.COM you can still
+rem                                     invoke earlier commands with
+rem                                     the PgUp and arrow keys, just
+rem                                     as if this screen blanking
+rem                                     programme had never been
+rem                                     executed.
+        Line=Line-1
+        LOCATE Line,Col
+        BlankLine$=SPACE$(80)
+        PRINT BlankLine$;
+        Line=Line-1
+        LOCATE Line,Col
+
+TheEnd:
+END
+
+rem  Subroutines for use by GOSUBs are placed after
+rem  the programme's END statement.
+rem  This programme has only one GOSUB.
+
+Wait:
+      Key$=INKEY$
+        IF Key$="" THEN Wait:
+      RETURN
+
+rem ________ The very end _________

@@ -1,0 +1,352 @@
+rem '===========================================================================
+rem ' Subject: PELLETS WORLD PACMAN 1            Date: 09-23-97 (19:19)       
+rem '  Author: Kenneth Green                     Code: ASIC                   
+rem '  Origin: green2@onramp113.org            Packet: ASIC.ABC
+rem '===========================================================================
+dim xx(1200)
+dim yy(1200)
+dim ox(1200)
+dim oy(1200)
+f$=chr$(2)
+g$=chr$(239)
+cls
+start:
+m=3
+ty=6
+fi=0
+scc=0
+sc=0
+screen 13
+color 15,0
+print
+print "    ------------------------"
+print "    | PELLETS WORLD PACMAN |"
+print "    ------------------------"
+print "        By Kenneth Green"
+print
+print "      -------------------"
+print "      | CHOOSE A NUMBER |"
+print "      |                 |"
+print "      |(1) Introduction |"
+print "      |(2) Play Game    |"
+print "      |(3) Quit         |"
+print "      -------------------"
+print
+print "DO NOT HOLD DOWN THE ARROW KEYS"
+print "WHILE PLAYING. THIS COULD FREEZE"
+print "THIS PROGRAM."
+key:
+k$=inkey$
+if k$="1" then intro:
+if k$="2" then begin:
+if k$="3" then done:
+goto key:
+intro:
+screen 13
+print "   Introduction"
+print
+print "You are ";
+color 14,0
+print f$;
+color 7,0
+print " Pac-Man and you"
+print "must munch all the"
+print "pellets on the"
+print "screen before you"
+print "are caught by the"
+print "Ghosts ";
+color 15,0
+print g$;
+print g$;
+color 7,0
+print ".You are"
+print "allowed to move"
+print "any direction and"
+print "off the screen to"
+print "get to the other side."
+print "After you eat all the"
+print "pellets, the game goes to"
+print "a faster level."
+print "To quit while playing,"
+print "press the Esc key."
+print "To move, use the arrow keys."
+print "Press enter to begin.";
+input bg$
+begin:
+if m=0 then
+   goto gameover:
+   endif
+screen 13
+rt$=chr$(75)
+lt$=chr$(77)
+u$=chr$(72)
+d$=chr$(80)
+c$=chr$(27)
+x=20
+y=10
+gx=30
+gy=5
+ggx=10
+ggy=15
+color 1,0
+locate 4,9
+print ""
+for ll=5 to 15
+locate ll,9
+print ""
+locate ll,31
+print ""
+next ll
+locate 16,9
+print ""
+color 7,0
+for e=10 to 30
+for ee=5 to 15
+t=t+1
+locate ee,e
+print "."
+xx(t)=e
+yy(t)=ee
+next ee
+next e
+go:
+time:
+a=timer
+aa=a+2
+time2:
+aaa=timer
+if aaa=aa then go2:
+goto time2:
+go2:
+color 14,0
+locate 0,0
+print "Score:";
+print sc
+if scc=1155 then
+   ty=ty-1
+   scc=0
+   if ty<2 then
+      ty=2
+      endif
+   goto zeros:
+endif
+locate 0,22
+print "Men Left:";
+print m
+a$=inkey$
+tm=tm+1
+if tm<ty then myturn:
+ghostturn:
+tm=0
+if gx>x then
+   gosub gcheck:
+   gx=gx-1
+   if gx<10 then
+       gx=10
+    endif
+endif
+
+if gx<x then
+   gosub gcheck:
+   gx=gx+1
+   if gx>30 then
+       gx=30
+   endif
+endif
+
+if gy>y then
+   gosub gcheck:
+   gy=gy-1
+   if gy<5 then
+       gy=5
+   endif
+endif
+
+if gy<y then
+   gosub gcheck:
+   gy=gy+1
+   if gy>15 then
+       gy=15
+   endif
+endif
+
+if ggx>x then
+   gosub ggcheck:
+   ggx=ggx-1
+   if ggx<10 then
+       ggx=10
+    endif
+endif
+
+if ggx<x then
+   gosub ggcheck:
+   ggx=ggx+1
+   if ggx>30 then
+       ggx=30
+   endif
+endif
+
+if ggy>y then
+   gosub ggcheck:
+   ggy=ggy-1
+   if ggy<5 then
+       ggy=5
+   endif
+endif
+
+if ggy<y then
+   gosub ggcheck:
+   ggy=ggy+1
+   if ggy>15 then
+       ggy=15
+   endif
+endif
+myturn:
+gosub checkdots:
+color 15,0
+locate gy,gx
+print g$
+locate ggy,ggx
+print g$
+if ggx=x then
+   if ggy=y then
+   goto caught:
+   endif
+endif
+if gy=y then
+   if gx=x then
+   caught:
+   m=m-1
+   scc=0
+   zeros:
+   for ttt=0 to 1100
+   ox(ttt)=0
+   oy(ttt)=0
+   xx(ttt)=0
+   yy(ttt)=0
+   next ttt
+   tt=0
+   t=0
+   if fi=1 then start:
+   goto begin:
+   endif
+endif
+if a$=rt$ then
+   locate y,x
+   print " "
+   x=x-1
+   if x<10 then
+     x=30
+     endif
+endif
+if a$=lt$ then
+   locate y,x
+   print " "
+   x=x+1
+   if x>30 then
+     x=10
+     endif
+endif
+
+if a$=u$ then
+   locate y,x
+   print " "
+   y=y-1
+   if y<5 then
+     y=15
+     endif
+endif
+
+if a$=d$ then
+   locate y,x
+   print " "
+   y=y+1
+   if y>15 then
+     y=5
+     endif
+endif
+if a$=c$ then
+     fi=1
+     goto zeros:
+endif
+color 14,0
+locate y,x
+print f$
+goto go:
+checkdots:
+for dt=0 to tt
+if x=ox(dt) then
+    if y=oy(dt) then
+    return
+    endif
+endif
+next dt
+for ch=10 to 30
+for cc=5 to 15
+if x=ch then
+   if y=cc then
+   sc=sc+5
+   scc=scc+5
+   sound 900,12
+   tt=tt+1
+   ox(tt)=x
+   oy(tt)=y
+   return
+   endif
+ endif
+next cc
+next ch
+return
+
+gcheck:
+if tt=0 then
+   tt=1
+   endif
+for gt=1 to tt
+if gx=ox(gt) then
+   if gy=oy(gt) then
+   locate gy,gx
+   print " "
+   return
+   endif
+ endif
+next gt
+locate gy,gx
+color 7,0
+print "."
+return
+
+ggcheck:
+if tt=0 then
+   tt=1
+   endif
+for ggt=1 to tt
+if ggx=ox(ggt) then
+   if ggy=oy(ggt) then
+   locate ggy,ggx
+   print " "
+   return
+   endif
+ endif
+next ggt
+locate ggy,ggx
+color 7,0
+print "."
+return
+gameover:
+screen 13
+locate 10,10
+color 15,0
+print "GAME    OVER"
+print
+print "Score:";
+print sc
+locate 20,1
+print "Press enter to go to menu.";
+input q$
+fi=1
+goto zeros:
+done:
+screen 0
+width 80
+end

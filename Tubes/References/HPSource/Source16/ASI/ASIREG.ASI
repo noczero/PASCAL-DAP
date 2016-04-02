@@ -1,0 +1,74 @@
+rem '===========================================================================
+rem ' Subject: GET DOS VERSION                   Date: 05-27-96 (00:00)       
+rem '  Author: Ben McGaughey                     Code: ASIC                   
+rem '  Origin: www.iea.com/~benm               Packet: ASIC.ABC
+rem '===========================================================================
+AX=&hex3000
+INT86(&hex21,AX,BX,CX,DX,NA,NA,NA,NA,NA)
+
+REM  Read AH
+
+F=1
+
+REM Change the binary number stored in the first 8 bits of
+REM AX to a decimal number.
+for i = 0 to 7
+T = zbit(i,AX)
+If T = 1 then
+   Z = Z+F
+endif
+F=F*2
+next i
+
+REM Change the value in AX to a string for clean output.  The loop
+REM just determines if the number returned is 1, 2 or 3 digits.
+mah$ = str$(z)
+If z > 9 then
+   If z > 99 then
+   mah$ = right$(mah$,3)
+   else
+   mah$=right$(mah$,2)
+   endif
+   else
+   mah$=right$(mah$,1)
+endif
+
+REM Read AL
+F=1
+T=0
+Z=0
+
+REM This is the same process as before only we are reading the last
+REM 8 bits stored in AX which is actually AL.
+for i = 8 to 15
+T = zbit(i,AX)
+If T = 1 then
+   Z = Z+F
+endif
+F=F*2
+next i
+mal$ = str$(z)
+If z > 9 then
+   If z > 99 then
+   mal$ = right$(mal$,3)
+   else
+   mal$=right$(mal$,2)
+   endif
+   else
+   mal$=right$(mal$,1)
+endif
+
+Print "DOS Version: ";
+Print mah$;
+Print ".";
+Print mal$
+Print
+Print "Some interrupts called in assembly return values in the 8 bit"
+Print "registers such as AH,AL,BH,BL,CH,etc...  This program demonstrates"
+Print "how to rip apart the 16 bit registers into 8 bit registers for"
+Print "reading and evaluating.  In the program it is simple to change"
+Print "from the AX register to BX or CX or DX by simply changing all of"
+Print "the AX's in the program to what you want and the variable mah$ to"
+Print "mbh$ or mch$.  I think you get it now so whatever."
+
+end

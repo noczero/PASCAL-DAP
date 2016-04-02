@@ -1,0 +1,7 @@
+
+10 rem Random Pixels, for Aquarius, http://rudih.info
+20 print CHR$(11)
+30 pset(int(rnd(1)*80),int(rnd(1)*70))
+40 x$=inkey$
+50 if x$="" then goto 30
+60 print CHR$(11)

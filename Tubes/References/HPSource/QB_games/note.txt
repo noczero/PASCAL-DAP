@@ -1,0 +1,11 @@
+
+ QB_Games
+
+ An archive that contains around 100 games 
+ for QBasic/QuickBasic  (DOS). If you have 
+ a 64-bit version of Windows, a Mac, or 
+ Linux, please use 'DOSBox'. 
+
+ Credit: William Yu (among others)
+
+ Web: http://rudih.info

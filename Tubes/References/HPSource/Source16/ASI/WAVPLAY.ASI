@@ -1,0 +1,52 @@
+rem '===========================================================================
+rem ' Subject: WAV PLAYER WITHOUT SIZE LIMIT     Date: 02-21-96 (22:52)       
+rem '  Author: Lars Orsedal                      Code: ASIC                   
+rem '  Origin: comp.lang.basic.misc            Packet: ASIC.ABC
+rem '===========================================================================
+REM From: Lars Orsedal <liquid@kuai.se>
+REM Newsgroups: comp.lang.basic.misc
+REM Subject: Wav player without size limit. (for Asic)
+REM Date: Wed, 21 Feb 1996 22:52:26 +0100
+
+REM Here is a simple sample-player for Asic! You can play files at any size with
+REM it, and if you want to change the playback-frequency, just mix with the
+REM FOR-NEXT loop a bit... Be sure to load SmartDrive before you use it or the
+REM playback will be crappy :(  (I'm working on a cache-system to fix that.)
+
+RESET:
+OUT &HEX226,1
+OUT &HEX226,0
+RESETLOOP:
+X=INP(&HEX22E)
+BIT7=ZBIT(7,X)
+IF BIT7=0 THEN RESETLOOP:
+X=INP(&HEX22A)
+IF X=&HEXAA THEN RESETCLEAR:
+GOTO RESETLOOP:
+RESETCLEAR:
+PRINT "RESET"
+
+SPEAKERON:
+X=INP(&HEX22C)
+BIT7=ZBIT(7,X)
+IF BIT7=1 THEN SPEAKERON:
+OUT &HEX22C,&HEXD1
+
+WAVPLAY:
+OPEN "I",1,"X.WAV"
+READWAV:
+INPUT# 1,WAVE$ BYTE
+WAVE=ASC(WAVE$)
+I$=INKEY$
+IF I$=" " THEN END:
+IF ERROR=99 THEN ENDOFFILE:
+IF WAVE=0 THEN READWAV:
+OUT &HEX22C,&HEX10
+FOR A=1 TO 225
+NEXT A
+OUT &HEX22C,WAVE
+GOTO READWAV:
+
+END:
+ENDOFFILE:
+CLOSE 1

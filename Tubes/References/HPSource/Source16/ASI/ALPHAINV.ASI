@@ -1,0 +1,237 @@
+rem '===========================================================================
+rem ' Subject: ALPHABET INVADERS                 Date: 05-27-97 (13:13)       
+rem '  Author: Kenneth Green                     Code: ASIC                   
+rem '  Origin: green3@mother.com               Packet: ASIC.ABC
+rem '===========================================================================
+begin:
+x=20
+y=20
+p=0
+
+cls
+print "                 Alphabet Invaders"
+print "                 -----------------"
+print
+print "By Kenneth Green"
+print
+print "Destroy 100 falling aliens to win the game."
+print
+print
+print "     Use These Keys"
+print
+print "    4=Left  Right=6"
+PRINT
+PRINT "        Q=Quit"
+PRINT
+PRINT "     Space Bar=Fire"
+PRINT
+PRINT "You= +"
+PRINT "Fire Power= *"
+print
+PRINT "Press enter to begin.";
+INPUT A$
+pick:
+cls
+locate 4,1
+print "Type the number for the computer system speed that"
+print "you are running this on:"
+print
+print "(1)Pentium 75 Mhz or faster"
+print "(2)30 to 74 Mhz"
+print "(3)Under 30 Mhz"
+print
+print "Type the number here and press enter:";
+input spd
+if spd>4 then pick:
+if spd<1 then pick:
+diffic:
+cls
+locate 4,10
+print "Difficulty"
+locate 5,10
+print "----------"
+print "(1)10 cannons - Easy"
+print "(2)5 cannons - Average"
+print "(3)3 cannons - Hard"
+print
+print "Type a number here (1 to 30):";
+input dif
+if dif>3 then diffic:
+if dif<1 then diffic:
+if dif=1 then easy:
+if dif=2 then average:
+if dif=3 then hard:
+easy:
+m=10
+goto wow:
+average:
+m=5
+goto wow:
+hard:
+m=3
+wow:
+if spd=1 then pent:
+if spd=2 then fesix:
+if spd=3 then un:
+pent:
+tm=2
+son=70
+goto ggo:
+fesix:
+tm=1.5
+son=55
+goto ggo:
+un:
+tm=1
+son=4
+goto ggo:
+miss:
+hy=y-2
+jy=y-1
+hx=x+1
+jx=x-1
+locate y,x
+print "@"
+locate hy,hx
+print "@"
+locate jy,jx
+print "@"
+locate y,hx
+print "@"
+locate hy,x
+print "@"
+locate hy,jx
+print "@"
+locate jy,hx
+print "@"
+locate y,jx
+print "@"
+sound 30000,son
+sound 20000,son
+m=m-1
+if m=0 then lose:
+GGO:
+YY=1
+CLS
+locate 10,55
+print "Score: ";
+print p
+locate 12,55
+print "Cannons Left: ";
+print m
+RANDOMIZE
+L=RND(0)
+L=L mod 25
+L=L+65
+B$=CHR$(L)
+RANDOMIZE
+XX=RND(0)
+XX=XX MOD 9
+XX=XX+1
+xx=xx*5
+N=0
+
+TIME:
+N=N+1
+IF N=2 THEN GO:
+TY=TIMER
+S=TY+TM
+
+ST:
+G=TIMER
+IF G>S THEN TIME:
+GOTO ST:
+GO:
+n=0
+LOCATE YY,XX
+PRINT " "
+YY=YY+1
+ff=yy
+IF YY>21 THEN miss:
+LOCATE YY,XX
+PRINT B$
+LOCATE Y,X
+PRINT "+"
+
+E$=INKEY$
+IF E$="4" THEN LEFT:
+IF E$="6" THEN RIGHT:
+IF E$=" " THEN FIRE:
+IF E$="q" THEN DONE:
+IF E$="Q" THEN DONE:
+GOTO TIME:
+LEFT:
+LOCATE Y,X
+PRINT " "
+X=X-5
+IF X<5 THEN LEFT2:
+GOTO GO:
+LEFT2:
+X=5
+GOTO GO:
+RIGHT:
+LOCATE Y,X
+PRINT " "
+X=X+5
+IF X>50 then right2:
+GOTO GO:
+RIGHT2:
+X=50
+GOTO GO:
+FIRE:
+R=X
+sy=y-1
+FOR LS=ff to sy
+LOCATE LS,R
+PRINT "*"
+NEXT LS
+ss=son/2
+SOUND 30000,ss
+FOR LL=ff TO sy
+LOCATE LL,R
+PRINT " "
+NEXT LL
+IF X=XX THEN HIT:
+GOTO GO:
+HIT:
+P=P+100
+tx=xx-1
+rx=xx-2
+locate yy,tx
+print "{ }"
+sound 16000,ss
+locate yy,rx
+print "{   }"
+sound 20000,ss
+
+cont:
+IF p=10000 THEN WIN:
+GOTO GGO:
+goto cont:
+lose:
+locate 3,5
+print "Y O U  L O S T"
+goto ending:
+
+
+
+WIN:
+cls
+locate 1,5
+print "Score: ";
+print p
+LOCATE 3,5
+PRINT "Y O U   W I N   T H E   G A M E"
+ending:
+sound 23000,son
+sound 22000,son
+sound 21000,son
+sound 15000,son
+sound 10000,son
+PRINT
+PRINT "Do you want to play again(Y/N)";
+input ag$
+if ag$="Y" then begin:
+if ag$="y" then begin:
+DONE:
+end

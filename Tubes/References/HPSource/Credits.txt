@@ -1,0 +1,71 @@
+HPSource Archive
+
+List of credits:
+
+Abraham Ishaq
+Andrew Banas
+Anthony Bernardino
+Aris Petridis
+B.S v/d Berg
+Ben McGaughey
+bhisekKr
+Bloodshed
+Bob Arnson
+Bob Stout
+Borland International
+Byte Magic Software
+Casey Hunter
+Chris Mailloux
+Christian Padovano
+Creative Computing
+Damond Walker
+Daniel Pronych
+Dariusz Stanislawek
+Dave French
+Dave Gjessing
+DECUS
+Domingo Morel
+Erik VanRiper
+Frank Vokoun
+Gonzales Cenelia
+Herbet Schildt
+Irene Sam
+Ivor Horton
+Jay Elkes 
+Jim Gerrie
+Joe Clementz
+Joe Huffman
+John A. Kiernan
+Jonathan Guthrie
+Jules Roman B. Polidario
+Justin Miller
+K.van Houten
+Keith Olson
+Kenneth C. Wood
+Kenneth Green
+Kenneth W. Melvin
+Kev J.
+Kyle Benson
+Kyle Cronin
+Lars Orsedal
+Matt Fowler
+Michael Hyman
+Michael Marques
+Mike Beckman
+Nathan Kerr
+Paul Schlyter
+Phil Wright
+R Shaw
+Ray Gardner
+Raymond Gardner
+Rudi Horne
+Stuart McLachlan
+Sturt Ison
+Thad Smith
+Tony Jones
+Vivek Patel
+Walter J. Savitch
+WHRauser
+Yijun Ding
+Zach Hunt
+Zachary Lark 

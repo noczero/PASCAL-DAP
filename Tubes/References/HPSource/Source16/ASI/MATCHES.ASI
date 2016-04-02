@@ -1,0 +1,297 @@
+rem '===========================================================================
+rem ' Subject: GAME OF MATCHES                   Date: 03-13-97 (00:00)       
+rem '  Author: batkin6114@aol.com                Code: ASIC                   
+rem '  Origin: comp.lang.basic.misc            Packet: ASIC.ABC
+rem '===========================================================================
+SCREEN 0
+WIDTH 80
+COLOR 7, 0
+CW = 0
+HW = 0
+A$ = CHR$(27)
+START:
+RANDOMIZE
+N = 23
+DUMB = 0
+CLS
+GOSUB SHOWMATCHES:
+PRINT
+PRINT "           ******************** ";
+COLOR 4, 0
+PRINT "23 MATCHES GAME";
+COLOR 7, 0
+PRINT " ********************"
+PRINT "           **                                                     **"
+PRINT "           **   Each turn, you may take away 1, 2, or 3 matches.  **"
+PRINT "           **   The player stuck with the last match loses.       **"
+PRINT "           **                                                     **"
+PRINT "           **   Choose: <";
+COLOR 4, 0
+PRINT "D";
+COLOR 7, 0
+PRINT ">unce, <";
+COLOR 4, 0
+PRINT "S";
+COLOR 7, 0
+PRINT ">mart, or <";
+COLOR 4, 0
+PRINT "G";
+COLOR 7, 0
+PRINT ">enius Computer.   **"
+PRINT "           **                                                     **"
+PRINT "           *********************************************************"
+LOOP1:
+K$ =INKEY$
+K$ = UCASE$(K$)
+IF K$ = A$ THEN ALLDONE:
+IF K$ = "D" THEN
+  DUMB = 1
+  GOTO  EXIT1:
+ENDIF
+IF K$ = "S" THEN
+  DUMB = 2
+  GOTO EXIT1:
+ENDIF
+IF K$ = "G" THEN
+  GOTO EXIT1:
+ENDIF
+GOTO LOOP1:
+EXIT1:
+CLS
+LOCATE 10, 0
+PRINT "           *********************************************************"
+PRINT "           **                                                     **"
+PRINT "           **        Who moves first? <";
+COLOR 4, 0
+PRINT "Y";
+COLOR 7, 0
+PRINT ">ou, <";
+COLOR 4, 0
+PRINT "C";
+COLOR 7, 0
+PRINT ">omputer.          **"
+PRINT "           **                                                     **"
+PRINT "           *********************************************************"
+LOOP2:
+K$ = INKEY$
+K$ = UCASE$(K$)
+IF K$ = A$ THEN ALLDONE:
+IF K$ = "Y" THEN
+  FIRST = 1
+  GOTO EXIT2:
+ENDIF
+IF K$ = "C" THEN
+  FIRST = 0
+  GOTO EXIT2:
+ENDIF
+GOTO LOOP2:
+EXIT2:
+IF FIRST = 0 THEN COMMOVE:
+GOSUB SHOWMATCHES:
+GOTO GETMOVE:
+SHOWMATCHES:
+CLS
+PRINT
+PRINT "    ";
+COLOR 4, 0
+FOR A = 1 TO 2
+PRINT
+PRINT "    ";
+FOR X = 1 TO N
+PRINT " ²²";
+NEXT X
+NEXT A
+COLOR 7, 0
+PRINT
+PRINT "    ";
+FOR X = 1 TO N
+PRINT " ²²";
+NEXT X
+PRINT
+PRINT "    ";
+COLOR 7, 0
+FOR A = 1 TO 8
+FOR X = 1 TO N
+PRINT " ÛÛ";
+NEXT X
+PRINT
+PRINT "    ";
+NEXT A
+COLOR 7, 0
+RETURN
+GETMOVE:
+GETNUM:
+PRINT
+PRINT "     You have ";
+COLOR 4, 0
+N$ = STR$(N)
+N$ = LTRIM$(N$)
+PRINT N$;
+COLOR 7, 0
+PRINT " matches left."
+PRINT "     How many do you want to remove (1, 2, or 3)? ";
+LOOP4:
+K$ = INKEY$
+IF K$ = "" THEN LOOP4:
+IF K$ = A$ THEN ALLDONE:
+R = VAL(K$)
+IF R >= N THEN ERROR1:
+IF R < 1 THEN ERROR1:
+IF R > 3 THEN ERROR1:
+GOTO NOERROR1:
+ERROR1:
+  PRINT
+  PRINT
+  COLOR 4, 0
+  PRINT "     Illegal number. Try again!"
+  COLOR 7, 0
+  GOTO GETNUM:
+NOERROR1:
+N = N - R
+GOTO COMMOVE:
+COMMOVE:
+CLS
+CR = RND(0)
+CR = CR MOD 3
+CR = CR + 1
+IF N = 20 THEN
+  CR = 3
+ENDIF
+IF N = 16 THEN
+CR = 3
+ENDIF
+IF N = 12 THEN
+CR = 3
+ENDIF
+IF N = 8 THEN
+CR = 3
+ENDIF
+IF N = 4 THEN
+CR = 3
+ENDIF
+IF N = 23 THEN
+CR = 2
+ENDIF
+IF N = 19 THEN
+CR = 2
+ENDIF
+IF N = 15 THEN
+CR = 2
+ENDIF
+IF N = 11 THEN
+CR = 2
+ENDIF
+IF N = 7 THEN
+CR = 2
+ENDIF
+IF N = 3 THEN
+CR = 2
+ENDIF
+IF N = 22 THEN
+CR = 1
+ENDIF
+IF N = 18 THEN
+CR = 1
+ENDIF
+IF N = 14 THEN
+CR = 1
+ENDIF
+IF N = 10 THEN
+CR = 1
+ENDIF
+IF N = 6 THEN
+CR = 1
+ENDIF
+IF N = 2 THEN
+CR = 1
+ENDIF
+IF N = 1 THEN
+CR = 1
+ENDIF
+IF DUMB > 0 THEN
+   GOSUB COMDUMB:
+ENDIF
+N = N - CR
+IF N = 0 THEN COMLOSE:
+GOSUB SHOWMATCHES:
+PRINT
+PRINT "     The Computer removes ";
+COLOR 4, 0
+CR$ = STR$(CR)
+CR$ = LTRIM$(CR$)
+PRINT CR$;
+COLOR 7, 0
+PRINT " matches."
+IF N = 1 THEN YOULOSE:
+GOTO GETMOVE:
+YOULOSE:
+PRINT
+PRINT "     You have the last match, You lose!"
+CW = CW + 1
+GOTO DONE:
+COMLOSE:
+N = 1
+GOSUB SHOWMATCHES:
+PRINT
+PRINT "     The Computer has the last match, It loses!"
+HW = HW + 1
+GOTO DONE:
+DONE:
+PRINT
+PRINT "     You have won ";
+COLOR 4, 0
+HW$ = STR$(HW)
+HW$ = LTRIM$(HW$)
+PRINT HW$;
+COLOR 7, 0
+PRINT " game(s), the Computer has won ";
+COLOR 4, 0
+CW$ = STR$(CW)
+CW$ = LTRIM$(CW$)
+PRINT CW$;
+COLOR 7, 0
+PRINT " game(s)."
+PRINT
+PRINT "     <";
+COLOR 4, 0
+PRINT "Q";
+COLOR 7, 0
+PRINT ">uit or any other key to play again..."
+LOOP3:
+K$ = INKEY$
+K$ = UCASE$(K$)
+IF K$ = "Q" THEN
+ALLDONE:
+  CLS
+  END
+ENDIF
+IF K$ = "" THEN LOOP3:
+GOTO START:
+COMDUMB:
+CR = RND(0)
+CR = CR MOD 3
+CR = CR + 1
+IF N = 4 THEN
+  CR = 3
+ENDIF
+IF N = 3 THEN
+  CR = 2
+ENDIF
+IF N = 2 THEN
+  CR = 1
+ENDIF
+IF N = 1 THEN
+  CR = 1
+ENDIF
+IF DUMB = 1 THEN YESRETURN:
+IF N = 6 THEN
+  CR = 1
+ENDIF
+IF N = 7 THEN
+  CR = 2
+ENDIF
+IF N = 8 THEN
+  CR = 3
+ENDIF
+YESRETURN:
+RETURN

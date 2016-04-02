@@ -1,0 +1,199 @@
+rem '===========================================================================
+rem ' Subject: CARD GAME TWENTY-ONE              Date: 05-18-97 (13:04)       
+rem '  Author: Kenneth Green                     Code: ASIC                   
+rem '  Origin: green3@mother.com               Packet: ASIC.ABC
+rem '===========================================================================
+data 1,1,1,1,1,1,1,1,1,1,1,1,1
+data 1,1,1,1,2,2,1,2,2,1,1,1,1
+data 1,1,1,2,2,2,2,2,2,2,1,1,1
+data 1,1,2,2,2,2,2,2,2,2,2,1,1
+data 1,1,2,2,2,2,2,2,2,2,2,1,1
+data 1,1,1,2,2,2,2,2,2,2,1,1,1
+data 1,1,1,1,2,2,2,2,2,1,1,1,1
+data 1,1,1,1,1,2,2,2,1,1,1,1,1
+data 1,1,1,1,1,1,2,1,1,1,1,1,1
+data 1,1,1,1,1,1,1,1,1,1,1,1,1
+data 1,1,1,1,1,1,1,1,1,1,1,1,1
+data 1,1,1,1,1,1,1,1,1,1,1,1,1
+data 1,1,1,1,1,1,2,1,1,1,1,1,1
+data 1,1,1,1,1,2,2,2,1,1,1,1,1
+data 1,1,1,1,2,2,2,2,2,1,1,1,1
+data 1,1,1,2,2,2,2,2,2,2,1,1,1
+data 1,1,2,2,2,2,2,2,2,2,2,1,1
+data 1,1,1,2,2,2,2,2,2,2,1,1,1
+data 1,1,1,1,2,2,2,2,2,1,1,1,1
+data 1,1,1,1,1,2,2,2,1,1,1,1,1
+data 1,1,1,1,1,1,2,1,1,1,1,1,1
+data 1,1,1,1,1,1,1,1,1,1,1,1,1
+data 1,1,1,1,1,1,1,1,1,1,1,1,1
+data 1,1,1,1,1,2,2,2,1,1,1,1,1
+data 1,1,1,1,2,2,2,2,2,1,1,1,1
+data 1,1,1,1,2,2,2,2,2,1,1,1,1
+data 1,1,1,2,2,2,2,2,2,2,1,1,1
+data 1,1,2,2,2,2,2,2,2,2,2,1,1
+data 1,1,2,2,2,2,2,2,2,2,2,1,1
+data 1,1,1,2,2,2,2,2,2,2,1,1,1
+data 1,1,1,1,1,2,2,2,1,1,1,1,1
+data 1,1,1,1,1,2,2,2,1,1,1,1,1
+data 1,1,1,1,1,2,2,2,1,1,1,1,1
+data 1,1,1,1,1,1,1,1,1,1,1,1,1
+data 1,1,1,1,1,1,1,1,1,1,1,1,1
+data 1,1,1,1,1,1,2,1,1,1,1,1,1
+data 1,1,1,1,1,2,2,2,1,1,1,1,1
+data 1,1,1,1,2,2,2,2,2,1,1,1,1
+data 1,1,1,2,2,2,2,2,2,2,1,1,1
+data 1,1,1,2,2,2,2,2,2,2,1,1,1
+data 1,1,2,2,1,1,2,1,1,2,2,1,1
+data 1,1,2,1,1,2,2,2,1,1,2,1,1
+data 1,1,1,1,2,2,2,2,2,1,1,1,1
+data 1,1,1,1,1,1,1,1,1,1,1,1,1
+data 1,1,1,1,1,1,1,1,1,1,1,1,1
+
+st:
+if c=0 then stt:
+restore
+pl=0
+t=0
+nn=0
+n=0
+c=0
+cc=0
+stt:
+cls
+screen 1
+for x=1 to 44
+for y=1 to 13
+read co
+pset(x,y),co
+next y
+next x
+color 2,0
+locate 1,20
+print "Card Game 21"
+locate 3,20
+print "By Kenneth Green"
+locate 20,1
+print "Press enter to begin game.";
+input a$
+cls
+screen 0
+print "       Instructions"
+print "       ------------"
+print "You get to pick a card"
+print "at any time during the game."
+print "The computer picks 3 cards."
+print "Whoever is closest to 21 wins."
+print "But whoever goes over 21, loses."
+print "It's easy to get used to."
+print
+print "Press enter to begin.";
+input beg$
+cls
+randomize
+f=rnd(0)
+f=f mod 2
+f=f+1
+if f=1 then you:
+if f=2 then computer:
+start:
+you:
+if pl=0 then you2:
+if pl=1 then you2:
+print "Do you want to pick up another card (Y/N)";
+input ac$
+if ac$="N" then computer:
+if ac$="n" then computer:
+if ac$="no" then computer:
+if ac$="NO" then computer:
+if ac$="No" then computer:
+you2:
+pl=1
+randomize
+n=rnd(0)
+n=n mod 10
+n=n+1
+print "Your card is a ";
+print n
+c=c+n
+print "Your total is: ";
+print c
+if c>21 then uover:
+print "Do you want another card (Y/N)";
+input d$
+if d$="Y" then you:
+if d$="y" then you:
+if d$="yes" then you:
+if d$="Yes" then you:
+if d$="YES" then you:
+computer:
+pl=2
+t=t+1
+if t=4 then total:
+randomize
+nn=rnd(0)
+nn=nn mod 10
+nn=nn+1
+print "The Computer's card is a ";
+print nn
+cc=cc+nn
+print "The Computer's total is: ";
+print cc
+if cc>21 then uwin:
+goto you:
+uover:
+print "You went over 21!"
+print "The Computer automatically wins."
+goto done:
+uwin:
+print "You Win!"
+beep
+beep
+print "Here is the score:"
+print "Computer: ";
+print cc
+print "You: ";
+print c
+
+goto done:
+total:
+print "Computer quits after 3 cards."
+print "The Computer's total is: ";
+print cc
+print "Do you want another card (Y/N)";
+input cd$
+if cd$="Y" then you:
+if cd$="y" then you:
+if cd$="yes" then you:
+if cd$="YES" then you:
+if cd$="Yes" then you:
+if cc>c then cwins:
+if cc<c then uwin:
+if cc=c then tie:
+tie:
+print "You and Computer finishes with a Tie!"
+print "Here is the score: "
+print "Computer: ";
+print cc
+print "You: ";
+print c
+goto done:
+
+cwins:
+print "Computer Wins."
+print "Here is the score:"
+print "Computer: ";
+print cc
+print "You: ";
+print c
+
+
+
+done:
+print "Do you want to play again (Y/N)";
+input ag$
+if ag$="Y" then st:
+if ag$="y" then st:
+if ag$="yes" then st:
+if ag$="YES" then st:
+if ag$="Yes" then st:
+end

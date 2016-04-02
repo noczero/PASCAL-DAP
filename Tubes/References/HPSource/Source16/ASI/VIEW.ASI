@@ -1,0 +1,40 @@
+rem File Viewer, compile with ASIC 5.00
+
+file$=command$
+file$=LTRIM$ (file$)
+if file$="" then
+  load:
+  print "filename";
+  input file$
+endif
+
+page=0
+close 1
+open "I",1,file$
+if error>0 then
+ print "error"
+ end
+endif
+
+feed:
+cls
+page=page+1
+print "press <O>pen <Esc> page:";
+print page
+feed=23
+while feed<>0
+ input# 1 line$ crlf
+ print line$
+ feed=feed-1
+wend
+
+x$=""
+while x$=""
+ x$=inkey$
+wend
+x$=ucase$(x$)
+if x$="O" then load:
+if x$="" then
+ end
+endif
+goto feed:

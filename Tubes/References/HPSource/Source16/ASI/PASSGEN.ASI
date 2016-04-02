@@ -1,0 +1,51 @@
+rem Password generator, for ASIC 5.00, http://rudih.info
+
+dim letter$(26)
+print "---PASSWORD GENERATOR---"
+print "Enter length of password (e.g. 8): ";
+input passlength;
+print ""
+for x = 1 to 26
+  y = x + 96
+  scratch$ = string$ (1,y)
+  letter$(x) = scratch$
+next x
+randomize
+y = rnd(0)
+y = y mod 26
+y = y + 1
+scratch$=letter$(y)
+scratch$=ucase$(scratch$)
+for x = 3 to passlength
+  y = rnd(0)
+  y = y mod 2
+  y = y + 1
+  if y = 1 then
+    y = rnd(0)
+    y = y mod 26
+    y = y + 1
+    scratch$ = scratch$ + letter$(y)
+  endif
+  if y = 2 then
+    y = rnd(0)
+    y = y mod 26
+    y = y + 1
+    ucletter$ = ucase$(letter$(y))
+    scratch$ = scratch$ + ucletter$
+  endif
+next x
+y = rnd(0)
+y = y mod 10
+y$ = str$(y)
+y$ = ltrim$(y$)
+scratch$ = scratch$ + y$
+print "Generated password: ";
+print scratch$
+open "o",1,"password.txt"
+print# 1, scratch$ nonull
+close 1
+print "Output saved as 'password.txt'."
+print "Press enter to exit."
+input y$;
+print ""
+end

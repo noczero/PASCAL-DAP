@@ -1,0 +1,678 @@
+rem '===========================================================================
+rem ' Subject: TIC-TAC-TOE                       Date: 12-17-95 (16:32)       
+rem '  Author: Mike Beckman                      Code: ASIC                   
+rem '  Origin: mhscards@aol.com                Packet: ASIC.ABC
+rem '===========================================================================
+rem     TicTacToe
+rem
+rem     By:  Mike Beckman
+rem             mhscards@aol.com
+rem     
+rem     For the ASIC 5.0 compiler
+rem
+rem =======================================================================
+rem     This is a NO Bells and Whistles TicTacToe game I wrote for Asic.
+
+dim board(9)
+
+verybeginning:
+vline$ = chr$(179)
+hline$ = chr$(196)
+cross$ = chr$(197)
+turn = 1
+
+for x = 1 to 9
+   board(x) = 0
+next x
+
+gosub drawboard:
+
+begin:
+if turn = 1 then
+   goto startgame:
+endif
+if turn = 2 then
+   goto computerturn:
+endif
+
+end
+
+drawboard:
+   cls
+   color 15,0
+   for x = 8 to 16
+       locate x,35
+       print vline$
+       locate x,45
+       print vline$
+   next x
+   for x = 31 to 49
+       locate 10,x
+       print hline$
+       locate 14,x
+       print hline$
+   next x
+   locate 10,35
+   print cross$
+   locate 10,45
+   print cross$
+   locate 14,35
+   print cross$
+   locate 14,45
+   print cross$
+return
+
+startgame:
+   loop:
+       keys$ = inkey$
+   if keys$ = "" then loop:
+
+   if keys$ = "1" then
+       keys = val(keys$)
+       if board(keys) = 0 then
+           board(keys) = 1
+           turn = 2
+       endif
+       gosub redraw:
+       goto begin:
+   endif
+
+   if keys$ = "2" then
+       keys = val(keys$)
+       if board(keys) = 0 then
+           board(keys) = 1
+           turn = 2
+       endif
+       gosub redraw:
+       goto begin:
+   endif
+
+   if keys$ = "3" then
+       keys = val(keys$)
+       if board(keys) = 0 then
+           board(keys) = 1
+           turn = 2
+       endif
+       gosub redraw:
+       goto begin:
+   endif
+
+   if keys$ = "4" then
+       keys = val(keys$)
+       if board(keys) = 0 then
+           board(keys) = 1
+           turn = 2
+       endif
+       gosub redraw:
+       goto begin:
+   endif
+
+   if keys$ = "5" then
+       keys = val(keys$)
+       if board(keys) = 0 then
+           board(keys) = 1
+           turn = 2
+       endif
+       gosub redraw:
+       goto begin:
+   endif
+
+   if keys$ = "6" then
+       keys = val(keys$)
+       if board(keys) = 0 then
+           board(keys) = 1
+           turn = 2
+       endif
+       gosub redraw:
+       goto begin:
+   endif
+
+   if keys$ = "7" then
+       keys = val(keys$)
+       if board(keys) = 0 then
+           board(keys) = 1
+           turn = 2
+       endif
+       gosub redraw:
+       goto begin:
+   endif
+
+   if keys$ = "8" then
+       keys = val(keys$)
+       if board(keys) = 0 then
+           board(keys) = 1
+           turn = 2
+       endif
+       gosub redraw:
+       goto begin:
+   endif
+
+   if keys$ = "" then
+       cls
+       color 7,0
+       end
+   endif
+
+   if keys$ = "9" then
+       keys = val(keys$)
+       if board(keys) = 0 then
+           board(keys) = 1
+           turn = 2
+       endif
+       gosub redraw:
+       goto begin:
+   else
+       goto startgame:
+   endif
+
+redraw:
+   if board(1) = 1 then
+       color 9,0
+       locate 15,32
+       print "X"
+   endif
+
+   if board(2) = 1 then
+       color 9,0
+       locate 15,40
+       print "X"
+   endif
+
+   if board(3) = 1 then
+       color 9,0
+       locate 15,48
+       print "X"
+   endif
+
+   if board(4) = 1 then
+       color 9,0
+       locate 12,32
+       print "X"
+   endif
+
+   if board(5) = 1 then
+       color 9,0
+       locate 12,40
+       print "X"
+   endif
+
+   if board(6) = 1 then
+       color 9,0
+       locate 12,48
+       print "X"
+   endif
+
+   if board(7) = 1 then
+       color 9,0
+       locate 9,32
+       print "X"
+   endif
+
+   if board(8) = 1 then
+       color 9,0
+       locate 9,40
+       print "X"
+   endif
+
+   if board(9) = 1 then
+       color 9,0
+       locate 9,48
+       print "X"
+   endif
+
+   if board(1) = 2 then
+       color 14,0
+       locate 15,32
+       print "O"
+   endif
+
+   if board(2) = 2 then
+       color 14,0
+       locate 15,40
+       print "O"
+   endif
+
+   if board(3) = 2 then
+       color 14,0
+       locate 15,48
+       print "O"
+   endif
+
+   if board(4) = 2 then
+       color 14,0
+       locate 12,32
+       print "O"
+   endif
+
+   if board(5) = 2 then
+       color 14,0
+       locate 12,40
+       print "O"
+   endif
+
+   if board(6) = 2 then
+       color 14,0
+       locate 12,48
+       print "O"
+   endif
+
+   if board(7) = 2 then
+       color 14,0
+       locate 9,32
+       print "O"
+   endif
+
+   if board(8) = 2 then
+       color 14,0
+       locate 9,40
+       print "O"
+   endif
+
+   if board(9) = 2 then
+       color 14,0
+       locate 9,48
+       print "O"
+   endif
+
+   gosub testwin:
+
+return
+
+computerturn:
+   gfunk = 3
+       while gfunk > 0
+           gfunk = gfunk - 1
+        rem *******
+        rem Space 1
+        rem *******
+        if board(1) = 0 then
+                if board(2) = gfunk then
+                        if board(3) = gfunk then
+                                board(1) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(4) = gfunk then
+                        if board(7) = gfunk then
+                                board(1) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(5) = gfunk then
+                        if board(9) = gfunk then
+                                board(1) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+        endif
+
+        rem *******
+        rem Space 2
+        rem *******
+        if board(2) = 0 then
+                if board(1) = gfunk then
+                        if board(3) = gfunk then
+                                board(2) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(5) = gfunk then
+                        if board(8) = gfunk then
+                                board(2) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+        endif
+
+        rem *******
+        rem Space 3
+        rem *******
+        if board(3) = 0 then
+                if board(2) = gfunk then
+                        if board(1) = gfunk then
+                                board(3) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(6) = gfunk then
+                        if board(9) = gfunk then
+                                board(3) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(5) = gfunk then
+                        if board(7) = gfunk then
+                                board(3) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+        endif
+
+        rem *******
+        rem Space 4
+        rem *******
+        if board(4) = 0 then
+                if board(5) = gfunk then
+                        if board(6) = gfunk then
+                                board(4) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(1) = gfunk then
+                        if board(7) = gfunk then
+                                board(4) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+        endif
+
+        rem *******
+        rem Space 5
+        rem *******
+        if board(5) = 0 then
+                if board(4) = gfunk then
+                        if board(6) = gfunk then
+                                board(5) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(8) = gfunk then
+                        if board(2) = gfunk then
+                                board(5) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(7) = gfunk then
+                        if board(3) = gfunk then
+                                board(5) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(9) = gfunk then
+                        if board(1) = gfunk then
+                                board(5) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+        endif
+
+        rem *******
+        rem Space 6
+        rem *******
+        if board(6) = 0 then
+                if board(4) = gfunk then
+                        if board(5) = gfunk then
+                                board(6) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(3) = gfunk then
+                        if board(9) = gfunk then
+                                board(6) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+        endif
+
+        rem *******
+        rem Space 7
+        rem *******
+        if board(7) = 0 then
+                if board(8) = gfunk then
+                        if board(9) = gfunk then
+                                board(7) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(4) = gfunk then
+                        if board(1) = gfunk then
+                                board(7) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(5) = gfunk then
+                        if board(3) = gfunk then
+                                board(7) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+        endif
+
+        rem *******
+        rem Space 8
+        rem *******
+        if board(8) = 0 then
+                if board(7) = gfunk then
+                        if board(9) = gfunk then
+                                board(8) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(5) = gfunk then
+                        if board(2) = gfunk then
+                                board(8) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+        endif
+
+        rem *******
+        rem Space 9
+        rem *******
+        if board(9) = 0 then
+                if board(8) = gfunk then
+                        if board(7) = gfunk then
+                                board(9) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(6) = gfunk then
+                        if board(3) = gfunk then
+                                board(9) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+                if board(5) = gfunk then
+                        if board(1) = gfunk then
+                                board(9) = 2
+                                gosub redraw:
+                                turn = 1
+                                goto begin:
+                        endif
+                endif
+        endif
+wend
+randomizeit:
+   randomize
+   random = rnd(0)
+   random = random mod 9
+   random = random + 1
+
+   if board(random) = 0 then
+       board(random) = 2
+       gosub redraw:
+       turn = 1
+       goto begin:
+   endif
+
+   goto randomizeit:
+
+testwin:
+   if board(1) = 1 then
+       if board(2) = 1 then
+           if board(3) = 1 then youwin:
+       endif
+       if board(4) = 1 then
+           if board(7) = 1 then youwin:
+       endif
+       if board(5) = 1 then
+           if board(9) = 1 then youwin:
+       endif
+   endif
+
+   if board(2) = 1 then
+       if board(5) = 1 then
+           if board(8) = 1 then youwin:
+       endif
+   endif
+
+   if board(3) = 1 then
+       if board(6) = 1 then
+           if board(9) = 1 then youwin:
+       endif
+       if board(5) = 1 then
+           if board(7) = 1 then youwin:
+       endif
+   endif
+
+   if board(4) = 1 then
+        if board(5) = 1 then
+                if board(6) = 1 then youwin:
+        endif
+   endif
+
+   if board(7) = 1 then
+        if board(8) = 1 then
+                if board(9) = 1 then youwin:
+        endif
+   endif
+
+   rem *******
+   rem Computer test winning
+   rem *******
+
+   if board(1) = 2 then
+        if board(2) = 2 then
+                if board(3) = 2 then youlose:
+        endif
+        if board(4) = 2 then
+                if board(7) = 2 then youlose:
+        endif
+        if board(5) = 2 then
+                if board(9) = 2 then youlose:
+        endif
+   endif
+
+   if board(2) = 2 then
+        if board(5) = 2 then
+                if board(8) = 2 then youlose:
+        endif
+   endif
+
+   if board(3) = 2 then
+        if board(5) = 2 then
+                if board(7) = 2 then youlose:
+        endif
+        if board(6) = 2 then
+                if board(9) = 2 then youlose:
+        endif
+   endif
+
+   if board(4) = 2 then
+        if board(5) = 2 then
+                if board(6) = 2 then youlose:
+        endif
+   endif
+
+   if board(7) = 2 then
+        if board(8) = 2 then
+                if board(9) = 2 then youlose:
+        endif
+   endif
+
+   rem *******
+   rem Test for cats game
+   rem *******
+
+   flag = 0
+   for qwerty = 1 to 9
+        if board(qwerty) <> 0 then
+                flag = flag + 1
+        endif
+   next qwerty
+
+   if flag = 9 then itsatie:
+
+return
+
+youwin:
+        strin$ = "Congratulations, you win!"
+        length = len(strin$)
+        length = 80 - length
+        length = length / 2
+        color 10,0
+        locate 22,length
+        print strin$
+        color 7,0
+        print
+        end
+
+youlose:
+        color 10,0
+        strin$ = "Better luck next time, you lose!"
+        length = len(strin$)
+        length = 80 - length
+        length = length / 2
+        locate 22,length
+        print strin$
+        color 7,0
+        print
+        end
+
+itsatie:
+        color 10,0
+        strin$ = "It's a cat's game!"
+        length = len(strin$)
+        length = 80 - length
+        length = length / 2
+        locate 22,length
+        print strin$
+        color 7,0
+        print
+        end

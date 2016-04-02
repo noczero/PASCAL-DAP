@@ -1,0 +1,283 @@
+rem '===========================================================================
+rem ' Subject: SPECTACULAR SCREEN CLEAR          Date: 05-07-97 (02:21)       
+rem '  Author: John A. Kiernan                   Code: ASIC                   
+rem '  Origin: kiernan@julian.uwo.ca           Packet: ASIC.ABC
+rem '===========================================================================
+rem    A submission to the ASIC section of A.B.C.   SCL.ASI
+rem    ASIC code with plenty of explanatory rem lines.
+rem  You may receive this load of code twice!
+rem    If you do, use this version because it contains more explanatory
+rem    (rem) lines.
+rem  Let me know if you'd prefer an attached .ZIP or whatever.
+rem     John Kiernan
+rem      kiernan@uwo.ca
+
+rem   SCL.ASI  Spectacular screen clearing routine
+rem           (Provides an attractive alternative to the CLS command
+rem            of MS-DOS, and it's different every time. Has a
+rem            cheering-up effect when called in AUTOEXEC.BAT.)
+rem      This programme illustrates the uses of several ASIC commands,
+rem      and also highlights an annoying defect in the RND function.
+rem      This is explained in the rem lines of the RandFg: subroutine.
+rem       It seems that a "random" number must be further
+rem       massaged in order to generate a proper selection
+rem       of foreground and background colour numbers.
+
+rem                                                 By J. A. Kiernan
+rem                                                 Dept of Anatomy
+rem                                                 Univ. of Western Ontario
+rem                                                 LONDON, Canada  N6A 5C1
+rem   Written 1st-3rd May 1997. May be freely copied but not sold.
+
+rem         Not for a slow computer.  (On a Tandy 1000 or an XT it
+rem         takes 15 seconds to execute. On a 486/120MHz it takes
+rem         0.53 of a second.)
+
+rem  Compilation:  ASICC SLC  to make a .COM or ASICC SLC b/EXE for an .EXE
+rem                No external libraries are needed.
+
+rem   Variations:
+rem   Any one or two of the three GOSUBs can be excluded by
+rem   inserting "rem" at the beginning of the line. This speeds up the
+rem   screen clearing, but diminishes the score for artistic impression.
+rem   Do not omit the NewColour: subroutine;  the screen colours may
+rem   be difficult to read or otherwise displeasing
+
+   RANDOMIZE
+   GOSUB FancyFill:
+   GOSUB NewColour:
+   GOSUB FancyClear:
+   END
+
+rem  Subroutines.
+
+ FancyFill:
+   rem     Fill screen with randomly coloured little squares.
+   rem     This subroutine calls the RandFg: & RandBg: subroutines.
+       FOR n = 0 TO 24
+         FOR m = 0 TO 79
+           Y=24-n
+           X=79-m
+           GOSUB RandFg:
+           GOSUB RandBg:
+           COLOR Fg,Bg
+           LOCATE Y,X
+           PRINT "Ü";
+         NEXT m
+       NEXT n
+   rem    The following 8 lines of code place the DOS prompt in black
+   rem    rectangle in lower left area of screen. Not needed if
+   rem    FancyFill: is to be followed by FancyClear:
+rem     COLOR 7,0
+rem       FOR Y = 22 TO 24
+rem         FOR X = 0 TO 35
+rem           LOCATE Y,X
+rem           PRINT " ";
+rem         NEXT X
+rem       NEXT Y
+rem     LOCATE 22,0
+   RETURN
+
+NewColour:
+  rem     Randomly choose foreground and background colours for
+  rem     the centrifugally cleared screen.
+  rem     This subroutine calls the RandFg: & RandBg: subroutines,
+  rem     and also the TestForLousyColours: subroutine.
+   Lousy=0
+   GOSUB RandFg:
+   GOSUB RandBg:
+  rem   Having chosen color combinations, exclude those that
+  rem   do not provide reasonable contrast.
+   GOSUB TestForLousyColours:
+     IF Lousy=1 THEN NewColour:
+   RETURN
+
+ FancyClear:
+   rem   Clear screen from centre outwards, by
+   rem   progressively enlarging a rectangle.
+   rem   Central area: Y = 11, 12 & 13; X = 39 & 40
+     COLOR Fg,Bg
+     TopY = 11
+     LeftX = 39
+     BotY = 13
+     RightX = 40
+       FOR Rectangle = 1 TO 14
+         GOSUB ClearRectangle:
+           IF TopY > 0 THEN
+             TopY = TopY - 1
+           ENDIF
+           IF BotY < 24 THEN
+             BotY = BotY + 1
+           ENDIF
+   rem  The > and < conditions are necessary because there are
+   rem  only 11 one-line decrements/increments vertically
+   rem  but 13 three-column shifts horizontally.
+           IF LeftX > 0 THEN
+             LeftX = LeftX - 3
+           ENDIF
+           IF RightX < 79 THEN
+             RightX = RightX + 3
+           ENDIF
+       NEXT Rectangle
+   LOCATE 0,0
+   RETURN
+
+ClearRectangle:
+          FOR Y = TopY TO BotY
+            FOR X = LeftX TO RightX
+              LOCATE Y,X
+              PRINT " ";
+            NEXT X
+          NEXT Y
+        RETURN
+
+ RandFg:
+   rem  Random foreground colour
+   rem          The subroutines RandFg: and RandBg: are used by the
+   rem          FancyFill: and FancyClear: subroutines.
+   rem       Fiddling with the random number is needed to get
+   rem       a proper range of Foreground colours in NewColour:
+   rem        Evidently ASIC's "random" number function is reluctant to
+   rem        generate 0, 7, 15 and perhaps some other numbers. After much
+   rem        messing around, I found that I could overcome this problem by
+   rem        subtracting an odd or even number from the number produced
+   rem        by RND and then using the ABS function to ensure a positive
+   rem        integer. The use of the MOD function to limit the range of
+   rem        a random number is explained in Visti's ASIC documentation.
+       RandomNumber=RND(0)
+       RandomNumber=RandomNumber MOD(2)
+       Fg=RND(0)
+       Fg=Fg-RandomNumber
+       Fg=ABS(Fg)
+       Fg = Fg MOD(16)
+     RETURN
+
+ RandBg:
+   rem  Random background colour
+   rem  This must be called after the RandFg: subroutine.
+rem       The subroutines RandFg: and RandBg: are used by the
+rem       FancyFill: and FancyClear: subroutines.
+   rem       Fiddling with the random number is needed to get
+   rem       a proper range of Background colours
+     AnotherBg:
+       RandomNumber=RND(0)
+       RandomNumber=RandomNumber MOD(2)
+       Bg=RND(0)
+       Bg=Bg-2
+       Bg=ABS(Bg)
+       Bg = Bg MOD(8)
+         IF Bg=Fg THEN AnotherBg:
+   RETURN
+
+TestForLousyColours:
+  rem    Do not allow Fg and Bg combinations that
+  rem    are illegible on the screen. Returns Lousy=0 if
+  rem    the colour combination is legible, Lousy=1 if not.
+    Lousy=0
+  rem  Concatenate Fg and Bg to make a character string, and test
+  rem  the string for identity with illegible colour combinations.
+    Fg$=STR$(Fg)
+    Fg$=LTRIM$(Fg$)
+      IF Fg$="" THEN
+        Fg$="0"
+      ENDIF
+    Bg$=STR$(Bg)
+    Bg$=LTRIM$(Bg$)
+      IF Bg$="" THEN
+        Bg$="0"
+      ENDIF
+    Colour$=Fg$+Bg$
+  rem  These combinations are no good:
+  rem     Blu on Bla  10
+  rem     Red on Bla  40
+  rem     Mag on Bla  50
+  rem     Yel on Bla  60
+  rem     Grey on Bla 80
+  rem     Bla on Blu  01
+  rem     Cya on Blu  51
+  rem     Red on Blu  41
+  rem     Yel on Blu  61
+  rem     Grey on Blu 81
+  rem     Cya on Gre  32
+  rem     Yel on Gre  62
+  rem     Whi on Gre  72
+  rem     Grey on Gre 82
+  rem     Bred on Gre 122
+  rem     Bmag on Gre 132
+  rem     Gre on Cya  23
+  rem     Whi on Cya  73
+  rem     Bblu on Cya 93
+  rem     Bmag on Cya 133
+  rem     Bla on Red  04
+  rem     Blu on Red  14
+  rem     Mag on Red  54
+  rem     Yel on Red  64
+  rem     Grey on Red 84
+  rem     Bred on Red 124
+  rem     Bla on Mag  05
+  rem     Blu on Mag  15
+  rem     Red on Mag  45
+  rem     Yel on Mag  65
+  rem     Grey on Mag 85
+  rem     Bblu on Mag 95
+  rem     Bred on Mag 125
+  rem     Bmag on Mag 135
+  rem     Blu on Yel  16
+  rem     Red on Yel  46
+  rem     Mag on Yel  56
+  rem     Grey on Yel 86
+  rem     Bblu on Yel 96
+  rem     Bred on Yel 126
+  rem     Bmag on Yel 136
+  rem     Gre on Whi  27
+  rem     Cya on Whi  37
+  rem     Bmag on Whi 137
+      IF Colour$= "10" THEN ColourNoGood:
+      IF Colour$= "40" THEN ColourNoGood:
+      IF Colour$= "50" THEN ColourNoGood:
+      IF Colour$= "60" THEN ColourNoGood:
+      IF Colour$= "80" THEN ColourNoGood:
+      IF Colour$= "01" THEN ColourNoGood:
+      IF Colour$= "51" THEN ColourNoGood:
+      IF Colour$= "41" THEN ColourNoGood:
+      IF Colour$= "61" THEN ColourNoGood:
+      IF Colour$= "81" THEN ColourNoGood:
+      IF Colour$= "32" THEN ColourNoGood:
+      IF Colour$= "62" THEN ColourNoGood:
+      IF Colour$= "72" THEN ColourNoGood:
+      IF Colour$= "82" THEN ColourNoGood:
+      IF Colour$="122" THEN ColourNoGood:
+      IF Colour$="132" THEN ColourNoGood:
+      IF Colour$= "23" THEN ColourNoGood:
+      IF Colour$= "73" THEN ColourNoGood:
+      IF Colour$= "93" THEN ColourNoGood:
+      IF Colour$="133" THEN ColourNoGood:
+      IF Colour$= "04" THEN ColourNoGood:
+      IF Colour$= "14" THEN ColourNoGood:
+      IF Colour$= "54" THEN ColourNoGood:
+      IF Colour$= "64" THEN ColourNoGood:
+      IF Colour$= "84" THEN ColourNoGood:
+      IF Colour$="124" THEN ColourNoGood:
+      IF Colour$= "05" THEN ColourNoGood:
+      IF Colour$= "15" THEN ColourNoGood:
+      IF Colour$= "45" THEN ColourNoGood:
+      IF Colour$= "65" THEN ColourNoGood:
+      IF Colour$= "85" THEN ColourNoGood:
+      IF Colour$= "95" THEN ColourNoGood:
+      IF Colour$="125" THEN ColourNoGood:
+      IF Colour$="135" THEN ColourNoGood:
+      IF Colour$= "16" THEN ColourNoGood:
+      IF Colour$= "46" THEN ColourNoGood:
+      IF Colour$= "56" THEN ColourNoGood:
+      IF Colour$= "86" THEN ColourNoGood:
+      IF Colour$= "96" THEN ColourNoGood:
+      IF Colour$="126" THEN ColourNoGood:
+      IF Colour$="136" THEN ColourNoGood:
+      IF Colour$= "27" THEN ColourNoGood:
+      IF Colour$= "37" THEN ColourNoGood:
+      IF Colour$="137" THEN ColourNoGood:
+   GOTO TestedColours:
+ ColourNoGood:
+    Lousy=1
+ TestedColours:
+   RETURN

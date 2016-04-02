@@ -1,0 +1,300 @@
+rem '===========================================================================
+rem ' Subject: TILES GAME                        Date: 12-17-95 (16:34)       
+rem '  Author: Mike Beckman                      Code: ASIC                   
+rem '  Origin: mhscards@aol.com                Packet: ASIC.ABC
+rem '===========================================================================
+rem     Tiles for Asic
+rem     
+rem     By Mike Beckman
+rem             mhscards@aol.com
+rem
+rem =======================================================================
+rem
+rem     The object of this game is to get the numbers in order from 1 to 8
+rem     using the cursor keys.  It keeps track of the number of moves it
+rem     takes you.  Hit ESCAPE to quit.
+
+dim board(9)
+dim xcoord(9)
+dim ycoord(9)
+
+data 9,32,9,40,9,48,12,32,12,40,12,48,15,32,15,40,15,48
+
+for x = 1 to 9
+   read xcoord(x)
+   read ycoord(x)
+next x
+
+gosub setupboard:
+gosub drawlines:
+gosub drawboard:
+gosub getinput:
+end
+
+drawlines:
+   vline$ = chr$(179)
+   hline$ = chr$(196)
+   cross$ = chr$(197)
+   cls
+   color 15,0
+   for x = 8 to 16
+       locate x,35
+       print vline$
+       locate x,45
+       print vline$
+   next x
+   for x = 31 to 49
+       locate 10,x
+       print hline$
+       locate 14,x
+       print hline$
+   next x
+   locate 10,35
+   print cross$
+   locate 10,45
+   print cross$
+   locate 14,35
+   print cross$
+   locate 14,45
+   print cross$
+return
+
+setupboard:
+   REM Initialization of playing field
+   numbers$ = ""
+   cls
+   print "Initializing";
+   for x = 1 to 9
+       doagain:
+       randomize
+       g = rnd(0)
+       g = g mod 9
+       g = g + 1
+       tmp$ = str$(g)
+       tmp$ = ltrim$(tmp$)
+       tmp$ = rtrim$(tmp$)
+       a = instr(numbers$, tmp$)
+       if a = 0 then
+           if g < 9 then
+               board(x) = g
+               numbers$ = numbers$ + tmp$
+               print ".";
+           else
+               board(x) = 0
+               numbers$ = numbers$ + tmp$
+               print ".";
+           endif
+       endif
+       if a > 0 then doagain:
+   next x
+return
+
+drawboard:
+   for x = 1 to 9
+       tmp$ = str$(board(x))
+       tmp$ = ltrim$(tmp$)
+       tmp$ = rtrim$(tmp$)
+       if tmp$ = "0" then
+           tmp2 = x
+           locate xcoord(x),ycoord(x)
+           print " "
+           goto skip:
+       endif
+               locate xcoord(x), ycoord(x)
+               color 9,0
+               print tmp$
+       skip:
+   next x
+return
+
+getinput:
+   getit$ = ""
+       while getit$ = ""
+           getit$ = inkey$
+       wend
+
+   if tmp2 = 1 then
+       if getit$ = "K" then
+           board(1) = board(2)
+           board(2) = 0
+           score = score + 1
+       endif
+       if getit$ = "H" then
+           board(1) = board(4)
+           board(4) = 0
+           score = score + 1
+       endif
+   endif
+   if tmp2 = 2 then
+       if getit$ = "H" then
+           board(2) = board(5)
+           board(5) = 0
+           score = score + 1
+       endif
+       if getit$ = "M" then
+           board(2) = board(1)
+           board(1) = 0
+           score = score + 1
+       endif
+       if getit$ = "K" then
+           board(2) = board(3)
+           board(3) = 0
+           score = score + 1
+       endif
+   endif
+   if tmp2 = 3 then
+       if getit$ = "H" then
+           board(3) = board(6)
+           board(6) = 0
+           score = score + 1
+       endif
+       if getit$ = "M" then
+           board(3) = board(2)
+           board(2) = 0
+           score = score + 1
+       endif
+   endif
+   if tmp2 = 4 then
+       if getit$ = "H" then
+           board(4) = board(7)
+           board(7) = 0
+           score = score + 1
+       endif
+       if getit$ = "P" then
+           board(4) = board(1)
+           board(1) = 0
+           score = score + 1
+       endif
+       if getit$ = "K" then
+           board(4) = board(5)
+           board(5) = 0
+           score = score + 1
+       endif
+   endif
+   if tmp2 = 5 then
+       if getit$ = "H" then
+           board(5) = board(8)
+           board(8) = 0
+           score = score + 1
+       endif
+       if getit$ = "P" then
+           board(5) = board(2)
+           board(2) = 0
+           score = score + 1
+       endif
+       if getit$ = "K" then
+           board(5) = board(6)
+           board(6) = 0
+           score = score + 1
+       endif
+       if getit$ = "M" then
+           board(5) = board(4)
+           board(4) = 0
+           score = score + 1
+       endif
+   endif
+   if tmp2 = 6 then
+       if getit$ = "H" then
+           board(6) = board(9)
+           board(9) = 0
+           score = score + 1
+       endif
+       if getit$ = "P" then
+           board(6) = board(3)
+           board(3) = 0
+           score = score + 1
+       endif
+       if getit$ = "M" then
+           board(6) = board(5)
+           board(5) = 0
+           score = score + 1
+       endif
+   endif
+   if tmp2 = 7 then
+       if getit$ = "P" then
+           board(7) = board(4)
+           board(4) = 0
+           score = score + 1
+       endif
+       if getit$ = "K" then
+           board(7) = board(8)
+           board(8) = 0
+           score = score + 1
+       endif
+   endif
+   if tmp2 = 8 then
+       if getit$ = "P" then
+           board(8) = board(5)
+           board(5) = 0
+           score = score + 1
+       endif
+       if getit$ = "M" then
+           board(8) = board(7)
+           board(7) = 0
+           score = score + 1
+       endif
+       if getit$ = "K" then
+           board(8) = board(9)
+           board(9) = 0
+           score = score + 1
+       endif
+   endif
+   if tmp2 = 9 then
+       if getit$ = "P" then
+           board(9) = board(6)
+           board(6) = 0
+           score = score + 1
+       endif
+       if getit$ = "M" then
+           board(9) = board(8)
+           board(8) = 0
+           score = score + 1
+       endif
+   endif
+
+   if getit$ = "" then
+       locate 20,1
+       color 10,0
+       print "Quitter....You had taken ";
+       score$ = str$(score)
+       score$ = ltrim$(score$)
+       score$ = rtrim$(score$)
+       color 15,0
+       print score$;
+       color 10,0
+       print " tries."
+       end
+   endif
+
+   gosub drawboard:
+   gosub checkwin:
+   goto getinput:
+
+
+return
+
+checkwin:
+   bee$ = ""
+   for q = 1 to 8
+       a$ = str$(board(q))
+       a$ = ltrim$(a$)
+       a$ = rtrim$(a$)
+       bee$ = bee$ + a$
+   next q
+   if bee$ = "12345678" then
+       locate 20,1
+       color 10,0
+       Print "You win!!!"
+       print
+       print "It took you ";
+       score$ = str$(score)
+       score$ = ltrim$(score$)
+       score$ = rtrim$(score$)
+       color 15,0
+       print score$;
+       color 10,0
+       print " tries to win!"
+       end
+   endif
+return
+

@@ -1,0 +1,21 @@
+Instructions for Borland commandline compiler
+
+============================
+Windows 98
+============================
+
+Borland C++ 5.5 Commandline Tools
+http://www.borland.com/products/downloads/download_cbuilder.html
+
+
+1. Install Borland free command line compiler ( set bcc32.cgf and ilink32.cfg - for more infos
+	read Readme.txt in Borland root directory)
+
+   Set PATH in autoexec.bat to BIN subdirectory in borland root directory
+	i.e PATH=%PATH%;C:\BORLAND\BCC55\BIN
+
+2. Update makefile.bcc (set BCCROOT to borland compiler root directory
+	i.e. BCCROOT=c:\borland\bcc55 )
+
+3. Compile with:  make -f makefile.bcc
+

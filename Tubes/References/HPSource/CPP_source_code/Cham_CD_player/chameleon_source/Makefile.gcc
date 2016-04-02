@@ -1,0 +1,59 @@
+# Project: Chameleo
+# set the MINGWROOT to root directory of MinGW compler
+
+
+MINGWROOT = c:/mingw
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = resource.res
+OBJ  = static.o button.o cube.o inikey.o listbox.o main.o mixer.o scroll.o skin.o $(RES)
+LIBS =  -L"$(MINGWROOT)/lib" -mwindows -lcomctl32 -lwinmm
+INCS =  -I"$(MINGWROOT)/include"  -I"$(MINGWROOT)/include/c++"  -I"$(MINGWROOT)/include" 
+BIN  = Chameleo.exe
+CXXFLAGS = $(INCS) 
+CFLAGS = $(INCS) 
+
+.PHONY: all all-before all-after clean clean-custom
+
+
+
+all: all-before Chameleo.exe all-after
+
+
+clean: clean-custom
+	rm -f $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(OBJ) -o "Chameleo.exe" $(LIBS) $(CXXFLAGS)
+
+static.o: static.cpp
+	$(CPP) -c static.cpp -o static.o $(CXXFLAGS)
+
+button.o: button.cpp
+	$(CPP) -c button.cpp -o button.o $(CXXFLAGS)
+
+cube.o: cube.cpp
+	$(CPP) -c cube.cpp -o cube.o $(CXXFLAGS)
+
+inikey.o: inikey.cpp
+	$(CPP) -c inikey.cpp -o inikey.o $(CXXFLAGS)
+
+listbox.o: listbox.cpp
+	$(CPP) -c listbox.cpp -o listbox.o $(CXXFLAGS)
+
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+
+mixer.o: mixer.cpp
+	$(CPP) -c mixer.cpp -o mixer.o $(CXXFLAGS)
+
+scroll.o: scroll.cpp
+	$(CPP) -c scroll.cpp -o scroll.o $(CXXFLAGS)
+
+skin.o: skin.cpp
+	$(CPP) -c skin.cpp -o skin.o $(CXXFLAGS)
+
+resource.res: resource.rc
+	$(WINDRES) -i resource.rc  -I rc -o resource.res -O coff

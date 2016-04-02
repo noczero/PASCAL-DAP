@@ -1,0 +1,34 @@
+
+ HPSource.zip Note
+
+ Description:
+ HPSource is an archive that contains C++, C, Basic, & Pascal source code. 
+ The computer systems which the code has been written for are Windows, 
+ Mac OS X, Linux, DOS, & old 8-bit Basic interpreters. Some of the programs 
+ in the archive, for example, are: games, text editors, & basic interpreters. 
+ The tools this code has been tested with are: MinGW, Dev-C++, ASIC, Turbo 
+ Pascal, Free Pascal, Turbo C, QBasic, QB64, Basica, GWBasic, Chipmunk Basic, 
+ Virtual MC-10, DOSBox, FreeBasic, & Codeblocks. The C++, Free Pascal, & 
+ FreeBasic code has been written for Windows, OS X & Linux but some of the 
+ code for older systems will require emulation to run on newer systems. For 
+ example, the 16-bit MS-DOS programs in the archive generally require DOSBox 
+ to run  on 64-bit Windows, Mac, & Linux. The archive is a ZIP file, which is 
+ around 1.3MB.
+
+ Recommended tools:
+ Basic_source_code --> FreeBasic / QBasic (Windows)
+ CPP_source_code --> Dev-C++ / MinGW (Windows)
+ QB_games --> QBasic (DOS) / QB64 (Windows)
+ Source16 --> ASIC / Turbo Pascal / Turbo C (DOS)
+
+ Command prompt compile commands:
+ MinGW: gcc filename.cpp -o filename.exe
+ FreeBasic QB mode: fbc -lang qb filename.bas
+ Free Pascal: fpc filename.pas
+
+ Websites:
+ Hobby Programming: http://rudih.info
+ MinGW compiler: http://www.mingw.org
+ FreeBasic compiler: http://www.freebasic.net
+ Free Pascal: http://www.freepascal.org
+ 

@@ -1,0 +1,43 @@
+File List
+---------
+
+EE.C      ;The main program
+EEIBM.C   ;Used only for mainframes (some documents)
+EE.EXE    ;MSDOS version
+EE.DOC    ;This file
+
+
+EE (Easy Editor)
+----------------
+
+There are many ASCII editors around, but I still find that I use my
+editor most often. Taking EMACS (one of the best) as an example, it
+is too slow to load when I am running TeX; too many different
+versions even within an operating system; too many commands to
+remember, but still don't have the ones you want.
+
+EE is public domain with source code. It has all of basic editing
+functions like search/replace, block delete/paste, word
+wrap/paragraph fill etc. It is small enough to maintain when you
+have a new OS, or just changed your taste of style. Compromises
+have to be made to make EE small and useful including the
+followings:
+
+* If tab characters are find, it will expand/compress the file.
+Otherwise it keep the spaces (good for fixed format data file).
+
+* It uses two windows, but only keeps one file structure in buffer.
+It works just like windows.
+
+* Whenever possible, portable code between IBM and mainframe
+machine are used.
+
+Of course, you can always change it if it doesn't fit your
+situation. If you like some of the code, you can make the author
+very happy by sending one dollar ($1) to his sweetheart:
+
+Xiu Ye, Department of Mathematics, UALR, Little Rock, AR 72204
+
+Questions, bugs, suggestions can be sent to:
+
+Yijun Ding, 348 S.Pacific Ave, Pittsburgh PA 15224, 412-361-0858

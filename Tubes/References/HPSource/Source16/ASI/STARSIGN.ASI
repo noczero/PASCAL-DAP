@@ -1,0 +1,99 @@
+rem StarSign, compile with ASIC 5.00
+
+beginning:
+print "Enter month and day of birth, as two numbers."
+print "month # ";
+input month
+print "day # ";
+input day
+if month=1 then
+  if day>=21 then
+    print "Aquarius"
+  else
+    print "Capricorn"
+  endif
+endif
+if month=2 then
+  if day<=19 then
+    print "Aquarius"
+  else
+    print "Pisces"
+  endif
+endif
+if month=3 then
+  if day<=20 then
+    print "Pisces"
+  else
+    print "Aries"
+  endif
+endif
+if month=4 then
+  if day<=20 then
+    print "Aries"
+  else
+    print "Taurus"
+  endif
+endif
+if month=5 then
+  if day<=21 then
+    print "Taurus"
+  else
+    print "Gemini"
+  endif
+endif
+if month=6 then
+  if day<=21 then
+    print "Gemini"
+  else
+    print "Cancer"
+  endif
+endif
+if month=7 then
+  if day<=19 then
+    print "Cancer"
+  else
+    print "Leo"
+  endif
+endif
+if month=8 then
+  if day<=24 then
+    print "Leo"
+  else
+    print "Virgo"
+  endif
+endif
+if month=9 then
+  if day<=24 then
+    print "Virgo"
+  else
+    print "Libra"
+  endif
+endif
+if month=10 then
+  if day<=24 then
+    print "Libra"
+  else
+    print "Scorpio"
+  endif
+endif
+if month=11 then
+  if day<=24 then
+    print "Scorpio"
+  else
+    print "Sagittarius"
+  endif
+endif
+if month=12 then
+  if day<=23 then
+    print "Sagittarius"
+  else
+    print "Capricorn"
+  endif
+endif
+x$=""
+print "Again, Y/N?"
+while x$=""
+ x$=inkey$
+wend
+x$=ucase$ (x$)
+if x$="Y" then beginning:

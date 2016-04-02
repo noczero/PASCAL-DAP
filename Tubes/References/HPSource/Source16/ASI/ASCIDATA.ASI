@@ -1,0 +1,87 @@
+rem '===========================================================================
+rem ' Subject: ASCII CHARACTER TABLE             Date: 08-20-95 (00:00)       
+rem '  Author: Kenneth W. Melvin                 Code: ASIC                   
+rem '  Origin: kwmelvin@nr.infi.net            Packet: ASIC.ABC
+rem '===========================================================================
+       REM Filename: ASICDATA.ASI for ASIC v5.0
+       REM Date: 20 August 1995 kwm
+
+REM ***********************************************************************
+REM ********************** Main Program Module ****************************
+REM ***********************************************************************
+DATA 32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47
+DATA 48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63
+DATA 64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79
+DATA 80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95
+DATA 96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111
+DATA 112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127
+DATA 128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143
+DATA 144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159
+DATA 160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175
+DATA 176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191
+DATA 192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207
+DATA 208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223
+DATA 224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239
+DATA 240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255
+DATA 00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+       CLS
+       COLOR 7, 0
+       GOSUB PrintTitle:
+       GOSUB Start:
+       END
+
+REM ***********************************************************************
+REM ********************** Title Screen Module ****************************
+REM ***********************************************************************
+PrintTitle:
+       WIDTH 40
+       CLS
+       LOCATE 10, 18
+           PRINT "ASCII"
+       LOCATE 11, 16
+           PRINT "CHARACTER"
+       LOCATE 12, 18
+           PRINT "TABLE"
+       LOCATE 23, 13
+           PRINT "<Press any key>"
+       GOSUB Pause:
+       WIDTH 80
+RETURN
+
+REM ***********************************************************************
+REM ******************** Press-A-Key Pause Routine ************************
+REM ***********************************************************************
+Pause:
+       inky$ = INKEY$
+       IF inky$ = "" THEN Pause:
+RETURN
+
+REM ***********************************************************************
+REM ********************* Ascii Character Table Module ********************
+REM ***********************************************************************
+Start:
+REM This program displays the ASCII characters 32-255.
+REM 32 is Space, and 255 is Blank, so a character will not show for them.
+
+CLS
+FOR Ascii = 1 TO 240
+   LOCATE 4, 0
+      FOR ShowChar = 1 TO 16
+           READ Ascii
+           PRINT Ascii;
+           PRINT "= ";
+           Strg$ = CHR$(Ascii)
+           PRINT Strg$
+      NEXT ShowChar
+   LOCATE 23, 0
+   PRINT "<Press a key>"
+   GOSUB Pause:
+   CLS
+NEXT Ascii
+RETURN
+
+REM The first FOR/NEXT iteration supplies the READ statement with fodder.
+REM The second FOR/NEXT iteration displays the data to the screen, 16
+REM characters at a time. The use of the Pause subroutine allows the user
+REM to look at each screen.
+

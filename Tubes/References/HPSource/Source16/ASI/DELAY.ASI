@@ -1,0 +1,25 @@
+rem '===========================================================================
+rem ' Subject: DELAY ROUTINE                     Date: 01-22-97 (12:51)       
+rem '  Author: Nathan Kerr                       Code: ASIC                   
+rem '  Origin: nathan_frog@goecities.com       Packet: ASIC.ABC
+rem '===========================================================================
+timer:
+REM This little sub counts for SECONDS then returns
+REM *MUST* set SECONDS before calling, number of seconds to loop for, please
+done=0
+startcnt& = timer
+REM times it by 18 because 18 ticks per second
+temp = seconds * 18
+temp = temp - 1
+while done=0
+endcnt&=timer
+checkcnt&= endcnt& - startcnt&
+checkcnt& = abs(checkcnt&)
+REM The reason the nest checks for GREATER-THAN is because if SECONDS gets
+REM really big, it might not be accurate
+if checkcnt& > temp then
+   done = 1
+endif
+wend
+temp=0
+return

@@ -1,0 +1,128 @@
+Welcome to...
+	Xtreme Fight 
+
+--- VERSION 0.8 ---
+	
+*If you are reading this give yourself a big pat on the back, most people skip the IMPORTANT RULES part*
+
+
+Basic Rules
+_______________________
+
+So you're this guy who kills badguys to win these coins to buy more stuff to kill more badguys so that you can win. Right.
+
+
+The Itty Bitty Details
+________________________________
+
+WEAPONS
+
+There a total of 9 weapons, all of which have there own advantages and disadvantages. Each weapon is ranked by it's power and accuracy which you can view in the Weapons of Mass Destruction shop. Power basicly tells you how much life the enemy will lose when struck. If you use the crossbow, for example, it has 10 - 20 pts power. 'Pts' stands for points, which is the same as 10 - 20 percent. So the enemy will lose something between 10 - 20 points.
+The accuracy of the weapon tells you your chances you actually hitting the enemy. If the weapon has 50% accuracy, for example, then your odds of hitting are 1 in 2, which are not very good odds in this game. If you do not hit the enemy, you miss, and then it's the enemy's turn. Each weapon has a price tag, and the priceyer the better.
+
+GOLD COINS
+
+Each time you defeat your enemy you are awarded 50 gold coins. (Unless you have it on easy mode). There are many strategies in this game, it just depends on which you like better. Your health is an important factor; it just does not jump back up to 100% when your done fighting the enemy, so the player (you) are forced to buy health potions. Once you get more into the game, it becomes harder as the player grows stronger and has more weapons and armor because the enemies are more difficult to defeat...I'll get more into that later. You not only need to buy armor for your protection and potions for your health, but weapons as well (saving up for that rocket launcher, are we?). You need to make wise chosies on how you spend your coins (c) or else you will end up dead. (this is something we don't want).
+
+POTIONS
+
+My favorite part. The potions...There are two types: Health potions and weapon potions. 
+
+Health Potions:
+
+Health potions provide, well, health. There are actually two types of health potions (and you thought this couldn't get any more confusing). Health10, Health20, and Health30 are all health potions that increase your regular health. So if you were at 90% health and bought Health10 you would be at maximum health (100%)...Did I say 'maximum' health? Yes, and it is this that increases your maximum health. In the beggining of the game, you have a max health of 100%. But later, you can buy MaxHealth potions, which will increase your maximum health (for example, to 110%). 
+
+*NOTE: THESE WILL NOT INCREASE YOUR REGULAR HEALTH. IF YOU ARE AT 70% HEALTH AND BUY A MAXHEALTH10 POTION YOU WILL STAY AT 70%. ONLY YOUR MAXIMUM HEALTH INCREASES.* 
+
+MaxHealth potions have a number by them, indicating how many points your maximum health increses. (like MaxHealth30). But there is a "MaxHealth" potion without a number; this is just like a regular Health potion execpt it increaes your health all the way up to whatever your maximum health is. So here's a little tip: Only buy the "MaxHealth" potion when your health is really low. That way you get alot for your money, know what I mean? You might say "gee, that MaxHealth potion is 200 c !? Why so much?" well, if you think about, you could have 250% max health and only have 25% regular health. Well, the MaxHealth potion will bump up your regular all the way back to 250%. Now that's pretty darn good.
+
+Weapon Potions:
+
+The fun part! Weapon potions! These little guys are pricy, but very powerful when used with the right element at the right enemy. Did i say "element"? No, you were just imagining things... Yes, here's where alot of strategy comes in. There are 3 weapon potions: Electric Thunder, Water Tsunami, and Fire Blaze. Sound cool, don't they? Each one creates a cool affect which can dramitcally damage your enemy's health, if used in the right way. If you took your science class, you should already know that the four elements are fire, air, earth, and water. When you attack with a weapon potion you have the option to combine your potion with one of the four elements in order to 'activate' the potion. You could say it inhances the potions effect (damage and accuracy). Each element you combine it with could cause a postive effect, or an effect you don't want. Depending on what element you choose, and which enemy your fighting, you can create a very powerful, destructive weapon. For example, the Water Tsunami combined with the element of water against Fire Ball would really put him out, if you know what I mean :) Here's a little list of what to expect from each weapon potion:
+
+Electric Thunder:
+
+Overall power: Good
+Overall accuracy: poor
+
+Water Tsunami:
+
+Overall power: Medium
+Overall accuracy: Good
+
+Fire Blaze:
+
+Overall power: Good
+Overall Accuracy: Medium
+
+And here's a little tip: DON'T use the Fire Blaze with the water element or the Water Tusinmi with the fire element, OK?
+
+
+ARMOR
+
+Armor is a very helpful too in succesfully completing the game. There are 4 diffrent armors you can buy: Bronze, Silver, Gold, and Plantium, each one subtracts a significant ammount of damage to you when an enemy attacks.
+
+RANKS
+
+The "goal" or whatever you want to call it, is to get the highest rank, Lord. Here are all the ranks you can achive, from lowest to highest, and how they are determined:
+
+Child: 5 kills or less
+Squire: Between 6 and 15 kills
+Knight: Between 16 and 30 kills
+Warrior: Between 31 and 50 kills
+Master: Between 51 and 75 kills
+Lord: More than 75 kills
+
+THE BOSSES
+
+For every 10 enemies you kill, there is a boss. Don't worry, if you run away from a boss it's health stays the same until you defeat it. So if your at 1% and need some health potions, the boss's health won't jump back up to the max like the enemies' health does. You are awarded 100 coins, instead of 50, for each boss you defeat.
+
+
+OTHER TID BITS YOU SHOULD KNOW:
+
+* Anything in these () you can enter.
+
+* Do NOT enter CAPS, only lowercase letters.
+
+* Do NOT test my program -- do not enter incorrect input because I still have yet to add errors.
+
+* Do NOT enter a long name or else it will not look pretty.
+
+* The health-o-meter, located in the upper-right (badguy) and upper-left (you) corners of the battle screen, indicate how much life you have left. It changes color, too! Green (80% or more) means good health, yellow (50% - 80%) means OK health and red (less then 50%) means you should consider buying some health potions.
+
+* Drinking a health potion during battle does not use up a turn; using a weapon potion does.
+
+* You can only buy a weapon once, but you can buy potions as much as your heart's content. But you can only buy the same potion once at a time.
+
+* If you die in a battle that's it. Bye-bye. No extra lives. Game over. You lose. So, WATCH YOUR HEALTH!
+
+____________________________________________
+
+I plan on making another version, 1.0, in the near future due to some problems in this version. I'm not going to list every problem in this game, but the main ones are the text turning gray sometimes, and not having complete error-proof protection for when the user enters wrong input. I also might add a whole new story line (as if this had any) and maybe have it not be completly fighting, but walking around and stuff, you know, more RPG-ish.
+
+PLEASE I am feedback hungry. If you have ANY comments, suggestions, complaints, or ANYTHNG for version 1.0, PLEASE PLEASE PLEASE let me know! I WANT TO KNOW WHAT YOU THINK!!! My e-mail is:
+
+monkypower@hotmail.com
+Thanks!
+
+To me, a game is is for one thing: having fun. And a game is based solely on how much fun it is. I hope you have as much fun playing this game as I did making it, and if you like it, please share it with your friends and family!
+
+THANKS FOR PLAYING...
+
+	XTREME FIGHT
+
+
+
+
+...maybe I should put...
+
+
+	XTREME FIGHT
+   crappy name, good game
+
+
+
+
+
+
+

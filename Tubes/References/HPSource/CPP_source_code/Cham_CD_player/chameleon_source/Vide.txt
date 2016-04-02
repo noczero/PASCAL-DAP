@@ -1,0 +1,10 @@
+Instructions for V IDE:
+
+============================
+Windows 98
+============================
+
+
+1. Install V IDE. Require MinGW,Borland or CygWin compiler
+2. Open chameleo.vpj
+3. Compile

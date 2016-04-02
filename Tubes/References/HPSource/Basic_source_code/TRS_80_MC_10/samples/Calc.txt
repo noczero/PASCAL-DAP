@@ -1,0 +1,8 @@
+20  INPUT "1st number";N1
+30  INPUT "op(+,-,*,/)";OP$
+40  INPUT "2nd number";N2
+60  IF OP$ = "+" THEN A=N1+N2
+70  IF OP$ = "-" THEN A=N1-N2
+80  IF OP$ = "*" THEN A=N1*N2
+90  IF OP$ = "/" THEN A=N1/N2
+100 PRINT A

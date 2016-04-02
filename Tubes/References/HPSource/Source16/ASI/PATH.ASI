@@ -1,0 +1,37 @@
+rem '===========================================================================
+rem ' Subject: ENVIRONMENT PATHNAME              Date: 07-11-96 (16:56)       
+rem '  Author: Stuart McLachlan                  Code: ASIC                   
+rem '  Origin: comp.lang.basic.misc            Packet: ASIC.ABC
+rem '===========================================================================
+Rem Get Program Segment Prefix Address
+    Ax=&Hex6200
+    Int86(&Hex21,Ax,Bx,Na,Na,Na,Na,Na,Na,Na)
+    Defseg = Bx
+
+Rem Get Address Of Environment Block
+    Lo = Peek(&Hex2c)
+    Hi = Peek(&Hex2d)
+    Env = Hi * 256
+    Env = Env + Lo
+    Defseg = Env
+
+Rem Get Environment Length
+    For Environment = 0 To 511
+       Temp=Peek(Environment)
+       If Temp = 1 Then
+           Locationstart = Environment + 2
+           Environment = 511
+       Endif
+    Next Environment
+
+Rem Get File Location Data
+   For Filelocation = Locationstart To 511
+      Temp = Peek(Filelocation)
+      If Temp <> 0 Then
+         Nextstring$ = Chr$(Temp)
+        Fileloc$ = Fileloc$ + Nextstring$
+      Else
+      Filelocation = 511
+      Endif
+   Next Filelocation
+Print Fileloc$

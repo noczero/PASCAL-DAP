@@ -1,0 +1,45 @@
+
+10 REM Arithmetic questioner, for Aquarius, http://rudih.info
+20 PRINT "Arithmetic Questioner (-1 quits)"
+30 PRINT "Set max # to add or subtract (1-15990)";
+40 INPUT A
+50 IF A <= 0 THEN END
+60 PRINT "Set max # to multiply or divide(1-178)";
+70 INPUT M
+80 IF M <= 0 THEN END
+90 U = 1
+100 P = int(RND(1)*4)
+120 IF P < 2 THEN GOSUB 250
+130 IF P = 2 THEN GOSUB 380
+140 IF P = 3 THEN GOSUB 480
+150 INPUT U
+160 IF P = 0 THEN R = N + D
+170 IF P = 1 THEN R = N - D
+180 IF P = 2 THEN R = N * D
+190 IF P = 3 THEN R = V / D
+200 IF U = R THEN PRINT "Correct"
+210 IF U <> R THEN PRINT "Incorrect, it's "; R
+220 IF U >= 0 THEN GOTO 100
+230 END
+250 REM ---SUBROUTINE ADD AND SUBTRACT---    
+270   N = int(RND(1)*A)
+300   D = int(RND(1)*A)
+310   IF D > A THEN GOTO 300
+320   IF D >= N THEN P = 0
+330   IF D >= N THEN PRINT N; " + "; D; " ";
+340   IF D < N THEN P = 1
+350   IF D < N THEN PRINT N; " - "; D; " ";
+360   RETURN 
+380 REM ---SUBROUTINE MULTIPLY---  
+400   N = int(RND(1)*M) + 1
+430   D = int(RND(1)*M) + 1 
+450   PRINT N; " * "; D; " ";
+460   RETURN
+480 REM ---SUBROUTINE DIVIDE---      
+500   N = int(RND(1)*M) + 1
+530   D = int(RND(1)*M) + 1
+540   IF D > M THEN GOTO 530 
+550   V = N * D
+560   PRINT V; " / "; D; " ";
+570   RETURN
+580 REM ---

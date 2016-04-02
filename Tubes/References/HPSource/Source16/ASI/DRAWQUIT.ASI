@@ -1,0 +1,111 @@
+rem '===========================================================================
+rem ' Subject: DRAW A QUIT BUTTON                Date: 06-06-97 (14:38)       
+rem '  Author: Domingo Morel                     Code: ASIC                   
+rem '  Origin: domingobmorel@usa.net           Packet: ASIC.ABC
+rem '===========================================================================
+REM ***THIS PROGRAM DEVELOPED IN ASIC 5.0 ALOW YOU TO DRAW A QUIT BUTTON
+REM ***AUTOR: DOMINGO MOREL <domingobmorel@usa.net>
+REM ***6/6/1997 Santiago, Dominican Republic.
+
+REM SCREEN 9 640X350
+REM SCREEN 7 320X200
+
+GETDATA:
+PRINT "INPUT THE SCREEN TYPE (7 or 9)";
+INPUT S
+PRINT "INPUT THE COLOR FOR FOREGROUND (0 TO 15)";
+INPUT FO
+PRINT "INPUT THE COLOR FOR BACKGROUND (0 TO 15)";
+INPUT BA
+PRINT "INPUT THE INITIAL PIXEL AS ROW";
+INPUT INIROW
+PRINT "INPUT THE INITIAL PIXEL AS COLUNM";
+INPUT INICOL
+
+SCREEN S
+
+FINROW=INIROW+10
+FINCOL=INICOL+10
+A=INIROW-2
+B=FINROW+2
+C=INICOL-2
+D=FINCOL+2
+
+IF FINROW >200 THEN PRINTERROR:
+  IF FINROW >350 THEN PRINTERROR:
+    IF FINCOL >320 THEN PRINTERROR:
+      IF FINCOL >640 THEN PRINTERROR:
+        IF S<>7 THEN SC9:
+
+DRAW:
+
+REM *****DRAW THE BUTTON*****
+FOR I=A TO B
+    FOR J=C TO D
+     PSET(I,J),BA
+    NEXT J
+NEXT I
+J=INICOL-1
+J2=FINCOL+1
+
+REM *****DRAW THE X*****
+FOR H=INIROW TO FINROW
+
+       J=J+1
+       J2=J2-1
+         PSET(H,J),FO
+         PSET(H,J2),FO
+NEXT H
+H3=FINROW-1
+J1=FINCOL
+J2=INICOL
+J3=FINCOL+1
+J4=INICOL-1
+FOR H=INIROW TO H3
+       J1=J1-1
+       J2=J2+1
+       J3=J3-1
+       J4=J4+1
+       H2=H+1
+          PSET(H,J1),FO
+          PSET(H,J2),FO
+          PSET(H2,J3),FO
+          PSET(H2,J4),FO
+NEXT H
+
+WHILE K$=""
+IF S=7 THEN
+     K=INIROW/8
+     K=K+2
+ELSE
+     K=INIROW/14
+     K=K+2
+ENDIF
+
+LOCATE K,1
+PRINT "PRESS ANY KEY TO CONTINUE"
+K$=INKEY$
+WEND
+
+SCREEN 0
+END
+
+E1:
+   PRINT "ERROR, INVALID PIXEL, YOUR SCREEN IS 200 ROW X 320 COLUNM"
+   GOSUB GETDATA:
+E2:
+   PRINT "ERROR, INVALID PIXEL, YOUR SCREEN IS 350 ROW X 640 COLUNM"
+   GOSUB GETDATA:
+SC9:
+ IF S <>9 THEN
+    CLS
+    PRINT "ERROR, YOUR SCREEN MOST BE 7 OR 9"
+    GOSUB GETDATA:
+ ELSE
+     GOSUB DRAW:
+ ENDIF
+
+PRINTERROR:
+SCREEN 0
+IF S=7 THEN E1:
+IF S=9 THEN E2:

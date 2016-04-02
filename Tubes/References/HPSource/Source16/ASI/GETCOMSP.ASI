@@ -1,0 +1,123 @@
+rem '===========================================================================
+rem ' Subject: DOS COMMANDS IN ASIC PROGRAMS     Date: 01-11-96 (22:22)       
+rem '  Author: John A. Kiernan                   Code: ASIC                   
+rem '  Origin: kiernan@uwo.ca                  Packet: ASIC.ABC
+rem '===========================================================================
+rem   GETCOMSP.ASI  An ASIC (version 4 or 5) program that:
+rem     (a) teaches the use of CALL for using internal DOS commands within
+rem         an executable file. Much easier with ASIC than with QuickBasic!
+rem         and it compiles to less than a tenth the size of a QB executable
+rem         file.
+rem     (b) shows how to make and write to a simple text file without
+rem         having to bother with "OPEN" and "CLOSE"
+rem   Read the last few lines of this file for compiling instructions.
+rem   ===========
+rem     Format 1 of ASIC's CALL command allows you to carry out internal
+rem     and external DOS commands in a .COM or .EXE program made by ASIC.
+rem     The syntax of Format 1 is  CALL (string1,string2)  where string1 is
+rem     the full name of an executable program, and string2 contains its
+rem     argument(s), including a leading space and any switches, etc.
+rem  ============
+rem     To run an internal DOS command (also, to run a batch file),
+rem     string1 must be the current COMSPEC, found in the DOS "environment"
+rem       You could change Env=30000 to Env=30 without offending anyone but
+rem       the most eccentric batch file zealot! However, allowing for a huge
+rem       environment does not enlarge or slow down the compiled program.
+rem   ===========
+       FOR Env = 1 TO 30000
+           Env$=ENVIRON$(Env)
+             Comsp=INSTR(Env$,"COMSPEC")
+               IF Comsp > 0 THEN
+                 Comspec$=Env$
+                 GOTO GotIt:
+               ENDIF
+       NEXT Env
+                rem  The program cannot get this far (unless you have been
+                rem  silly and have removed the COMSPEC statement from the
+                rem  environment.
+       PRINT "Couldn't find COMSPEC - This should be utterly impossible."
+       GOTO Finished:
+rem                     The next lines extract the COMSPEC
+rem                     (after the = sign) and display it.
+   GotIt:
+       Length=LEN(Comspec$)
+       EqualsPos=INSTR(Comspec$,"=")
+       ComspLength=Length-EqualsPos
+       Comspec$=RIGHT$(Comspec$,ComspLength)
+       PRINT Comspec$
+rem                     Pause the screen display
+       PRINT "Press any key to continue . . ."
+   Wait:
+       Key$=INKEY$
+         IF Key$="" THEN Wait:
+rem                            Comspec$ shows which command processor you
+rem                            are using. This may not be C:\COMMAND.COM.
+rem                            See NOTES_AT_END:
+rem   * ASIC's  CALL  is used to invoke DOS internal commands.      *
+rem   * Spaces around /C matter a lot!  You can't add the " /C" to  *
+rem   * the  Comspec$  variable.   The  /C  (with space before and  *
+rem   * after) MUST be in the second part (string2) of the argument *
+rem   * that follows CALL.  See also NOTES_AT_END:                  *
+         CALL (Comspec$," /C dir/w")
+         CALL (Comspec$," /C ver")
+         CALL (Comspec$," /C path")
+rem   ===========
+rem  The argument following the /C  can be quite complicated,
+rem  BUT IT CANNOT BE VERY LONG - an annoyance, mentioned in the
+rem  commented code that follows.
+ CALL (Comspec$," /C echo 12345678901234567890123456789012345678901234567890")
+ PRINT " Only the first 24 of these numerals are displayed on the screen."
+rem   ===========
+rem  Redirection & piping are OK.  The next line makes a text
+rem  file called JUNK in the default directory.
+        CALL (Comspec$," /C echo This file is Junk! >JUNK")
+rem        The above example illustrates the limitation of the
+rem        length of string2 in ASIC's CALL command.  If you add
+rem        one space anywhere in the string (for example, after
+rem        "echo" or after ">" the string is truncated and makes
+rem        a file named JUN instead of JUNK.
+rem            You cannot get round this length limitation by using a
+rem        variable for string2.
+rem   ===========
+rem  To append things to a file, use the DOS convention of
+rem  two greater-than signs.
+       CALL (Comspec$," /C echo Second line >>JUNK")
+       CALL (Comspec$," /C ver >> JUNK")
+       CALL (Comspec$," /C echo. >>JUNK")
+       CALL (Comspec$," /C set >> junk")
+       CALL (Comspec$," /C echo. >>JUNK")
+       PRINT "  Now enter TYPE JUNK at the DOS prompt, to read the"
+       PRINT "  redirected and appended outputs of internal DOS commands"
+       PRINT "  executed within GETCOMSP.COM"
+       PRINT "                                 You can then delete JUNK."
+       PRINT ""
+rem   ===========
+rem   With this tiny program you have made a file and added text to it
+rem   without having to bother with the "OPEN" and "CLOSE" commands of
+rem   ASIC and other BASIC languages. Once you get the hang of the ASIC's
+rem   CALL command, it's nearly as easy as writing a batch file.
+rem   ===========
+   Finished:
+       END
+   NOTES_AT_END:
+rem  Command processors.
+rem     Wise users of computers know that 4DOS.COM is better in every way
+rem     than the COMMAND.COM that comes with MS-DOS. 4DOS is not the only
+rem     command processor that's better than COMMAND.COM - there's DR DOS
+rem     and NDOS and probably others too.
+rem  Punctuation of the CALL command.
+rem     If the punctuation of the CALL (string1,string2) command is wrong,
+rem     the compiled ASIC program (a) doesn't work, and (b) uses up
+rem     oodles of memory in temporary command processors - about 60kB each
+rem     time you run it. Recover the eaten memory by entering EXIT several
+rem     times at the DOS prompt. The DOS 6.0 command MEM/c/p will show how
+rem     much memory is being used or wasted.
+rem  How to compile this program.
+rem     If this file, named GETCOMSP.ASI is in the same directory
+rem     as the ASIC program files, the command:
+rem                                             ASICC GETCOMSP
+rem     will make GETCOMSP.COM (2659 bytes).
+rem   ===========
+rem     Written and put in the public domain by John A. Kiernan, Jan.1996
+rem                                             (kiernan@uwo.ca)
+

@@ -1,0 +1,185 @@
+rem '===========================================================================
+rem ' Subject: SWAP NAMES OF TWO FILES           Date: 09-17-97 (16:32)       
+rem '  Author: John A. Kiernan                   Code: ASIC                   
+rem '  Origin: kiernan@uwo.ca                  Packet: ASIC.ABC
+rem '===========================================================================
+rem  SWAPNAME.ASI  Compilation: ASICC SWAPNAME
+rem  Exchange the names of two files, with error trapping etc.
+rem  Version 1.1 September 1997 (improved on-line help)
+
+rem   Submitted to A.B.C. 15th September 1997
+
+rem  Both files must be in the current directory. SWAPNAME.COM
+rem  can be in any directory that is in the PATH statement.
+
+DIM WrongCharacter$(4)
+DATA "\",":","*","?"
+ FOR n = 1 TO 4
+   READ WrongCharacter$(n)
+ NEXT n
+BadEntry=0
+TempFileName$="TEMPOR.ARY"
+
+CommandLineTail$=COMMAND$
+CommandLineTail$=LTRIM$(CommandLineTail$)
+CommandLineTail$=RTRIM$(CommandLineTail$)
+CommandLineTail$=UCASE$(CommandLineTail$)
+     MoreInfo=INSTR(CommandLineTail$,"/?")
+       IF MoreInfo>0 THEN
+         GOSUB MoreInfo:
+         GOTO TheEnd:
+       ENDIF
+WholeLength=LEN(CommandLineTail$)
+FirstTerm=INSTR(CommandLineTail$," ")
+FirstTerm=FirstTerm-1
+  IF FirstTerm < 1 THEN
+    GOSUB BadEntry:
+  ENDIF
+  IF BadEntry > 0 THEN TheEnd:
+FirstTerm$=LEFT$((CommandLineTail$,FirstTerm)
+SecondTerm=WholeLength-FirstTerm
+SecondTerm$=RIGHT$(CommandLineTail$,SecondTerm)
+SecondTerm$=LTRIM$(SecondTerm$)
+SecondTerm=LEN(SecondTerm$)
+  IF SecondTerm < 1 THEN
+    GOSUB BadEntry:
+  ENDIF
+  IF BadEntry > 0 THEN TheEnd:
+  ThirdTerm=INSTR(SecondTerm$," ")
+    IF ThirdTerm > 0 THEN
+      GOSUB BadEntry:
+    ENDIF
+    IF BadEntry > 0 THEN TheEnd:
+
+  TestTerm$=FirstTerm$
+  GOSUB CheckTerm:
+    IF BadEntry > 0 THEN TheEnd:
+  TestTerm$=SecondTerm$
+  GOSUB CheckTerm:
+    IF BadEntry > 0 THEN TheEnd:
+  GOSUB CheckExist:
+    IF BadEntry > 0 THEN TheEnd:
+
+rem Renaming files
+
+ NAME FirstTerm$ AS TempFileName$
+   IF ERROR > 0 THEN
+     GOSUB RenameError:
+     GOTO TheEnd:
+   ENDIF
+ NAME SecondTerm$ AS FirstTerm$
+   IF ERROR > 0 THEN
+     GOSUB RenameError:
+     GOTO TheEnd:
+   ENDIF
+ NAME TempFileName$ AS SecondTerm$
+   IF ERROR > 0 THEN
+     GOSUB RenameError:
+     GOTO TheEnd:
+   ENDIF
+
+ COLOR 3,0
+ PRINT ""
+ PRINT "File names swapped."
+ COLOR 7,0
+TheEnd:
+END
+
+rem  Subroutines
+
+BadEntry:
+COLOR 11,0
+PRINT ""
+PRINT "   SWAPNAME.COM         ";
+COLOR 3,0
+PRINT "Version 1.1  by J. A. Kiernan (c) September 1997"
+PRINT ""
+COLOR 11,0
+PRINT "   Exchange the names of two files."
+PRINT ""
+COLOR 15,0
+PRINT "   Usage: ";
+COLOR 14,0
+PRINT "SWAPNAME File1 File2  ";
+COLOR 7,0
+PRINT "where File1 and File2 are"
+PRINT "          The names of the two files. Both files must be in"
+PRINT "          the current directory of the logged drive, and the"
+PRINT "          names must not include wildcard (* or ?) characters."
+PRINT ""
+  IF MoreInfo=0 THEN
+    COLOR 15,0
+    PRINT "          Enter the command SWAPNAME /? for more information"
+    COLOR 7,0
+  ENDIF
+rem ***PRINT ""
+BadEntry=1
+RETURN
+
+CheckTerm:
+    FOR n = 1 TO 4
+       BadEntry=INSTR(TestTerm$,WrongCharacter$(n))
+         IF BadEntry > 0 THEN WrongThingFound:
+    NEXT n
+    GOTO NoWrongThings:
+ WrongThingFound:
+    GOSUB BadEntry:
+ NoWrongThings:
+    RETURN
+
+CheckExist:
+   FileName$=FirstTerm$
+   Fil$=FIND FIRST(FirstTerm$,0)
+          IF ERROR > 0 THEN
+            GOSUB NotThere:
+            BadEntry=1
+          ENDIF
+   FileName$=SecondTerm$
+   Fil$=FIND FIRST(SecondTerm$,0)
+          IF ERROR > 0 THEN
+            GOSUB NotThere:
+            BadEntry=2
+          ENDIF
+     IF BadEntry > 0 THEN
+       GOSUB BadEntry:
+     ENDIF
+   RETURN
+
+NotThere:
+  Gap$=SPACE$(35)
+  COLOR 3,0
+  PRINT Gap$;
+  PRINT FileName$;
+  PRINT " not found."
+  COLOR 7,0
+  RETURN
+
+MoreInfo:
+GOSUB BadEntry:
+PRINT "     Only three DOS commands are needed to exchange the names of a"
+PRINT "     pair of files. However, a single wrongly typed character or a"
+PRINT "     failure to appreciate the fine points of DOS syntax can generate"
+PRINT "     error messages that are not easily understood.  The SWAPNAME"
+PRINT "     utility detects any errors that would make the exchange of file"
+PRINT "     names impossible."
+PRINT ""
+RETURN
+
+RenameError:
+PRINT ""
+COLOR 14,0
+PRINT "An error occurred in renaming: ";
+COLOR 11,0
+ IF ERROR < 5 THEN
+   PRINT "File not found"
+ ENDIF
+ IF ERROR > 4 THEN
+   PRINT "Access denied"
+ ENDIF
+COLOR 15,0
+PRINT "One of the files may have been copied to ";
+PRINT TempFileName$
+PRINT "Check the directory entries."
+PRINT ""
+COLOR 7,0
+RETURN

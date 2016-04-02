@@ -1,0 +1,251 @@
+rem '===========================================================================
+rem ' Subject: SINGLE CHARACTER REPLACER         Date: 05-10-96 (07:33)       
+rem '  Author: Keith Olson                       Code: ASIC                   
+rem '  Origin: FidoNet QUIK_BAS Echo           Packet: ASIC.ABC
+rem '===========================================================================
+REM   Here is a program that I wrote in ASIC to change one character to
+REM  another.  It isn't fancy, but it works. The syntax is:
+REM
+REM  SCR inputfile outputfile searchchar replacechar
+REM  e.g. SCR manual.doc manual.fp 32 255
+REM
+REM  BTW, while it can replace ASCII 0 with something else, it can't do
+REM  the reverse.
+
+cls
+bg1=0
+bg2=0
+fg1=7
+fg2=15
+color fg2,bg1
+print "S";
+color fg1,bg1
+print "ingle ";
+color fg2,bg1
+print "C";
+color fg1,bg1
+print "haracter ";
+color fg2,bg1
+print "R";
+color fg1,bg1
+print "eplacer v1.0á"
+print "Copyright 1996, K-Soft Consulting"
+print ""
+
+cmd$=command$
+cmd$=ucase$(cmd$)
+cmd$=ltrim$(cmd$)
+cmd$=rtrim$(cmd$)
+Tmp1=len(cmd$)
+
+if Tmp1=0 then MissingParams:
+
+Tmp1=instr(cmd$," ")
+if Tmp1=0 then ShowSyntax:
+
+tmp2=tmp1-1
+Param1$=left$(cmd$,Tmp2)
+Param2$=Mid$(cmd$,Tmp1,127)
+Param2$=ltrim$(Param2$)
+
+Tmp1=instr(Param2$," ")
+if Tmp1=0 then MissingParams:
+
+Param3$=mid$(Param2$,Tmp1,127)
+Param3$=ltrim$(Param3$)
+Tmp1=Tmp1-1
+Param2$=left$(Param2$,Tmp1)
+
+if Param1$=Param2$ then SameName:
+
+Tmp1=instr(Param3$," ")
+if Tmp1=0 then MissingParams:
+
+Param4$=mid$(Param3$,Tmp1,127)
+Param4$=ltrim$(Param4$)
+Tmp1=Tmp1-1
+Param3$=left$(Param3$,Tmp1)
+
+Param3=val(Param3$)
+Param3=Param3 mod 256
+Param4=val(Param4$)
+Param4=Param4 mod 256
+
+InputFile$=find first (Param1$,0)
+
+   tmp1=len(InputFile$)
+   if tmp1=0 then FileNotFound:
+   OutputFile$=Param2$
+   open "R",1,InputFile$
+   EOF&=filepos(1,EOF)
+   EOF&=EOF&+1&
+   close 1
+   open "I",1,InputFile$
+   open "O",2,OutputFile$
+
+   locate 3,0
+   print "   % done copying ";
+   color fg2,bg2
+   print Param1$;
+   color fg1,bg1
+   print " to ";
+   color fg2,bg2
+   print param2$
+   color fg1,bg1
+   print "Filtering out ";
+   color fg2,bg2
+   print "<ALT-";
+   print param3$;
+   print ">";
+   color fg1,bg1
+   print " and replacing with ";
+   color fg2,bg2
+   print "<ALT-";
+   print param4$;
+   print ">";
+   color fg1,bg1
+   print "."
+   print
+   print
+   print "Press <ESC> to stop."
+   print
+   endy = csrlin
+   color fg2,bg2
+   OldTmp1&=0
+   StartTime&=Timer
+   I&=1&
+   While i& < EOF&
+      input# 1, InByte$ NONULL
+      InByteAddr=varptr(InByte$)
+      Tmp2=len(InByte$)
+      OutByte$=space$(Tmp2)
+      OutByteAddr=varptr(OutByte$)
+      Tmp1&=Tmp2
+      I&=I&+Tmp1&
+      Tmp2=Tmp2-1
+
+      for j = 0 to Tmp2
+         Tmp1=InByteAddr+j
+         InByte=peek(Tmp1)
+         Tmp1=OutByteAddr+j
+         if InByte=Param3 then
+            poke Tmp1, Param4
+            Replacements&=Replacements&+1&
+         else
+            poke Tmp1,InByte
+         endif
+      next j
+
+      print#2, OutByte$ NONULL
+
+      tmp1&=i&*100
+      Tmp1&=Tmp1&/EOF&
+      if Tmp1& > OldTmp1& then
+         tmp1$=str$(Tmp1&)
+         Tmp1$=right$(tmp1$,3)
+         locate 3,0
+         print tmp1$;
+         locate 25,88
+         OldTmp1&=Tmp1&
+         Tmp1$=inkey$
+         Tmp2$=chr$(27)
+         if Tmp1$=Tmp2$ then UserInt:
+      endif
+   wend
+
+   EndTime&=Timer
+   Tmp1&=EndTime&-StartTime&
+   Tmp2&=Tmp1& / 18
+   Tmp1&=Tmp2& / 60
+   Tmp2&=Tmp2& mod 60
+   locate 6,0
+   color fg1,bg1
+   print "Replacements - ";
+   tmp1$=str$(Replacements&)
+   Tmp1$=ltrim$(tmp1$)
+   color fg2,bg2
+   print tmp1$;
+   print "                                                         "
+
+   color fg1,bg1
+   print "Total Bytes  - ";
+   color fg2,bg2
+   Tmp1$=str$(EOF&)
+   Tmp1$=ltrim$(Tmp1$)
+   print Tmp1$;
+   print "                                            "
+
+   color fg1,bg1
+   print "Total Time   - ";
+   color fg2,bg2
+   tmp1$=str$(Tmp1&)
+   Tmp1$=ltrim$(tmp1$)
+   print Tmp1$;
+   print"m ";
+   tmp1$=str$(Tmp2&)
+   Tmp1$=ltrim$(tmp1$)
+   print Tmp1$;
+   print "s                                           "
+
+   color fg2,bg2
+   locate 10,0
+   print "Finished.                                       "
+   goto Done:
+
+SameName:
+   msg$="Cannot Overwrite Source File.                    "
+   goto PrintError:
+
+UserInt:
+
+   msg$= "Interrupted by User.                            "
+   goto PrintError:
+
+FileNotFound:
+
+   msg$= Param1$+" Not Found.                             "
+
+PrintError:
+
+   locate 7,0
+   color fg2,bg2
+   print msg$
+   color fg1,bg1
+   for i = 0 to 3
+       tmp1$=space$(78)
+       print tmp1$
+   next i
+   goto Done:
+
+MissingParams:
+
+   msg$= "Missing Parameters.                             "
+
+ShowSyntax:
+
+   locate 3,0
+   color fg2,bg2
+   print msg$
+   color fg1,bg1
+   print
+   print
+   print "SCR Replaces oldchar in source.fil with newchar.  Output goes"
+   print "to target.fil."
+   print
+   print "Syntax:"
+   print "SCR source.fil target.fil oldchar newchar"
+   print
+
+Done:
+
+   color fg1,bg1
+   tmp1=csrlin
+   tmp1=tmp1+2
+   locate tmp1y,0
+   print
+
+rem EndLoop: Tmp1$=inkey$
+rem if Tmp1$="" then EndLoop:
+close 1
+close 2
+end

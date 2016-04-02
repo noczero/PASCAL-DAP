@@ -1,0 +1,132 @@
+rem '===========================================================================
+rem ' Subject: MENU IN A BOX                     Date: 08-20-95 (00:00)       
+rem '  Author: Kenneth W. Melvin                 Code: ASIC                   
+rem '  Origin: kwmelvin@nr.infi.net            Packet: ASIC.ABC
+rem '===========================================================================
+REM BOXMENU.ASI 08/20/95 kwm
+REM Demonstrates a simple, structured, Menu-in-a-box.
+REM For ASIC 5.0.
+
+REM *******************************************************************
+REM *********************** Main Program Module ***********************
+REM *******************************************************************
+CLS
+COLOR 1, 7
+   GOSUB MakeBox:
+   GOSUB PrintMessage:
+   GOSUB Menu:
+END
+
+REM *******************************************************************
+REM *** This module draws the box on the screen and is divided into ***
+REM *** three smaller modules which draw different parts of the box ***
+REM *******************************************************************
+MakeBox:
+   GOSUB UpperBox:
+   GOSUB BoxSides:
+   GOSUB LowerBox:
+RETURN
+
+REM *******************************************************************
+REM ********** This sub-module draws the top of the box ***************
+REM *******************************************************************
+UpperBox:
+   LOCATE 8, 24
+       A$ = SPACE$(23)
+       B$ = CHR$(201)
+       C$ = CHR$(187)
+       D$ = B$ + A$
+       D$ = D$ + C$
+   PRINT D$
+   LOCATE 8, 25
+       A$ = SPACE$(21)
+       B$ = CHR$(205)
+       C$ = B$ + A$
+       C$ = C$ + B$
+   PRINT C$
+RETURN
+
+REM *********************************************************************
+REM ************ This sub-module draws the sides of the box *************
+REM *********************************************************************
+BoxSides:
+   J = 9
+   FOR I = 1 TO 5
+       LOCATE J, 24
+           A$ = SPACE$(23)
+           B$ = CHR$(186)
+           C$ = B$ + A$
+           C$ = C$ + B$
+       PRINT C$
+       J = J + 1
+   NEXT I
+RETURN
+
+REM ********************************************************************
+REM *********** This sub-module draws the bottom of the box ************
+REM ********************************************************************
+LowerBox:
+   LOCATE 14, 24
+       A$ = SPACE$(23)
+       B$ = CHR$(200)
+       C$ = CHR$(188)
+       D$ = B$ + A$
+       D$ = D$ + C$
+   PRINT D$
+   LOCATE 14, 25
+       E$ = STRING$(23, 205)
+   PRINT E$
+RETURN
+
+REM **********************************************************************
+REM ******************** This module prints your message *****************
+REM **********************************************************************
+PrintMessage:
+   LOCATE 8, 26
+           print "      MAIN MENU      "
+   LOCATE 10, 26
+           print "  [A] First Choice   "
+   LOCATE 11, 26
+           print "  [B] Second Choice  "
+   LOCATE 12, 26
+           print "  [C] Third Choice   "
+   LOCATE 13, 26
+           print "  [X] Exit this Menu "
+RETURN
+
+REM ***********************************************************************
+REM ************************* Menu Module *********************************
+REM ***********************************************************************
+Menu:
+locate 16, 0
+color 7, 0
+print "Choose..."
+input Choice$
+if Choice$ = "A" then FirstChoice:
+if Choice$ = "a" then FirstChoice:
+if Choice$ = "B" then SeconChoice:
+if Choice$ = "b" then SeconChoice:
+if Choice$ = "C" then ThirdChoice:
+if Choice$ = "c" then ThirdChoice:
+if Choice$ = "X" then End:
+if Choice$ = "x" then End:
+
+FirstChoice:
+ locate 18,0
+ print "You chose A"
+ goto Menu:
+
+SeconChoice:
+ locate 18,0
+ print "You chose B"
+ goto Menu:
+
+ThirdChoice:
+ locate 18,0
+ print "You chose C"
+ goto Menu:
+
+End:
+ end
+
+

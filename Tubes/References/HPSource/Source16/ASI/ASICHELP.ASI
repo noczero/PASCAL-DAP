@@ -1,0 +1,583 @@
+rem '===========================================================================
+rem ' Subject: ASIC HELP                         Date: 12-22-95 (00:00)       
+rem '  Author: Dave Gjessing                     Code: ASIC                   
+rem '  Origin: dgjess@freenet.columbus.oh.us   Packet: ASIC.ABC
+rem '===========================================================================
+rem ASICHELP.ASI dg 12/22/95
+rem Just messing around with some of the "ASICHELP" files that I
+rem did several months ago, when I knew even *less* than I do now,
+rem and was all gung-ho about using ASIC to learn BASIC. :)
+rem
+rem This is *very* "basic" stuff.
+menu:
+cls
+color 14,0
+locate 7, 0
+print "                               ASICHELP.ASI"
+print
+print "                                 (G)OTO"
+print "                                 (C)OLOR"
+print "                                 (I)NKEY"
+print "                                 (S)OUND"
+print "                                 (P)RINT"
+print "                                 (Q)UIT"
+menuloop:
+menuchoice$=inkey$
+menuchoice$ = ucase$(menuchoice$)
+rem input menuchoice$
+   if menuchoice$ = "G" then gototop:
+   if menuchoice$ = "C" then colortop:
+   if menuchoice$ = "I" then inkeytop:
+   if menuchoice$ = "S" then soundtop:
+   if menuchoice$ = "P" then printtop:
+   if menuchoice$ = "Q" then end:
+goto menuloop:
+end:
+end
+rem ***********************************************************************
+rem GOTO.ASI (or GOTO.TXT)
+rem by Dave Gjessing 8/20/95
+rem demonstration ot the GOTO keyword
+
+gototop:
+cls
+quote$=chr$(34)
+
+rem see PRINT to find out what the quote$=chr$(34) thing is about
+
+color 14,0
+
+rem see the COLOR segment
+
+print "This segment demonstrates the GOTO keyword."
+color 7,0
+print
+print "Unlike a lot of the other ASIC keywords, GOTO does just exactly"
+print "what it's name implies. It makes the program execution GOTO another"
+print "place in the code."
+print
+color 11,0
+print "The syntax is: GOTO [targetlabel:]"
+color 7,0
+print
+print "GOTO does not require any user input to work. As soon as the program"
+print "encounters a GOTO statement, it jumps right to the target label and"
+print "continues on from there. Nothing happens on the screen that would make"
+print "it obvious that a GOTO statement had been encountered."
+print
+print "GOTO jumps DIRECTLY to the target label, no matter where the target"
+print "label is in relation to the GOTO statement. The target can be either"
+print "before or after the GOTO statement. The great thing about this is that"
+print "your program does not have to simply proceed from one line to the next"
+print "until it encounters the end. GOTO introduces some control."
+print
+color 7,0
+print "Try it out in conjunction with the INPUT keyword, as the following"
+print "example illustrates:"
+print
+print
+print
+color 10,0
+print "press ENTER to continue";
+input c$;
+
+page2:
+cls
+color 15,0
+print "The following do-nothing program uses INPUT and GOTO:"
+color 14,0
+print
+print "start:"
+print "input c$"
+print "goto end:"
+print "goto start:"
+print "end:"
+print "end"
+color 7,0
+print
+print "There is no way to get back to ";
+print quote$;
+print "start:";
+print quote$;
+print ", because as soon as input"
+print "has gotten c$, the program will jump to the target label ";
+print quote$;
+print "end:";
+print quote$;
+print ", "
+print "bypassing the line ";
+print quote$;
+print "goto start:";
+print quote$;
+print " Thus, the line ";
+print quote$;
+print "goto start:";
+print quote$;
+print " will"
+print "NEVER be executed."
+print
+color 7,0
+print "If you were to switch the two GOTO lines around, then the program"
+print "would turn into one of those annoying continuous loop things that"
+print "the INKEY$ section talks about. Try doing that and you will see what"
+print "I mean. (look at the INKEY$ section first though, to avoid"
+print "frustration!)."
+print
+print
+print
+print
+color 10,0
+print "press ENTER to leave the goto segment altogether."
+print "press W, then ENTER to look at the (W)hole goto segment again.";
+input nowwhat$;
+nowwhat$=ucase$(nowwhat$)
+if nowwhat$="" then menu:
+if nowwhat$="W" then gototop:
+
+rem ************************************************************************
+
+rem COLOR.ASI (or COLOR.TXT)
+rem by Dave Gjessing, 8-11-95
+rem demonstrates the COLOR keyword
+
+colortop:
+cls
+rem    12/22/95 - this is incorporated in the QBPER12.BAS program
+color 14,0
+print "The following colors are available to you in ASIC:"
+color 7,0
+print
+print "0 - Black     4 - Red         8 - Dark Grey    12 - Light Red"
+print "1 - Blue      5 - Magenta     9 - Light Blue   13 - Light Magenta"
+print "2 - Green     6 - Brown      10 - Light Green  14 - Yellow"
+print "3 - Cyan      7 - White      11 - Light Cyan   15 - Bright White"
+print
+color 11,0
+print "The syntax for the color statement is:"
+print
+color 14,0
+print "COLOR [number for foreground],[number for background]"
+print
+color 11,0
+print "To see what the various combinations look like, indicate"
+print "a foreground and a background number below:"
+print
+color 7,0
+   print "foreground ";
+   input fg;
+   print
+   print "background ";
+   input bg;
+   print
+   print
+
+sfg$=str$ (fg)
+sbg$=str$ (bg)
+sfg$=ltrim$ (sfg$)
+sbg$=ltrim$ (sbg$)
+
+rem The four lines above manipulate the information that was just input
+rem so that it can be displayed on the screen the way I want it. Notice
+rem that we input normal integers for the variables fg and bg. A normal
+rem integer has six "places" in it, so if you only input a single place,
+rem say 2, for instance, then what you have is five "empty" places, and
+rem the one place you entered. The letter e represents an empty space in
+rem this example: eeeee2
+rem Since I wanted the following display of the color numbers that were
+rem selected to look just like they would in your code, I need to first
+rem convert the normal integers fg and bg into string variables, then
+rem trim off all of the leading spaces. The result is sfg$ and sbg$ -
+rem string variables that I can print to the screen, and get the result
+rem I wanted. See below->
+
+
+   color fg,bg
+   print " Here is a sample of text in the colors you just selected. "
+   print " The syntax to create these colors would look like this:   "
+   color 14,0
+   print
+   print "COLOR ";
+   print sfg$;
+   print ",";
+   print sbg$;
+
+rem if the colors were 2 and 3, and we had NOT converted to strings and
+rem trimmed spaces, the display here would be COLOR      2,     3
+
+color 7,0
+print
+print "(backgrounds 8 through 15 will make the foreground blink)"
+print
+
+color 10,0
+print "press ENTER to do another combination, Q and ENTER to Quit color";
+input nowwhat$;
+nowwhat$=ucase$(nowwhat$)
+if nowwhat$="Q" then menu:
+if nowwhat$="" then colortop:
+
+rem ***********************************************************************
+
+rem INKEY$.ASI (or INKEY$.TXT)
+rem by Dave Gjessing 8/19/95
+rem demonstrates some things that INKEY$ is good for
+
+inkeytop:
+cls
+quote$=chr$(34)
+
+rem see PRINT to find out what the quote$=chr$(34) thing is about
+
+color 14,0
+
+rem see the COLOR segment
+
+print "This segment demonstrates the INKEY$ keyword."
+color 7,0
+print
+print "The INKEY$ keyword provides a special way of letting the user give"
+print "instructions to your program. It is similar to INPUT, but unlike"
+print "INPUT, it can only catch one keystroke at a time, and when it catches"
+print "one of the ones it is waiting for, it reacts right then, not needing"
+print "the user to press <ENTER> to send the information. It also differs"
+print "in that it sort of ";
+print quote$;
+print "lurks";
+print quote$;
+print " in the background, while other functions go"
+print "on. The great thing about it is that you can use it to give a way to"
+print "break out of what would otherwise be a continuous loop."
+print
+print "Since accidentaly creating continuous loops is pretty darn easy to do,"
+print "and since it's also pretty darn annoying when it happens, you might"
+print "want to get in the habit of inserting the following bit of code at the"
+print "beginning of each new program you work on:"
+print
+color 14,0
+print "quit$=inkey$"
+print "if quit$=";
+print quote$;
+print "q";
+print quote$;
+print "then quit:"
+color 11,0
+print "(start on your program here)"
+color 14,0
+print "quit:"
+print "end"
+color 7,0
+print
+print "Start working on the program in that space above ";
+print quote$;
+print "quit:";
+print quote$
+print
+color 10,0
+print "press ENTER to continue";
+input c$;
+
+
+cls
+color 7,0
+print "Now, if you screw up and create a loop, all you have to do is press"
+print quote$;
+print "q";
+print quote$;
+print " and your program will terminate. (Sure beats having to reboot the"
+print "computer!)"
+print
+color 11,0
+print "The following program would loop forever:"
+print
+color 14,0
+print "top:"
+print "print ";
+print quote$;
+print "whatever";
+print quote$
+print "goto top:"
+color 7,0
+print
+color 11,0
+print "This one would too, but you could get out by pressing ";
+print quote$;
+print "q";
+print quote$;
+print
+print
+color 14,0
+print "top:"
+print "quit$=inkey$"
+print "if quit$=";
+print quote$;
+print "q";
+print quote$;
+print " then quit:"
+print "print ";
+print quote$;
+print "whatever";
+print quote$
+print "goto top:"
+print "quit:"
+print "end"
+color 11,0
+print
+print "...thereby saving you tons of frustration!"
+print
+print
+print
+color 10,0
+print "press ENTER to continue";
+input c$;
+
+example:
+quit$=inkey$
+if quit$="q" then nowwhat:
+rem if quit$="t" then top: (take out the rem to make t work here)
+print "whatever (remember the q to quit thing)"
+goto example:
+
+nowwhat:
+cls
+color 11,0
+
+print "Here is the code that created that annoying loop just then:"
+print
+color 14,0
+
+print "example:"
+print "quit$=inkey$"
+print "if quit$=";
+print quote$;
+print "q";
+print quote$;
+print " then nowwhat:"
+print "print ";
+print quote$;
+print "whatever (remember the q to quit thing)";
+print quote$
+print "goto example:"
+print
+color 11,0
+print "You may have as many if-then statements as you want following the"
+print "line that equates a variable name to inkey$. That is, you can create"
+print "as many options as you need. Just remember to provide target labels"
+print "for each option. This next bit, for instance, would accept either q"
+print "or t to break the loop:"
+print
+color 14,0
+print "example:"
+print "quit$=inkey$"
+print "if quit$=";
+print quote$;
+print "q";
+print quote$;
+print " then nowwhat:"
+print "if quit$=";
+print quote$;
+print "t";
+print quote$;
+print " then top:"
+print "print ";
+print quote$;
+print "whatever";
+print quote$
+print "goto example:"
+
+locate 22,0
+color 10,0
+print "press ENTER to leave the inkey$ segment altogether"
+print "press W, then ENTER to look at the (W)hole inkey$ segment again";
+input nowwhat$;
+nowwhat$=ucase$(nowwhat$)
+if nowwhat$="" then menu:
+if nowwhat$="W" then inkeytop:
+
+rem ***********************************************************************
+
+rem PRINT.ASI (or PRINT.TXT)
+rem by Dave Gjessing, 8/14/95
+rem demonstration of print keyword
+
+printtop:
+cls
+color 14,0
+
+rem see COLOR.TXT
+
+rem One of the first things I discovered while fooling with this is that
+rem a string constant can apprently not contain quotation marks INSIDE
+rem of the beginning and ending quotation marks that DEFINE it. So, I had
+rem to go to the ASCII chart and get the value for a " , which is 34, and
+rem assign that value to a variable (quote$). I couldn't see any other way
+rem to make - PRINT "This segment demonstrates the PRINT keyword" show up
+rem on the screen complete.
+rem So, all of this is apparently required:
+
+quote$=chr$(34)
+print "PRINT ";
+print quote$;
+print "This segment demonstrates the PRINT keyword.";
+print quote$
+
+rem (Whew! :) )
+
+color 7,0
+print
+color 15,0
+print "This segment demonstrates the PRINT keyword."
+color 7,0
+print
+print "The PRINT keyword is used to print things on the screen. In the"
+print "example above, the yellow text is the actual line from the .asi file"
+print "that causes the bright white message below it to show up on the screen." 
+print
+color 11,0
+print "The syntax is: PRINT [printobject1 [;] ]"
+print
+color 7,0
+print "To quote from the 80/20 Software documentation:"
+print
+color 11,0
+print "Printobject1 is defined as any valid ASIC data type: integer constant,"
+print "integer variable, decimal constant, decimal variable, string constant,"
+print "string variable, and arrays. The semicolon is optional and is used to"
+print "tell ASIC if you want a carriage return/line feed issued."
+color 7,0
+print
+print "My example above shows a string constant. Since there is NO semicolon"
+print "at the end, ASIC issues a carriage return/line feed once the print"
+print "operation is completed. If there WERE a semicolon at the end, then the"
+print "next print operation would start on the same line, right after the"
+
+rem Here is that quotation mark work-around again...
+
+print "word ";
+print quote$;
+print "keyword";
+print quote$;
+print ". (ie: ";
+print quote$;
+print "...keyword.The PRINT keyword is used to ...";
+print quote$;
+print ")"
+print
+color 10,0
+print "press ENTER to continue";
+input c$;
+
+tryit:
+cls
+color 15,0
+print "Here, make your own example. Type in your name."
+print
+color 7,0
+input name$;
+print
+print
+print "The line that you would need to type into your .asi file in order to"
+print "have your program print your name on the screen would be this:"
+print
+color 14,0
+print "PRINT ";
+print quote$;
+print name$;
+print quote$
+print
+color 7,0
+print "... and that would result in the following display:"
+print
+print name$
+print
+color 11,0
+print "These examples show only one of the several valid data types, that"
+print "being string constants. Like it says in the program documentation,"
+print "however, any data type may be ";
+print quote$;
+print "printed";
+print quote$;
+print "."
+print
+print "This print example program, PRINT.COM uses string constants and also"
+print "string variables. While writing it, I discovered a few things about"
+print "ASIC that I had not known before (which isn't surprising, since I've"
+print "only been working with programing for a little while). Read the file"
+print "PRINT.TXT to see how PRINT.COM works."
+print
+color 10,0
+print "press ENTER to continue";
+input c$;
+
+cls
+color 10,0
+locate 20,0
+print "press ENTER to leave the print segment altogether"
+print "press W, then ENTER to look at the (W)hole print segment again"
+print "press I, then ENTER to try (I)nputing your name again only"
+input nowwhat$;
+nowwhat$=ucase$(nowwhat$)
+if nowwhat$="" then menu:
+if nowwhat$="W" then printtop:
+if nowwhat$="I" then tryit:
+
+rem ***********************************************************************
+
+rem SOUND.ASI
+rem Dave Gjessing 8/21/95
+rem a demonstration of the SOUND keyword
+
+rem I'm thinking that this will be based on the COLOR segment, behave the
+rem same way, etc.
+
+rem DRAFT!!!!!!!!!!!!!
+
+soundtop:
+cls
+color 14,0
+print "This is a demonstration of the SOUND keyword."
+print
+color 11,0
+print "The syntax for the SOUND keyword is:"
+print
+color 14,0
+print "sound [frequency, duration]"
+print
+color 11,0
+print "Frequency and Duration are expressed as numbers. Frequencies"
+print "can run from 0 to 32,767. Durations can run higher..."
+print
+color 7,0
+print "Frequencies are backwards from what you might expect, with a higher"
+print "number resulting in a lower sound. Duration seems to be a function"
+print "of the Frequency. That is, a 400/200 sound takes the same amount of"
+print "real time as a 200/400 sound. Beware that long Durations with low "
+print "Frequencies can take a LONG time to execute..."
+print
+print "Create your own sample sound. Type in a number for each variable:"
+print
+print "Frequency: ";
+input frequency&;
+if frequency&>32767 then soundtop:
+print
+print
+print " Duration: ";
+input duration&;
+cls
+
+print
+print
+color 14,0
+print "Here here is an ASIC sound with a Frequency of:";
+print frequency&
+print "                             and a duration of:";
+print duration&
+sound frequency&, duration&
+locate 24,0
+color 10,0
+print "press ENTER to do another sound, Q and ENTER to quit sound";
+input c$;
+c$=ucase$(c$)
+if c$="Q" then menu:
+if c$="" then soundtop:
+
+rem ***********************************************************************

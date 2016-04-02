@@ -1,0 +1,16 @@
+					Address Book © Help
+  ____________________________________________________________________________________________________________ 										
+Address Book © is a basic data recorder that you can use to save and view your Addresses 
+System Requirements:
+-------------------------------
+If you experience any visual problems Please follow the instructions below:
+This program works best with:
+Microsoft Windows XP© Operating System
+A Full Screen (Press Al t+ Enter for a full view effect)
+Please enter the correct in formation at any prompt i.e.:
+If asked to enter a numeric data e.g. Age entering a character may lead to miss entering of your data.
+If asked a YES/NO statement please enter only Y, y, N or n;
+To avoid loss of Data please exit the program using the standard procedure.
+						
+
+

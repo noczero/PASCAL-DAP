@@ -1,0 +1,91 @@
+rem '===========================================================================
+rem ' Subject: LINE DRAWING ROUTINE              Date: 04-29-96 (00:00)       
+rem '  Author: Ben McGaughey                     Code: ASIC                   
+rem '  Origin: www.iea.com/~benm               Packet: ASIC.ABC
+rem '===========================================================================
+REM Line Drawing program for ASIC 5.00
+REM Programmed by Ben McGaughey
+REM benm@iea.com
+REM http://www.iea.com/~benm/
+REM Date: April 29, 1996
+
+   REM X1,Y1,X2,Y2 are the starting and ending points of the line.
+   X1@ = 22
+   Y1@ = 3
+
+   X2@ = 120
+   Y2@ = 155
+
+   SCREEN 13
+
+   XUNIT@ = 0
+   YUNIT@ = 0
+
+   VALUE@ = Y1@ * 320
+   OFFSET@ = VALUE@ + X1@
+
+   YDIFF@ = Y2@ - Y1@
+
+   IF YDIFF@ < 0 THEN
+      YDIFF@ = -1 * YDIFF@
+      YUNIT@ = -320
+   ELSE
+      YUNIT@ = 320
+   ENDIF
+
+   XDIFF@ = X2@ - X1@
+
+   IF XDIFF@ < 0 THEN
+      XDIFF@ = -1 * XDIFF@
+      XUNIT@ = -1
+   ELSE
+      XUNIT@ = 1
+   ENDIF
+
+   DEFSEG = &hexA000
+
+   IF XDIFF@ > YDIFF@ THEN
+      LENGTH@ = XDIFF@ + 1
+      FOR I@ = 0 TO LENGTH@
+            POKE OFFSET@ , 15
+            OFFSET@ = OFFSET@ + XUNIT@
+            ERTERM@ = ERTERM@ + YDIFF@
+            IF ERTERM@ > XDIFF@ THEN
+                ERTERM@ = ERTERM@ - XDIFF@
+                OFFSET@ = OFFSET@ + YUNIT@
+            ENDIF
+      NEXT I@
+   ELSE
+
+   LENGTH@ = YDIFF@ + 1
+   FOR I@ = 0 TO LENGTH@
+       POKE OFFSET@ , 15
+       OFFSET@ = OFFSET@ + YUNIT@
+       ERTERM@ = ERTERM@ + XDIFF@
+       IF ERTERM@ > 0 THEN
+          ERTERM@ = ERTERM@ - YDIFF@
+          OFFSET@ = OFFSET@ + XUNIT@
+       ENDIF
+   NEXT I@
+
+   ENDIF
+
+   PSET ( Y1@ , X1@ ) , 11
+   PSET ( Y2@ , X2@ ) , 11
+
+   W0:
+   VALUE0$ = INKEY$
+   VALUE1$ = ""
+   IF VALUE0$ = VALUE1$ THEN
+       VALUE0 = 1
+   ELSE
+       VALUE0 = 0
+   ENDIF
+   IF VALUE0 <> 0 THEN
+   ENDIF
+   IF VALUE0 <> 0 THEN W0:
+
+   SCREEN 0
+   WIDTH 80
+
+   END

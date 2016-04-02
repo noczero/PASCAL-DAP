@@ -1,0 +1,129 @@
+rem '===========================================================================
+rem ' Subject: GFX MOUSE POINTER                 Date: 03-13-97 (13:49)       
+rem '  Author: Dave French                       Code: ASIC                   
+rem '  Origin: davebf@cobweb.com.au            Packet: ASIC.ABC
+rem '===========================================================================
+REM 640X350X16
+SCREEN 9
+REM FIRST, CHECK FOR MOUSE DRIVER, AND RESET IT
+AX=0
+GOSUB MOUSE:
+
+REM **************************************
+REM **** Global Variables ****************
+rem **************************************
+TIXE=0
+
+REM ****************************************
+REM **** Actual GFX Program Starts Here ****
+REM ****************************************
+WorkBench:
+color 0,0
+CLS
+rem Make Mouse Cursor Visable
+AX=1
+GOSUB Mouse:
+REM **** WorkBench Title Bar ****
+FOR I=1 TO 640
+   FOR J=1 TO 15
+       PSET(J,I),15
+   NEXT J
+NEXT I
+FOR I=1 TO 640
+   PSET(16,I),0
+NEXT I
+REM **** NEW QUIT BUTTON ****
+LOCATE 0,76
+COLOR 4,7
+PRINT " X "
+REM **** REF LLINE **************
+color 3,12
+LOCATE 22,40
+PRINT "THIS LINE HERE FOR REFERENCE"
+REM **** Box Drawing Co-Ordinates ****
+rem **** X1 = START X
+X1=300
+REM **** Y1 = START Y
+Y1=200
+REM **** X2 = ENDING X
+X2=400
+REM **** I Think Your Catching On As To What Y2 Is ***
+Y2=300
+rem **** CO = Color of box
+CO=15
+GOSUB BoxDraw:
+WHILE TIXE=0
+   AX=3
+   GOSUB MOUSE:
+   color 3,0
+   LOCATE 20,0
+   PRINT "MOUSE HORIZONTAL COORD IS";
+   PRINT CX
+   PRINT "MOUSE VERTICAL COORD IS  ";
+   PRINT DX
+   PRINT "THE FOLLOWING BUTTONS ARE PRESSED: ";
+
+   rem **** IF THE LEFT MOUSE IS CLICKED ****
+   IF BX=1 THEN
+        GOSUB CheckMouse:
+   ENDIF
+   REM **** Leave Above Sub-Routine in At ALL Costs ***
+
+   IF BX=1 THEN
+      A$="LEFT "
+   ELSE
+      IF BX=2 THEN
+          A$="RIGHT"
+      ELSE
+          IF BX=3 THEN
+              A$="BOTH "
+            ELSE
+              A$="NONE "
+          ENDIF
+      ENDIF
+   ENDIF
+   PRINT A$
+   X$=INKEY$
+WEND
+goto WorkBench:
+
+CheckMouse:
+rem ********************************************
+rem **** Check If Mouse Clicked In Quit Box ****
+rem ********************************************
+IF CX>607 THEN
+   IF DX>0 THEN
+       IF CX<631 THEN
+           IF DX<14 THEN
+           TIXE=1
+           GOSUB ExitMain:
+           ENDIF
+       ENDIF
+   ENDIF
+ENDIF
+RETURN
+
+
+MOUSE: REM CALLS MOUSE INTERRUPT 33H
+   INT86(&HEX33,AX,BX,CX,DX,NA,NA,NA,NA,NA)
+RETURN
+
+BoxDraw:
+REM **** Top & Bottom Of Box ***************
+FOR I=X1 TO X2
+   PSET(Y1,I),CO
+   PSET(Y2,I),CO
+NEXT I
+REM **** Left & Right Sides Of Box *********
+FOR I=Y1 TO Y2
+   PSET(I,X1),CO
+   PSET(I,X2),CO
+NEXT I
+RETURN
+
+ExitMain:
+rem **** Hide Mouse & Clean Up Screen Before Leaving ****
+AX=2
+gosub Mouse:
+SCREEN 0
+END

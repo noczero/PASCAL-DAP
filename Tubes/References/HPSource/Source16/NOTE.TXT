@@ -1,0 +1,8 @@
+
+ ***Simple programs; source code***
+
+ These are mostly short programs in various languages for 16 bit 
+ compilers. They have been zipped together for convenience. 
+ Contains C, Pascal, & BASIC source code.
+
+ For: Turbo C, Turbo Pascal (early versions), & ASIC 5.00.
