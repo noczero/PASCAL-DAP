@@ -1,7 +1,7 @@
-{File 			: puzzle.pas}
-{Description 	: Game Puzzle Multi Size}
-{Date 			: 2 March 2016}
-{Author			: Satrya Budi Pratama}
+{File           : puzzle.pas         }
+{Description    : Game Puzzle Multi Size}
+{Date           : 2 March 2016       }
+{Author         : Satrya Budi Pratama}
 {====================================}
 {====== Bismillahirahmanirahim ======}
 {====================================}
