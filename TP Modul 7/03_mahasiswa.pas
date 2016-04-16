@@ -49,4 +49,5 @@ end;
 begin
 	inputdata();
 	showdata();
+	readln;
 end.

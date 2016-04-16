@@ -24,9 +24,11 @@ begin
 		write('Inputkan Harga Kamar : '); readln(Harga[i]);
 		SubTotal[i] := hitung(Lama[i],Harga[i]);
         Total := Total + SubTotal[i];
-		i := i + 1;
+		i := succ(i);
+		//i := i + 1;
 	end;
 end;
+
 
 procedure ShowData();
 begin

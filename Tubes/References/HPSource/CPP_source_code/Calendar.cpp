@@ -6,7 +6,7 @@
 // prints a calendar from
 // reference date to user's date
 
-#include <iostream.h>
+#include <iostream>
 #include <conio.h>
 
 // sunday = 1, monday = 2, .... , friday = 7
@@ -27,7 +27,7 @@ int main(){
 
         int month = reference_month ;
         int year = reference_year ;
-        cout << "Year: " << year << endl ;
+        cout << "Year: " << year  <<endl ;
         while(true){
                 if(year == final_year && month == final_month)
                         break ;

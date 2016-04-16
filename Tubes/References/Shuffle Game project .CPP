@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<iostream.h>
+#include<iostream>
 #include<stdlib.h>
 #include<string.h>
 #include<conio.h>
@@ -159,8 +159,8 @@ void easy()
       }
 
 
- 
- 
+
+
 void initial(int x)
 {      int i,no;
  step=0;
