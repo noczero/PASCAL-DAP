@@ -8,7 +8,7 @@ var
 
 
  procedure input( var T : data; var n,dicari : integer);
-
+ 
   begin
       write('Masukkan Jumlah data : '); readln(n);
       for i:= 1 to n do
