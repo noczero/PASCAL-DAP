@@ -5,35 +5,35 @@
 {====================================}
 {====== Bismillahirahmanirahim ======}
 {====================================}
+
 program PuzzleMultiSize;
 uses crt,sysutils;
 const
 	nmaks = 25;
-	lvl1 = 9;
-	lvl2 = 16;
-	lvl3 = 25;
+	lvl1 = 3;	
+	lvl2 = 4;
+	lvl3 = 5;
 
 type
 	size = array[1..nmaks] of String[2];
 	size2 = array[1..nmaks] of word;
 
-	sizeint = array[1..lvl1] of integer;
+	sizeint = array[1..9] of integer;
 
-	sze3 = array[1..3,1..3] of integer;
-	sze4 = array[1..4,1..4] of integer;
-	sze5 = array[1..5,1..5] of integer;
+	sze3 = array[1..3,1..3] of String[2];
+	sze4 = array[1..4,1..4] of String[2];
+	sze5 = array[1..5,1..5] of String[2];
 
 	ceksize3 = array[1..3,1..3] of integer;
 	ceksize4 = array[1..4,1..4] of integer;
 	ceksize5 = array[1..5,1..5] of integer;
-
 
 	username = record
 		nama : String;
 	end;
 
 var
-	b, i, j, k, l, m, idx0, baris, kolom, x, y, sama: Integer;
+	b, i, j, k, l, m, idx0, baris, kolom, x, y, sama,langkah: Integer;
 	a, jam, menit, detik, Milidetik : word;
 	pilihMenu, pilihUkuran, press : Char;
 	Level1,Level1_2, Level2,Level3 : size;
@@ -43,6 +43,8 @@ var
 	size3 : sze3;
 	size4 : sze4;
 	size5 : sze5;
+	dat : array[1..100] of integer;
+	dat1,code1 : integer;
 
 	convert : size2;
 	usr : username;
@@ -55,151 +57,75 @@ var
     TS,TS2 : TTimeStamp;
 
    // f : file of username;
-
-
-procedure cekmenang3();
+   
+{Check Menang Level 1}
+function cekMenangLvl1(): Boolean;
+var
+	i, j, k: Integer;
 begin
-	m:=0;
-	for k:= 1 to 3 do
+	k := 0;
+	for i := 1 to lvl1 do
 	begin
-		for l:= 1 to 3 do
+		for j := 1 to lvl1 do
 		begin
-			m := m + 1;
-			checksize3[k,l] := m-1;
+			k := k + 1;
+			cekMenangLvl1 := IntToStr(k) = size3[i][j];
+			if (k = 9) then
+				break;
 		end;
-	end;
 
-	//Misal
-	m:=0;
-	for k:= 1 to 3 do
-	begin
-		for l:= 1 to 3 do
-		begin
-			m := m + 1;
-			size3[k,l] := m-1;
-		end;
+		if (k = 9) then
+			break;
 	end;
-
-	for k:= 1 to 3 do
-	begin
-		for l:= 1 to 3 do
-		begin
-			write(checksize3[k,l]);
-		end;
-	end;
-	sama := 0;
-	for k := 1 to 3 do
-	begin
-		for l := 1 to 3 do
-		begin
-			if size3[k,l] = checksize3[k,l] then
-				sama := sama + 1;
-		end;
-	end;
-	writeln;
-	writeln(sama);
-	if sama = 9 then
-	menang := true;
 
 end;
+{End Check Menang Level 1}
 
-procedure cekmenang4();
+{Check Menang Level 2}
+function cekMenangLvl2(): Boolean;
+var 
+	i, j, k: integer;
 begin
-	m:=0;
-	for k:= 1 to 4 do
+	k := 0;
+	for i := 1 to lvl2 do
 	begin
-		for l:= 1 to 4 do
+		for j := 1 to lvl2 do
 		begin
-			m := m + 1;
-			checksize4[k,l] := m-1;
+			k := k + 1;
+			cekMenangLvl2 := IntToStr(k) = size4[i][j];
+			if (k = 16)  then
+				break;
 		end;
-	end;
 
-	//Misal
-	m:=0;
-	for k:= 1 to 4 do
-	begin
-		for l:= 1 to 4 do
-		begin
-			m := m + 1;
-			size4[k,l] := m-1;
-		end;
+		if (k = 16) then
+			break;
 	end;
-
-	for k:= 1 to 4 do
-	begin
-		for l:= 1 to 4 do
-		begin
-			write(checksize4[k,l]);
-		end;
-	end;
-	sama := 0;
-	for k := 1 to 4 do
-	begin
-		for l := 1 to 4 do
-		begin
-			if size4[k,l] = checksize4[k,l] then
-				sama := sama + 1;
-		end;
-	end;
-	writeln;
-	writeln(sama);
-	if sama = 16 then
-	menang := true;
-
 end;
+{End Check Menang Level 2}
 
-procedure cekmenang5();
+{Check Menang Level 3}
+function cekMenangLvl3(): Boolean;
+var 
+	i, j, k: integer;
 begin
-	m:=0;
-	for k:= 1 to 5 do
+	k := 0;
+	for i := 1 to lvl3 do
 	begin
-		for l:= 1 to 5 do
+		for j := 1 to lvl3 do
 		begin
-			m := m + 1;
-			checksize5[k,l] := m-1;
+			k := k + 1;
+			cekMenangLvl3 := IntToStr(k) = size5[i][j];
+			if (k = 25) then
+				break;
 		end;
-	end;
 
-	//Misal
-	m:=0;
-	for k:= 1 to 5 do
-	begin
-		for l:= 1 to 5 do
-		begin
-			m := m + 1;
-			size5[k,l] := m-1;
-		end;
+		if (k = 25) then
+			break;
 	end;
-
-	for k:= 1 to 5 do
-	begin
-		for l:= 1 to 5 do
-		begin
-			write(checksize5[k,l]);
-		end;
-	end;
-
-	sama := 0;
-	for k := 1 to 5 do
-	begin
-		for l := 1 to 5 do
-		begin
-			if size4[k,l] = checksize4[k,l] then
-				sama := sama + 1;
-		end;
-	end;
-	writeln;
-	writeln(sama);
-	if sama = 25 then
-	menang := true;
-
 end;
+{End Check Menang Level 3}
 
-
-
-
-
+{Keluar}
 procedure Keluar();
 begin
 	writeln;
@@ -208,9 +134,12 @@ begin
 	delay(500);
 	clrscr;
 end;
+{End Keluar}
 
-procedure search0(var T : size; n : integer);
-var ilocal : integer;
+{Search Index 0}
+procedure search0(var T : size; n : integer ;var idx : integer );
+var 
+	ilocal : integer;
 begin
 	ilocal := 1;
 	while (ilocal < n) and (T[ilocal] <> ' ') do
@@ -220,45 +149,212 @@ begin
 
 	if T[ilocal] = ' ' then
 	begin
-		idx0 := ilocal;
+		idx := ilocal;
 	end;
 end;
+{End Search }
 
-procedure UpArrow();
+{Folding Pindah Keyboard}
+{Pindah Angka Untuk Level 1}
+procedure UpArrowLvl1(); 	//Atas
+var
+	temp: String[2];
 begin
-
-	if (idx0 = 0) or (idx0 = 2) or (idx0 = 3) then
+	langkah := langkah + 1;
+	if baris <> 1 then
 	begin
-		write('Tidak Bisa');
-	end;
+		temp := size3[baris][kolom];
+		size3[baris][kolom] := size3[baris-1][kolom];
+		size3[baris-1][kolom] := temp;
+		baris := baris - 1;
+	end;		
+end;
 
-	if idx0 = 4  then
+procedure DownArrowLvl1();	//Bawah
+var
+	temp: String[2];	
+begin
+	langkah := langkah + 1;
+	if baris <> 3 then
 	begin
-		GotoXY(x,y); write(Level1[idx0]);
-		GotoXY(x,y+2); write(Level1[1]);
+		temp := size3[baris][kolom];
+		size3[baris][kolom] := size3[baris+1][kolom];
+		size3[baris+1][kolom] := temp;
+		baris := baris + 1;
+
 	end;
-
 end;
 
-procedure DownArrows();
+procedure LeftArrowLvl1();	//Kiri
+var
+	temp: String[2];
 begin
-	
+	langkah := langkah + 1;
+	if kolom <> 1 then
+	begin
+		temp := size3[baris][kolom];
+		size3[baris][kolom] := size3[baris][kolom-1];
+		size3[baris][kolom-1] := temp;
+		kolom := kolom - 1;
+	end;
 end;
 
-procedure LeftArrow();
+
+procedure RightArrowLvl1();	//Kanan
+var
+	temp: String[2];
 begin
-	
+	langkah := langkah + 1;
+	if kolom <> 3 then
+	begin
+		temp := size3[baris][kolom];
+		size3[baris][kolom] := size3[baris][kolom+1];
+		size3[baris][kolom+1] := temp;
+		kolom := kolom + 1;
+	end;
 end;
+{End Pindah Angka Lvl 1}
 
-
-procedure RightArrow();
+{Pindah Angka Untuk Level 2}
+procedure UpArrowLvl2();	//Atas
+var
+	temp: String[2];
 begin
-	
+	langkah := langkah + 1;
+	if baris <> 1 then
+	begin
+	temp := size4[baris][kolom];
+	size4[baris][kolom] := size4[baris-1][kolom];
+	size4[baris-1][kolom] := temp;
+	baris := baris - 1;
+	end;
 end;
 
+procedure DownArrowLvl2();	//Bawah
+var
+	temp: String[2];
+begin
+	langkah := langkah + 1;
+	if baris <> 4 then
+	begin
+	temp := size4[baris][kolom];
+	size4[baris][kolom] := size4[baris+1][kolom];
+	size4[baris+1][kolom] := temp;
+	baris := baris + 1;
+	end;
+end;
 
+procedure LeftArrowLvl2();	//Kiri
+var
+	temp: String[2];
+begin
+	langkah := langkah + 1;
+	if kolom <> 1 then
+	begin
+	temp := size4[baris][kolom];
+	size4[baris][kolom] := size4[baris][kolom-1];
+	size4[baris-1][kolom] := temp;
+	kolom := kolom - 1;
+	end;
+end;
+
+procedure RightArrowLvl2();	//Kanan
+var
+	temp: String[2];
+begin
+	langkah := langkah + 1;
+	if kolom <> 4 then
+	begin
+	temp := size4[baris][kolom];
+	size4[baris][kolom] := size4[baris][kolom+1];
+	size4[baris][kolom+1] := temp;
+	kolom := kolom + 1;
+	end;
+end;
+{End Pindah Angka Lvl 2}
+
+{Pindah Angka Untuk Level 3}
+
+procedure UpArrowLvl3();	//Atas
+var
+	temp: String[2];
+begin
+	temp := size5[baris][kolom];
+	size5[baris][kolom] := size5[baris-1][kolom];
+	size5[baris-1][kolom] := temp;
+	baris := baris - 1;
+end;
+
+procedure DownArrowLvl3();	//Bawah
+var
+	temp: String[2];
+begin
+	temp := size5[baris][kolom];
+	size5[baris][kolom] := size5[baris+1][kolom];
+	size5[baris+1][kolom] := temp;
+	baris := baris + 1;
+end;
+
+procedure LeftArrowLvl3();	//Kiri
+var
+	temp: String[2];
+begin
+	temp := size5[baris][kolom];
+	size5[baris][kolom] := size5[baris][kolom-1];
+	size5[baris-1][kolom] := temp;
+	kolom := kolom - 1;
+end;
+
+procedure RightArrowLvl3();	//Kanan
+var
+	temp: String[2];
+begin
+	temp := size5[baris][kolom];
+	size5[baris][kolom] := size5[baris][kolom+1];
+	size5[baris][kolom+1] := temp;
+	kolom := kolom + 1;
+end;
+{End Pindah Keyboard}
+
+{End Pindah Keyboard}
+
+{Procedure Pindah-Pindah Keyboard}
+procedure MoveLvl1(ditekan : Char);
+begin
+	case ditekan of
+		#72 : UpArrowLvl1();
+		#75 : LeftArrowLvl1();
+		#77 : RightArrowLvl1();
+		#80 : DownArrowLvl1();
+		#8 	: Keluar();
+	end;
+end;
+
+procedure MoveLvl2(ditekan : Char);
+begin
+	case ditekan of
+		#72 : UpArrowLvl2();
+		#75 : LeftArrowLvl2();
+		#77 : RightArrowLvl2();
+		#80 : DownArrowLvl2();
+		#8 	: Keluar(); 
+	end;
+end;
+
+procedure MoveLvl3(ditekan : Char);
+begin
+	case ditekan of
+		#72 : UpArrowLvl3();
+		#75 : LeftArrowLvl3();
+		#77 : RightArrowLvl3();
+		#80 : DownArrowLvl3();
+		#8	: Keluar();
+	end;
+end;
+{End Pindah Keyboard}
+
+{Folding Waktu}
 procedure startwaktu();
-
 begin
    TS:=DateTimeToTimeStamp (Now);
 	With TS do
@@ -277,7 +373,9 @@ begin
 	totalwaktu := waktuakhir - waktuawal;
 	decodeTime(totalwaktu/1000/60/60/24, jam,menit,Detik,Milidetik);
 end;
+{End Waktu}
 
+{Input Nama}
 procedure Nama();
 begin
 	//HEADER
@@ -285,11 +383,77 @@ begin
 	writeln('=  Zero Puzzle Games  =');
 	writeln('=======================');
 
-	writeln('Masukkan Nama Users : '); readln(usr.nama);
-	delay(1000);
+	write('Masukkan Nama Users : '); readln(usr.nama);
+	delay(100);
 	clrscr;
 end;
+{End Input Nama}
+{Cetak Puzzle Lvl 1}
+procedure Cetaklvl1();
+var
+	i, j : Integer;
+begin
+	clrscr;
+	writeln('=======================');
+	writeln('=  Zero Puzzle Games  =');
+	writeln('=======================');
+	for i := 1 to lvl1 do
+	begin
+		for j := 1 to lvl1 do
+		begin
+			 write(size3[i][j],'   ');
+		end;
+		writeln;
+		writeln;
+	end;
+	//langkah := langkah + 1;
+	gotoXY(8,10); writeln('Step : ' ,langkah);
+end;
+{End Cetak Puzzle lvl 1}
 
+{Cetak Puzzle Lvl 2}
+procedure Cetaklvl2();
+var
+	i, j : Integer;
+begin
+	clrscr;
+	writeln('=======================');
+	writeln('=  Zero Puzzle Games  =');
+	writeln('=======================');
+	for i := 1 to lvl2 do
+	begin
+		for j := 1 to lvl2 do
+		begin
+			write(size4[i][j], '   ');
+		end;
+		writeln;
+		writeln;
+	end;
+end;
+{End Cetak Puzzle lvl 2}
+
+{Cetak Puzzle Lvl 3}
+procedure Cetaklvl3();
+var
+	i, j : Integer;
+begin
+	clrscr;
+	writeln('=======================');
+	writeln('=  Zero Puzzle Games  =');
+	writeln('=======================');
+	for i := 1 to lvl3 do
+	begin
+		for j := 1 to lvl3 do
+		begin
+			 write(size5[i][j], '   ');
+		end;
+		writeln;
+		writeln;
+	end;
+end;
+{End Cetak Puzzle lvl 3}
+
+{Inisialisasi Puzzle lvl1}
 procedure Ukuran_3x3();
 begin
 	baris := 3;
@@ -330,59 +494,72 @@ begin
 			{merubah nilai nilai numerik ke string}
 			end;
 
-	//HEADER
-	x := 4;
-	y := 4;
-
-	writeln('=======================');
-	writeln('=  Zero Puzzle Games  =');
-	writeln('=======================');
-
-	 GotoXY(x,y); write(Level1[1]);
-	 GotoXY(x+4,y); write(Level1[2]);
-	 GotoXY(x+8,y); write(Level1[3]);
-	 GotoXY(x,y+2); write(Level1[4]);
-	 GotoXY(x+4,y+2); write(Level1[5]);
-	 GotoXY(x+8,y+2); write(Level1[6]);
-	 GotoXY(x,y+4); write(Level1[7]);
-	 GotoXY(x+4,y+4); write(Level1[8]);
-	 GotoXY(x+8,y+4); write(Level1[9]);
+	{Assign Angka RAndom ke Array 2 Dimensi}
 	
-	writeln;
+	size3[1][1] := Level1[1];
+	size3[1][2] := Level1[2];
+	size3[1][3] := Level1[3];
+	size3[2][1] := Level1[4];
+	size3[2][2] := Level1[5];
+	size3[2][3] := Level1[6];
+	size3[3][1] := Level1[7];
+	size3[3][2] := Level1[8];
+	size3[3][3] := Level1[9];
 
-	search0(Level1, lvl1);
-	writeln(idx0);
+	{Cari Indeks ' ' Untuk Baris dan Kolom }
+	search0(Level1, 9 ,idx0);
 
-	//delay(100);
-
-	//Press
-	repeat
-		
-	press := readkey;
-	case press of
-	#00 :begin
-	 case readkey of
-		#72 : UpArrow();
-		#75 : LeftArrow();
-		#77 : RightArrow();
-		#80 : DownArrows();
+	{Konversi Indeksnya ke Baris dan Kolom}
+	case idx0 of
+		1: begin
+			baris := 1;
+			kolom := 1;
 		end;
+		2: begin
+			baris := 1;
+			kolom := 2;
 		end;
-
-		#8 : Keluar();
-
+		3: begin
+			baris := 1;
+			kolom := 3;
+		end;
+		4: begin
+			baris := 2;
+			kolom := 1;
+		end;
+		5: begin
+			baris := 2;
+			kolom := 2;
+		end;
+		6: begin
+			baris := 2;
+			kolom := 3;
+		end;
+		7: begin
+			baris := 3;
+			kolom := 1;
+		end;
+		8: begin
+			baris := 3;
+			kolom := 2;
+		end;
+		9: begin
+			baris := 3;
+			kolom := 3;
+		end;
 	end;
 
-	until menang = true ;
+	{Panggi Perulangan}
 
-	// readln(baca);
-
-	// case baca of
-	// 	'nyerah': Keluar();
-	// end;
-
+	while (not cekMenangLvl1) or selesai = true do
+	begin
+		Cetaklvl1;
+		MoveLvl1(readkey);
+	end;
 end;
+{End Inisialisai Puzzle lvl1}
 
+{Inisialisasi Puzzle Lvl2}
 procedure Ukuran_4x4();
 begin
 	clrscr;
@@ -430,43 +607,144 @@ begin
 			{merubah nilai nilai numerik ke string}
 			end;
 
-	//HEADER
+	{Assign Angka RAndom ke Array 2 Dimensi}
+	size4[1][1] := Level2[1];
+	size4[1][2] := Level2[2];
+	size4[1][3] := Level2[3];
+	size4[1][4] := Level2[4];
 
-	writeln('=======================');
-	writeln('=  Zero Puzzle Games  =');
-	writeln('=======================');
+	size4[2][1] := Level2[5];
+	size4[2][2] := Level2[6];
+	size4[2][3] := Level2[7];
+	size4[2][4] := Level2[8];
 
-	 GotoXY(5,4); write(Level2[1]);
-	 GotoXY(10,4); write(Level2[2]);
-	 GotoXY(15,4); write(Level2[3]);
-	 GotoXY(20,4); write(Level2[4]);
+	size4[3][1] := Level2[9];
+	size4[3][2] := Level2[10];
+	size4[3][3] := Level2[11];
+	size4[3][4] := Level2[12];
 
-	 GotoXY(5,6); write(Level2[5]);
-	 GotoXY(10,6); write(Level2[6]);
-	 GotoXY(15,6); write(Level2[7]);
-	 GotoXY(20,6); write(Level2[8]);
+	size4[4][1] := Level2[13];
+	size4[4][2] := Level2[14];
+	size4[4][3] := Level2[15];
+	size4[4][4] := Level2[16];
 
-	 GotoXY(5,8); write(Level2[9]);
-	 GotoXY(10,8); write(Level2[10]);
-	 GotoXY(15,8); write(Level2[11]);
-	 GotoXY(20,8); write(Level2[12]);
+	{Cari Indeks ' ' Untuk Baris dan Kolom }
+	search0(Level2, 16 ,idx0);
 
-	 GotoXY(5,10); write(Level2[13]);
-	 GotoXY(10,10); write(Level2[14]);
-	 GotoXY(15,10); write(Level2[15]);
-	 GotoXY(20,10); write(Level2[16]);
-	
-	writeln;
-
-	delay(100);
-	
-	readln(baca);
-
-	case baca of
-		'nyerah': Keluar();
+	{Konversi Indeksnya ke Baris dan Kolom}
+	case idx0 of
+		1: begin
+			baris := 1;
+			kolom := 1;
+		end;
+		2: begin
+			baris := 1;
+			kolom := 2;
+		end;
+		3: begin
+			baris := 1;
+			kolom := 3;
+		end;
+		4: begin
+			baris := 1;
+			kolom := 4;
+		end;
+		5: begin
+			baris := 2;
+			kolom := 1;
+		end;
+		6: begin
+			baris := 2;
+			kolom := 2;
+		end;
+		7: begin
+			baris := 2;
+			kolom := 3;
+		end;
+		8: begin
+			baris := 2;
+			kolom := 4;
+		end;
+		9: begin
+			baris := 3;
+			kolom := 1;
+		end;
+		10: begin
+			baris := 3;
+			kolom := 2;
+		end;
+		11: begin
+			baris := 3;
+			kolom := 3;
+		end;
+		12: begin
+			baris := 3;
+			kolom := 4;
+		end;
+		13: begin
+			baris := 4;
+			kolom := 1;
+		end;
+		14: begin
+			baris := 4;
+			kolom := 2;
+		end;
+		15: begin
+			baris := 4;
+			kolom := 3;
+		end;
+		16: begin
+			baris := 4;
+			kolom := 4;
+		end;
 	end;
-end;
 
+	{Panggi Perulangan}
+
+	while (not cekMenangLvl2) or selesai = true do
+	begin
+		Cetaklvl2;
+		MoveLvl2(readkey);
+	end;
+
+
+	// writeln('=======================');
+	// writeln('=  Zero Puzzle Games  =');
+	// writeln('=======================');
+
+	//  GotoXY(5,4); write(Level2[1]);
+	//  GotoXY(10,4); write(Level2[2]);
+	//  GotoXY(15,4); write(Level2[3]);
+	//  GotoXY(20,4); write(Level2[4]);
+
+	//  GotoXY(5,6); write(Level2[5]);
+	//  GotoXY(10,6); write(Level2[6]);
+	//  GotoXY(15,6); write(Level2[7]);
+	//  GotoXY(20,6); write(Level2[8]);
+
+	//  GotoXY(5,8); write(Level2[9]);
+	//  GotoXY(10,8); write(Level2[10]);
+	//  GotoXY(15,8); write(Level2[11]);
+	//  GotoXY(20,8); write(Level2[12]);
+
+	//  GotoXY(5,10); write(Level2[13]);
+	//  GotoXY(10,10); write(Level2[14]);
+	//  GotoXY(15,10); write(Level2[15]);
+	//  GotoXY(20,10); write(Level2[16]);
+	
+	// writeln;
+
+	// delay(100);
+	
+	// readln(baca);
+
+	// case baca of
+	// 	'nyerah': Keluar();
+	// end;
+end;
+{End Inisialisasi Puzzle Lvl2}
+
+{Inisialisasi Puzzle lvl3}
 procedure Ukuran_5x5();
 begin
 	clrscr;
@@ -567,11 +845,18 @@ begin
 	case baca of
 		'nyerah': Keluar();
 	end;
-
 end;
+{End Inisialisasi Puzzle lvl3}
+
+
+
+
 
 procedure Menu();
 	//Nested Procedure
+	{Proses Puzzle Lvl1}
+	
+
 	procedure Peraturan();
 	begin
 		clrscr;
@@ -628,6 +913,7 @@ procedure Menu();
 		end;
 
 	end;
+
 begin
 
 	clrscr;
@@ -664,6 +950,7 @@ begin
     detik := 0;
     jam := 0;
 	assign(myfile,'history.txt');
+	langkah := 0;
 
 	startwaktu();
 repeat
@@ -680,13 +967,14 @@ repeat
      end;
 
 until selesai = true;
-cekmenang3();
-cekmenang4();
-cekmenang5();
+
+//cekmenang3();
+//cekmenang4();
+//cekmenang5();
 writeln;
 
 endwaktu();
 hitungwaktu();
-Writeln(format('Waktu Bermain  %d Jam %d Menit %d.%d Detik',[jam,menit,detik,Milidetik]));
+Writeln(format('Waktu Bermain  %d Jam %d Menit %d Detik %d MiliDetik',[jam,menit,detik,Milidetik]));
 readln;
 end.
