@@ -90,14 +90,14 @@ begin
 		begin
 			cekMenangLvl2 := IntToStr(k) = size4[i][j];
 			k := k + 1;
-			if (k = 16)  then
+			if (k = 16) or (not cekMenangLvl2) then
 				begin
 				menang := true;
 				break;
 				end;
 		end;
 
-		if (k = 16) then
+		if (k = 16) or (not cekMenangLvl2) then
 		begin
 			menang := true;
 			break;
@@ -119,14 +119,14 @@ begin
 		begin
 			cekMenangLvl3 := IntToStr(k) = size5[i][j];
 			k := k + 1;
-			if (k = 25) then
+			if (k = 25) or (not cekMenangLvl3) then
 				begin
 				menang := true;
 				break;
 				end;
 				
 		end;
-		if (k = 25) then
+		if (k = 25) or (not cekMenangLvl3) then
 			begin
 				menang := True;
 				break;
@@ -235,9 +235,9 @@ procedure Menu();
 	var
 		temp: String[2];
 	begin
-		langkah := langkah + 1;
 		if baris <> 3 then
 		begin
+			langkah := langkah + 1;
 			temp := size3[baris][kolom];
 			size3[baris][kolom] := size3[baris+1][kolom];
 			size3[baris+1][kolom] := temp;
@@ -249,9 +249,9 @@ procedure Menu();
 	var
 		temp: String[2];	
 	begin
-		langkah := langkah + 1;
 		if baris <> 1 then
 		begin
+			langkah := langkah + 1;
 			temp := size3[baris][kolom];
 			size3[baris][kolom] := size3[baris-1][kolom];
 			size3[baris-1][kolom] := temp;
@@ -264,9 +264,9 @@ procedure Menu();
 	var
 		temp: String[2];
 	begin
-		langkah := langkah + 1;
 		if kolom <> 3 then
 		begin
+			langkah := langkah + 1;
 			temp := size3[baris][kolom];
 			size3[baris][kolom] := size3[baris][kolom+1];
 			size3[baris][kolom+1] := temp;
@@ -278,9 +278,9 @@ procedure Menu();
 	var
 		temp: String[2];
 	begin
-		langkah := langkah + 1;
 		if kolom <> 1 then
 		begin
+			langkah := langkah + 1;
 			temp := size3[baris][kolom];
 			size3[baris][kolom] := size3[baris][kolom-1];
 			size3[baris][kolom-1] := temp;
@@ -295,13 +295,13 @@ procedure Menu();
 	var
 		temp: String[2];
 	begin
-		langkah := langkah + 1;
 		if baris <> 4 then
 		begin
-		temp := size4[baris][kolom];
-		size4[baris][kolom] := size4[baris+1][kolom];
-		size4[baris+1][kolom] := temp;
-		baris := baris + 1;
+			langkah := langkah + 1;
+			temp := size4[baris][kolom];
+			size4[baris][kolom] := size4[baris+1][kolom];
+			size4[baris+1][kolom] := temp;
+			baris := baris + 1;
 		end;
 	end;
 
@@ -309,13 +309,13 @@ procedure Menu();
 	var
 		temp: String[2];
 	begin
-		langkah := langkah + 1;
 		if baris <> 1 then
 		begin
-		temp := size4[baris][kolom];
-		size4[baris][kolom] := size4[baris-1][kolom];
-		size4[baris-1][kolom] := temp;
-		baris := baris - 1;
+			langkah := langkah + 1;
+			temp := size4[baris][kolom];
+			size4[baris][kolom] := size4[baris-1][kolom];
+			size4[baris-1][kolom] := temp;
+			baris := baris - 1;
 		end;
 	end;
 
@@ -323,13 +323,13 @@ procedure Menu();
 	var
 		temp: String[2];
 	begin
-		langkah := langkah + 1;
 		if kolom <> 4 then
 		begin
-		temp := size4[baris][kolom];
-		size4[baris][kolom] := size4[baris][kolom+1];
-		size4[baris][kolom+1] := temp;
-		kolom := kolom + 1;
+			langkah := langkah + 1;
+			temp := size4[baris][kolom];
+			size4[baris][kolom] := size4[baris][kolom+1];
+			size4[baris][kolom+1] := temp;
+			kolom := kolom + 1;
 		end;
 	end;
 
@@ -337,13 +337,13 @@ procedure Menu();
 	var
 		temp: String[2];
 	begin
-		langkah := langkah + 1;
 		if kolom <> 1 then
 		begin
-		temp := size4[baris][kolom];
-		size4[baris][kolom] := size4[baris][kolom-1];
-		size4[baris][kolom-1] := temp;
-		kolom := kolom - 1;
+			langkah := langkah + 1;
+			temp := size4[baris][kolom];
+			size4[baris][kolom] := size4[baris][kolom-1];
+			size4[baris][kolom-1] := temp;
+			kolom := kolom - 1;
 		end;
 	end;
 	{End Pindah Angka Lvl 2}
@@ -354,13 +354,13 @@ procedure Menu();
 	var
 		temp: String[2];
 	begin
-		langkah := langkah + 1;
 		if baris <> 5 then
 		begin
-		temp := size5[baris][kolom];
-		size5[baris][kolom] := size5[baris+1][kolom];
-		size5[baris+1][kolom] := temp;
-		baris := baris + 1;
+			langkah := langkah + 1;
+			temp := size5[baris][kolom];
+			size5[baris][kolom] := size5[baris+1][kolom];
+			size5[baris+1][kolom] := temp;
+			baris := baris + 1;
 		end;
 	end;
 
@@ -368,13 +368,13 @@ procedure Menu();
 	var
 		temp: String[2];
 	begin
-		langkah := langkah + 1;
 		if baris <> 1 then
 		begin
-		temp := size5[baris][kolom];
-		size5[baris][kolom] := size5[baris-1][kolom];
-		size5[baris-1][kolom] := temp;
-		baris := baris - 1;
+			langkah := langkah + 1;
+			temp := size5[baris][kolom];
+			size5[baris][kolom] := size5[baris-1][kolom];
+			size5[baris-1][kolom] := temp;
+			baris := baris - 1;
 		end;
 	end;
 
@@ -382,13 +382,13 @@ procedure Menu();
 	var
 		temp: String[2];
 	begin
-		langkah := langkah + 1;
 		if kolom <> 5 then
 		begin
-		temp := size5[baris][kolom];
-		size5[baris][kolom] := size5[baris][kolom+1];
-		size5[baris][kolom+1] := temp;
-		kolom := kolom + 1;
+			langkah := langkah + 1;
+			temp := size5[baris][kolom];
+			size5[baris][kolom] := size5[baris][kolom+1];
+			size5[baris][kolom+1] := temp;
+			kolom := kolom + 1;
 		end;
 	end;
 
@@ -396,13 +396,13 @@ procedure Menu();
 	var
 		temp: String[2];
 	begin
-		langkah := langkah + 1;
 		if kolom <> 1 then
 		begin
-		temp := size5[baris][kolom];
-		size5[baris][kolom] := size5[baris][kolom-1];
-		size5[baris][kolom-1] := temp;
-		kolom := kolom - 1;
+			langkah := langkah + 1;
+			temp := size5[baris][kolom];
+			size5[baris][kolom] := size5[baris][kolom-1];
+			size5[baris][kolom-1] := temp;
+			kolom := kolom - 1;
 		end;
 	end;
 	{End Pindah Keyboard}
@@ -547,8 +547,8 @@ procedure Menu();
 		Nama();
 		convert[1]:=3;
 		convert[2]:=2;
-		convert[3]:=8;
-		convert[4]:=7;
+		convert[3]:=7;
+		convert[4]:=8;
 		convert[5]:=9;
 		convert[6]:=6;
 		convert[7]:=5;
@@ -656,6 +656,7 @@ procedure Menu();
 		//	writeln(baris, ' ',kolom);
 		end;
 		{ cek Menang Lvl1 = True }
+		delay(1000);
 		CetakMenang();
 	end;
 	{End Inisialisai Puzzle lvl1}
@@ -665,21 +666,21 @@ procedure Menu();
 	begin
 		clrscr;
 		Nama();
-		convert[1]:=3;
-		convert[2]:=2;
-		convert[3]:=8;
-		convert[4]:=7;
-		convert[5]:=9;
-		convert[6]:=6;
-		convert[7]:=5;
-		convert[8]:=1;
-		convert[9]:=4;
-		convert[10]:=11;
-		convert[11]:=12;
-		convert[12]:=15;
-		convert[13]:=13;
-		convert[14]:=14;
-		convert[15]:=16;
+		convert[1]:=1;
+		convert[2]:=5;
+		convert[3]:=12;
+		convert[4]:=13;
+		convert[5]:=8;
+		convert[6]:=2;
+		convert[7]:=16;
+		convert[8]:=6;
+		convert[9]:=14;
+		convert[10]:=7;
+		convert[11]:=11;
+		convert[12]:=4;
+		convert[13]:=3;
+		convert[14]:=15;
+		convert[15]:=9;
 		convert[16]:=10;
 		randomize;
 
@@ -833,6 +834,7 @@ procedure Menu();
 			MoveLvl2(readkey);
 		end;
 		{ cek Menang Lvl2 = True }
+		delay(1000);
 		CetakMenang();
 	end;
 	{End Inisialisasi Puzzle Lvl2}
@@ -1075,6 +1077,7 @@ procedure Menu();
 			MoveLvl3(readkey);
 		end;
 		{ cek Menang Lvl1 = True }
+		delay(1000);
 		CetakMenang();
 
 	end;
@@ -1094,10 +1097,14 @@ procedure Menu();
 		writeln('1. Susun angka sesuai  ');
 		writeln('   urutan terkecil ke  ');
 		writeln('   terbesar. Contohnya ');
-		writeln('   1-2-3-4-5-6-7-8-9-10');
+		writeln('   1-2-3-4-5-6-7-8     ');
 		writeln;
-		writeln('2. Tekan Keyboard untuk');
-		writeln('   Memindahkan angka   ');
+		writeln('2. Tekan Up , Right, Left, Down ');
+		writeln('   Arrow pada Keyboard untuk');
+		writeln('   memindahkan angka   ');
+		writeln;
+		writeln('3. Tekan Backspace untuk menyerah');
+		writeln('   dalam permainan            ');
 		writeln;
 		writeln(' Press any key ...');
 		readln;
