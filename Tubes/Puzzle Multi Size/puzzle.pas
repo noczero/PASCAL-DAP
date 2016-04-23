@@ -1177,6 +1177,8 @@ begin
     jam := 0;
 	assign(myfile,'history.txt');
 	startwaktu();
+	TextBackground(cyan);
+	TextColor(white);
 
 repeat
 	langkah := 0;
