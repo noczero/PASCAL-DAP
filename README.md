@@ -2,5 +2,4 @@
 Dokumentasi Dasar Algoritma Pemrograman.
 Build with love.
 
-This repository has became controversy at the time. 
-Just don't do plagiarism :) 
+This repository became controversial at the time. Just don't do plagiarism :)
